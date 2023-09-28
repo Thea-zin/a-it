@@ -1,7 +1,7 @@
-function BookingForm(){
+function BookingForm({onClose}){
     return (
-        <div className="p-4 space-y-5">
-                <form className="box-border h-auto w-[500px] bg-cyan p-10 text-[16px]  rounded-[16px] space-y-5">
+        <div className="p-4 space-y-5 fixed inset-0 flex item-center justify-center z-45 bg-opacity-[50] backdrop-blur-sm overscroll-none" onClick={onClose}>
+                <form className="box-borderh-auto w-[500px]  bg-cyan p-10 text-[16px]  rounded-[16px] space-y-5">
                 <div className="text-[32px] text-darkblue text-center font-medium ">Booking</div>
                     <div>
                         <div className="p-2"><label>Full name <span className="text-red">*</span></label></div>
@@ -28,10 +28,12 @@ function BookingForm(){
                     <div>
                         <input type="checkbox"></input>
                         <label> I agree to Privacy Policy</label>
+                      
                     </div>
-                    <div ><button className="bg-darkblue text-white p-2 rounded-full w-full text-[24px] " >Book</button></div>
-    
+                    <button className="bg-darkblue text-white p-2 rounded-full w-full  lg:text-[24px] md-text-[15px] " >Book</button>
+        
                 </form>
+      
            </div>
     )
 }
