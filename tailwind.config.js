@@ -17,6 +17,12 @@ module.exports = {
         darkgray:"#4a4a4a",
         red:"#ff3535"
 
+      },
+      screens:{
+        'xsm':'100px',
+        'sm':'640px',
+        'md':'900px',
+        'lg':'1024px'
       }
       
     },

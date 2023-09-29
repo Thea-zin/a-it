@@ -11,7 +11,7 @@ function CustomerReview(){
     return (
         <div className=" p-4">
         <div className="text-center space-y-2 ">
-            <div className="text-cyan text-[32px] font-medium">
+            <div className="text-cyan lg:text-[32px] md:text-[25px] sm:text-[23px] xsm:text-[22px] font-medium">
                 Customer Review
             </div>
     
@@ -19,7 +19,7 @@ function CustomerReview(){
             {
              customerReviewList.map((datas)=>(
                 <div>
-                     <div className="border-2 sm:space-y-3 p-10 mt-5  ">
+                     <div className="border-2  p-10 mt-5  ">
                         
                       {/* <div className="flex justify-center"> <div className="border-2 rounded-full bg-cyan w-[100px] h-[100px] "><img src={datas.icon} className="items-center p-3"></img></div></div>
                      
@@ -28,7 +28,7 @@ function CustomerReview(){
                               <div className="block  rounded-full border-1 bg-cyan text-white text-[12px] p-2 "> {factor}</div>
                           ))
                       } */}
-                      <div className="text-[13px] text-center"> {datas.message}</div>
+                      <div className="text-[10px] text-center"> {datas.message}</div>
                       <div className="grid grid-cols-2"> 
                          
                                     <img src={datas.pic} className="items-center p-3 rounded-full"></img>

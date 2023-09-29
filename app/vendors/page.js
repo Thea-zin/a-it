@@ -1,3 +1,4 @@
+
 import Advertisement from "./component/advertisement";
 import Booking from "./component/booking";
 import BookingForm from "./component/bookingForm";
@@ -5,6 +6,7 @@ import CustomerReview from "./component/customerReview";
 import MainComponent from "./component/mainComponnent";
 import PublishForm from "./component/publishForm";
 import Testimonial from "./component/testimonial";
+import Footer from "../components/footer"
 
 function Vendor(){
     return (
@@ -13,13 +15,7 @@ function Vendor(){
                 <MainComponent></MainComponent>
             </div>
             <div>
-               <Booking></Booking>
-            </div>
-            <div>
-           
-            </div>
-            <div>
-                <PublishForm></PublishForm>
+                <Advertisement></Advertisement>
             </div>
             <div>
                 <Testimonial></Testimonial>
@@ -27,9 +23,14 @@ function Vendor(){
             <div>
                 <CustomerReview></CustomerReview>
             </div>
-            <div>
-                <Advertisement></Advertisement>
+            <div className="grid lg:grid-cols-2 md:grid-cols-1">
+                <Booking></Booking>
+                <PublishForm></PublishForm>
             </div>
+            <div>
+            <Footer></Footer>
+            </div>
+
         </div>
        
 

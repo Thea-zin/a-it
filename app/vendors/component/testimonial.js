@@ -11,7 +11,7 @@ function Testimonial(){
     return(
         <div className="p-4 ">
           <div className="text-center space-y-2">
-              <div className="text-cyan text-[32px] font-medium">
+              <div className="text-cyan lg:text-[32px] md:text-[25px] sm:text-[23px] xsm:text-[22px] font-medium">
                   Testimonial
               </div>
               <div>
