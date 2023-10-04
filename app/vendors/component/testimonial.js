@@ -17,12 +17,12 @@ function Testimonial(){
               <div className="text-body-md">
                 Customer review,Customer review,Customer review
               </div>
-              <div className="grid lg:grid-cols-3 p-4 md:grid-cols-3 sm:grid-cols-1 lg:space-x-3  ">
+              <div className="grid  lg:grid-cols-3 p-4 md:grid-cols-3 sm:grid-cols-1 lg:space-x-3  ">
               {
                 testimonialList.map((datas)=>(
     
-                    <div className="border-2 space-y-3 p-10 mt-5  ">
-                        <div className="flex justify-center"> <div className="border-2 rounded-full bg-cyan w-[100px] h-[100px] "><img src={datas.icon} className="items-center p-3"></img></div></div>
+                    <div className="border-2 space-y-3 border-gray p-10 mt-5  ">
+                        <div className="flex justify-center"> <div className="border-2 border-white rounded-full bg-cyan w-[100px] h-[100px] "><img src={datas.icon} className="items-center p-3"></img></div></div>
                        <div className="lg:text-display-md md:display-sm sm:display-sm x xsm:text-display-sm font-bold text-darkblue">{datas.heading}</div>
                         {
                             datas.factors.map((factor)=>(

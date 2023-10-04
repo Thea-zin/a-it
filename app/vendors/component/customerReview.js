@@ -19,7 +19,7 @@ function CustomerReview(){
             {
              customerReviewList.map((datas)=>(
                 <div>
-                     <div className="border-2  p-10 mt-5  ">
+                     <div className="border-2 border-gray p-10 mt-5  ">
                         
                       {/* <div className="flex justify-center"> <div className="border-2 rounded-full bg-cyan w-[100px] h-[100px] "><img src={datas.icon} className="items-center p-3"></img></div></div>
                      
