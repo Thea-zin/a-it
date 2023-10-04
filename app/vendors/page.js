@@ -24,7 +24,7 @@ function Vendor(){
                 <CustomerReview></CustomerReview>
             </div>
             <div className="grid lg:grid-cols-2 md:grid-cols-1">
-                <Booking></Booking>
+                <div className="mt-10"> <Booking ></Booking></div>
                 <PublishForm></PublishForm>
             </div>
             <div>

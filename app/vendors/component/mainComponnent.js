@@ -1,7 +1,7 @@
 function MainComponent(){
     return (
         <div>
-            <img src={"hero.png"}></img>
+            <img src={"aIT-2.png"}></img>
         </div>
     )
 }
