@@ -13,9 +13,9 @@ function UpdateBody(){
                     reviewList.map((review)=>(
                             <div className="flex-cols p-4 rounded-lg bg-base space-y-4">
                                 <div className="lg:grid lg:grid-cols-3 md:grid md:grid-cols-3 p-5 ">
-                                    <div className="lg:col-span-2 md:col-span-2  content-center">
+                                    <div className="lg:col-span-2 md:col-span-2   content-center">
                                         <div className="flex space-x-1 text-body-sm text-basedark  ">
-                                            <img src={review.profile} className="rounded-full w-10 h-10"></img>
+                                            <div className="display-flex justify-center"> <img src={review.profile} className="rounded-full w-10 h-10 "></img></div>
                                             <div className="content-center">
                                             <div>{review.author}</div>
                                             <div>{review.date}</div>
@@ -25,20 +25,29 @@ function UpdateBody(){
                                     <div className="text-title-md font-bold">
                                         {review.title}
                                     </div>
-                                    <div className="lg:text-body-md md:text-body-sm sm:text-body-sm xsm:text-body-sm">
+                                    <div className="lg:text-body-md md:text-body-md sm:text-body-sm xsm:text-body-sm">
                                         {review.content}
                                     </div>
                         
 
                                     </div>
-                                    <div className="lg:w-[90%] sm:w-[60%] md:w-[60%]">
-                                    <img src={review.blog_pic} className="lg:w-[90%] sm:w-[100%] md:w-[90%] xsm:w-[95%] "></img>
+                                    <div >
+                                    <img src={review.blog_pic} className="w-[90%]"></img>
                                 </div>
                    
                                 </div>
-                                <button>Design</button>
+                                <div className="grid grid-cols-3 space-x-[80%]" >
+                                    <div className="col-span-2"> <button className="rounded-full bg-divider text-center p-2" >Design</button></div>
+                                    <div className="flex mt-[0.1%] space-x-3">
+                                        <div><img src={"bookMark.png"}></img></div>
+                                        <div><img src={"edit.png"}></img></div>
+                                    </div>
+        
+                                </div>
+                                </div>
+                 
 
-                            </div>
+           
                      
 
                         
