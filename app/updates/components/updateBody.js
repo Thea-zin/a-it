@@ -1,10 +1,10 @@
 function UpdateBody(){
     const reviewList = [
         {author:"Sopheak Khoeurn",profile:'people-1.png',blog_pic:'blog1.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",pic:"",content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-        {author:"Sopheak Khoeurn",date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'blog2.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-        {author:"Sopheak Khoeurn",date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'blog3.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-        {author:"Sopheak Khoeurn",date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-        {author:"Sopheak Khoeurn",date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {author:"Park Jihoon",profile:'people-1.png',date:"2023-09-21",title:"Favorite AI toos for designers in 2023",blog_pic:'blog2.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {author:"Kim Taehyung",profile:'people-1.png',date:"2023-09-02",title:"Favorite AI toos for designers in 2023",blog_pic:'blog3.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {author:"Jeon Jungkook",profile:'people-1.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {author:"Sopheak Khoeurn",profile:'people-1.png',date:"2023-05-23",title:"Favorite AI toos for designers in 2023",blog_pic:'blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
 
     ]
     return (
@@ -15,14 +15,14 @@ function UpdateBody(){
                                 <div className="lg:grid lg:grid-cols-3 md:grid md:grid-cols-3 p-5 ">
                                     <div className="lg:col-span-2 md:col-span-2   content-center">
                                         <div className="flex space-x-1 text-body-sm text-basedark  ">
-                                            <div className="display-flex justify-center"> <img src={review.profile} className="rounded-full w-10 h-10 "></img></div>
+                                            <div className="display-flex justify-center"> <img src={review.profile} className="rounded-full w-14 h-14 "></img></div>
                                             <div className="content-center">
-                                            <div>{review.author}</div>
-                                            <div>{review.date}</div>
+                                            <div className="lg:text-body-lg">{review.author}</div>
+                                            <div className="lg:text-body-md">{review.date}</div>
                                             
                                         </div>
                                     </div>
-                                    <div className="text-title-md font-bold">
+                                    <div className="text-display-md font-bold">
                                         {review.title}
                                     </div>
                                     <div className="lg:text-body-md md:text-body-md sm:text-body-sm xsm:text-body-sm">
@@ -32,15 +32,18 @@ function UpdateBody(){
 
                                     </div>
                                     <div >
-                                    <img src={review.blog_pic} className="w-[90%]"></img>
+                                    <img src={review.blog_pic} className="w-[100%]"></img>
                                 </div>
                    
                                 </div>
-                                <div className="grid grid-cols-3 space-x-[80%]" >
-                                    <div className="col-span-2"> <button className="rounded-full bg-divider text-center p-2" >Design</button></div>
-                                    <div className="flex mt-[0.1%] space-x-3">
-                                        <div><img src={"bookMark.png"}></img></div>
-                                        <div><img src={"edit.png"}></img></div>
+                                <div className="grid grid-cols-3 lg:space-x-[70%] sm:space-x-[50%] xsm:space-x-[25%]" >
+                                    <div className="col-span-2"> <button className="rounded-full bg-divider hover:bg-darkbase text-center p-2" >Design</button></div>
+                                    <div className="flex  space-x-3">
+                                        <div className=" rounded-full w-10 h-10 text-center "><button><img src={"bookMark.png"}></img></button></div>
+                                        <div className=" rounded-full w-10 h-10 text-center"><button><img src={"edit.png"}></img></button></div>
+                                        <div></div>
+                                        {/* <button className="w-[52px] h-[52px]" ><img src={"bookmark.png"} className="w-[100px] h-[100px]" ></img></button>
+                                        <button  className="w-[52px] h-[52px]"><img src={"edit.png"} className="w-[100px] h-[100px]"></img></button> */}
                                     </div>
         
                                 </div>

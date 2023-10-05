@@ -48,6 +48,7 @@ function PublishForm(){
                         <div className="p-2"><label>Remark</label></div>
                         <input type="text" className=" border-[1px]  rounded-full w-full p-2"></input>
                     </div>
+                    <button className="bg-darkblue text-white p-2 rounded-full w-full hover:bg-darkblue-[300]  lg:text-display-sm md-body-sm " >Book</button>
         
                 
             </form>
