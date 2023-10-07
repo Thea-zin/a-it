@@ -1,6 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import WriteReviewPage from "./write_review_page/write_review_page";
+import ReviewForm1 from "./write_review_page/review_form_1";
+import ReviewForm2 from "./write_review_page/review_form_2";
+import ReviewForm3 from "./write_review_page/review_form_3";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +29,8 @@ export default function RootLayout({ children }) {
         ></link>
       </head>
       <body className={inter.className}>
-        <WriteReviewPage></WriteReviewPage>
+        {/* <WriteReviewPage></WriteReviewPage> */}
+        <ReviewForm3></ReviewForm3>
       </body>
     </html>
   );
