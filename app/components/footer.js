@@ -1,10 +1,10 @@
 import Link from "next/link";
 function Footer(){
     return (
-        <div className="grid grid-cols-3 w-full h-full bg-black p-7 content-center">
-            <div className="space-y-3 col-span-2 ">
-                 <div><img src={"aIT.png"}></img></div>
-                 <div className="space-y-3 ">
+        <div className="grid grid-cols-3 w-full h-full bg-black p-7 content-center lg:text-body-md md:body-sm sm:body-sm x xsm:text-body-sm ">
+            <div className="space-y-3 col-span-2 mt-[10%] mb-[10%]">
+                 <div><img src={"../aIT.png"}></img></div>
+                 <div className="space-y-[70px] ">
                     <div className="space-x-5">
                          <Link href="/vendors" className="underline decoration-white text-white">Categories</Link>
                          <Link href="/vendors" className="underline decoration-white text-white">Write a Review</Link>
@@ -25,14 +25,14 @@ function Footer(){
                     </div>
             </div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-[70px] mt-[30%]">
                 <p className="text-white text-center">Stay up to date</p>
-                <div className="text-center"><input type="email" className='p-2 rounded-full w-auto'></input></div>
+                <div className="text-center"><input type="email" className='p-2  sm:w-full md:w-auto lg:w-auto bg-darkbase' placeholder="Email Address"></input></div>
                 <div className="flex space-x-2 justify-center">
-                    <Link href="/vendors"><img src={"instagram.png"}></img></Link>
-                    <Link href="/vendors"><img src={"linkedin.png"}></img></Link>
-                    <Link href="/vendors"><img src={"twitter.png"}></img></Link>
-                    <Link href="/vendors"><img src={"facebook.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../instagram.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../linkedin.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../twitter.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../facebook.png"}></img></Link>
 
                 </div>
             </div>

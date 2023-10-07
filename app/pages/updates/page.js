@@ -1,4 +1,3 @@
-import Footer from "../components/footer"
 import UpdateBody from "./components/updateBody";
 import Update1 from "./components/updateHeader1";
 import Header2 from "./components/updateHeader2";

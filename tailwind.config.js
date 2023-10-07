@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundSize:{'100':'100% 100%'},
+      backgroundImage:{
+        'triangle':'linear-gradient(to bottom right,#000 60%,#fff 50%)'
+      },
       fontFamily:{
         dmsan:["dmsan"]
       },
@@ -19,7 +23,8 @@ module.exports = {
         gray:"#D9D9D9",
         base:"#f7f8fa",
         basedark:"#4a4a4a",
-        divider:"#eeebeb"
+        divider:"#eeebeb",
+        stroke:"#e3e6ea",
 
       },
       screens:{

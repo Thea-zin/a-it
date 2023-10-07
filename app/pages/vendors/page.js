@@ -6,11 +6,11 @@ import CustomerReview from "./component/customerReview";
 import MainComponent from "./component/mainComponnent";
 import PublishForm from "./component/publishForm";
 import Testimonial from "./component/testimonial";
-import Footer from "../components/footer"
+
 
 function Vendor(){
     return (
-        <div className="font-dmsan ">
+        <div className="font-dmsan bg-base  ">
             <div>
                 <MainComponent></MainComponent>
             </div>
@@ -23,12 +23,9 @@ function Vendor(){
             <div>
                 <CustomerReview></CustomerReview>
             </div>
-            <div className="grid lg:grid-cols-2 md:grid-cols-1">
+            <div className="grid lg:grid-cols-2 md:grid-cols-1 p-2 ">
                 <div className="mt-10"> <Booking ></Booking></div>
                 <PublishForm></PublishForm>
-            </div>
-            <div>
-            <Footer></Footer>
             </div>
 
         </div>

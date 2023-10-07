@@ -2,11 +2,10 @@
 import { data } from "autoprefixer";
 import { useState } from "react";
 function CustomerReview(){
-    // const [customerReviewList,setCustomerReview]=useState([]);
     const customerReviewList=[
-        {name:"Wen Junhui",pic:"people-4.png",role:"Software Engineer",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."},
-        {name:"Choi Soobin",pic:"people-3.png",role:"Executive Director",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."},
-        {name:"Lana Del Rey",pic:"people-2.png",role:"Software Manager",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."}
+        {id:1,name:"Wen Junhui",pic:"../vendors/people-4.png",role:"Software Engineer",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."},
+        {id:2,name:"Choi Soobin",pic:"../vendors/people-3.png",role:"Executive Director",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."},
+        {id:3,name:"Lana Del Rey",pic:"../vendors/people-2.png",role:"Software Manager",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."}
     ]
     return (
         <div className=" p-4">
@@ -18,16 +17,8 @@ function CustomerReview(){
             <div className="grid p-4 lg:grid-cols-3  md:grid-cols-3 sm:grid-cols-1 lg:space-x-2 md:space-x-2">
             {
              customerReviewList.map((datas)=>(
-                <div>
-                     <div className="border-2 border-gray p-10 mt-5  ">
-                        
-                      {/* <div className="flex justify-center"> <div className="border-2 rounded-full bg-cyan w-[100px] h-[100px] "><img src={datas.icon} className="items-center p-3"></img></div></div>
-                     
-                      {
-                          datas.factors.map((factor)=>(
-                              <div className="block  rounded-full border-1 bg-cyan text-white text-[12px] p-2 "> {factor}</div>
-                          ))
-                      } */}
+                <div key={datas.id}>
+                     <div className="border-2 border-white rounded-[16px] p-10 mt-5 bg-white  ">
                       <div className="lg:text-body-lg md:text-body-md sm:text-body-sm xsm:text-body-sm italic text-center"> {datas.message}</div>
                       <div className="grid grid-cols-2"> 
                          

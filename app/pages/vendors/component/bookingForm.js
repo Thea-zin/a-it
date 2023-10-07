@@ -1,7 +1,7 @@
 function BookingForm({onClose}){
     return (
-        <div className="p-4 space-y-5 fixed inset-0 flex item-center justify-center z-45 bg-opacity-[50] backdrop-blur-sm overscroll-none" onClick={onClose}>
-                <form className="box-borderh-auto w-[500px]  bg-cyan p-10 text-[16px]  rounded-[16px] space-y-5">
+        <div className="p-4 space-y-5 fixed inset-0 flex item-center justify-center z-50 bg-white  " onClick={onClose}>
+                <form className="box-border  bg-cyan p-10 text-[16px]  rounded-[16px] space-y-5 overflow-auto w-full max-h-48">
                 <div className="text-[32px] text-darkblue text-center font-medium ">Booking</div>
                     <div>
                         <div className="p-2"><label>Full name <span className="text-red">*</span></label></div>
