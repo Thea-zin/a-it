@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 const navbar = () => {
   return (
     <div>
@@ -7,13 +8,15 @@ const navbar = () => {
         <div className='menu flex justify-between '>
             <div className='listing flex items-center gap-5  '>
                 <a className='logo '>
-                  <img 
-                  src="/photo/logoAIT.png"/>
+                  <Link href='/pages/home'>
+                    <img 
+                      src="/photo/logoAIT.png"/>
+                  </Link>
                 </a>
-                    <div className='categories'>Software categories</div>
+                    <div className='categories'><Link href='/pages/home' >Software categories</Link></div>
                     <div className='update'>Update</div>
-                    <div className='write a Review'>Write a Review</div>
-                    <div className='vendor'>For Vendors</div>
+                    <div className='write a Review'><Link href='/pages/updates'>Write a Revie</Link>w</div>
+                    <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
             </div>
             <div className=' flex gap-5 justify-center items-center'>
                 <div>Loign</div>
