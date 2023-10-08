@@ -7,13 +7,13 @@ const navbar = () => {
       <header className='p-4  '>
         <div className='menu flex justify-between '>
             <div className='listing flex items-center gap-5  '>
-                <a className='logo '>
-                  <Link href='/pages/home'>
+                <a className='logo ' href='/pages/home' >
+                  
                     <img 
                       src="/photo/logoAIT.png"/>
-                  </Link>
+                  
                 </a>
-                    <div className='categories'><Link href='/pages/home' >Software categories</Link></div>
+                    <div className='categories'> <Link href='/pages/home' >Software categories</Link></div>
                     <div className='update'>Update</div>
                     <div className='write a Review'><Link href='/pages/updates'>Write a Revie</Link>w</div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
