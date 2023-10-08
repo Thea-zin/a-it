@@ -5,7 +5,7 @@ const navbar = () => {
     <div>
       <header className='p-4  '>
         <div className='menu flex justify-between '>
-            <div className='listing flex gap-5  '>
+            <div className='listing flex items-center gap-5  '>
                 <a className='logo '>
                   <img 
                   src="/photo/logoAIT.png"/>
@@ -15,9 +15,9 @@ const navbar = () => {
                     <div className='write a Review'>Write a Review</div>
                     <div className='vendor'>For Vendors</div>
             </div>
-            <div className=' flex gap-5'>
+            <div className=' flex gap-5 justify-center items-center'>
                 <div>Loign</div>
-                <div>Sign Up</div>
+                <div className='bg-[#2F455C] p-2 text-white text-center rounded-full w-24 hover:bg-sky-700 cursor-pointer'>Sign Up</div>
             </div>
             
         </div>
