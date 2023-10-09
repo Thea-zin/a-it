@@ -14,12 +14,12 @@ const navbar = () => {
                   
                 </a>
                     <div className='categories'> <Link href='/pages/home' >Software categories</Link></div>
-                    <div className='update'>Update</div>
-                    <div className='write a Review'><Link href='/pages/updates'>Write a Revie</Link>w</div>
+                    <div className='update'><Link href={"/pages/updates"}>Updates</Link></div>
+                    <div className='write a Review'><Link href='/'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
             </div>
             <div className=' flex gap-5 justify-center items-center'>
-                <div>Loign</div>
+                <div>Log In</div>
                 <div className='bg-[#2F455C] p-2 text-white text-center rounded-full w-24 hover:bg-sky-700 cursor-pointer'>Sign Up</div>
             </div>
             

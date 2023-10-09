@@ -27,7 +27,12 @@ function Footer(){
             </div>
             <div className="space-y-[70px] mt-[30%]">
                 <p className="text-white text-center">Stay up to date</p>
-                <div className="text-center"><input type="email" className='p-2  sm:w-full md:w-auto lg:w-auto bg-darkbase' placeholder="Email Address"></input></div>
+                <div className="text-center ">
+                    <input type="email" className='p-2  sm:w-full md:w-auto lg:w-auto bg-basedark' placeholder="Email Address"></input>
+                    <div className="relative mt-[-7.5%] ml-[40%]">
+                        <button><img src="../send.png"></img></button>
+                    </div>
+                </div>
                 <div className="flex space-x-2 justify-center">
                     <Link href="/vendors"><img src={"../instagram.png"}></img></Link>
                     <Link href="/vendors"><img src={"../linkedin.png"}></img></Link>

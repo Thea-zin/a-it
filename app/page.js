@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       <div>
-        <Link href='/vendors'>Vendor</Link>
+        <Link href='/pages/vendors'>Vendor</Link>
       </div>
     </main>
   )
