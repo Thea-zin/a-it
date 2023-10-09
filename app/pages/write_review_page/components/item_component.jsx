@@ -11,7 +11,7 @@ export default function Item(id, name, iconid) {
         <p>(2134)</p>
       </div>
       <div className="w-full h-28 grid place-content-center relative z-0">
-        <img src={`write_review/icons/${iconid}.png`} alt="" />
+        <img src={`/write_review/icons/${iconid}.png`} alt="" />
       </div>
     </div>
   );

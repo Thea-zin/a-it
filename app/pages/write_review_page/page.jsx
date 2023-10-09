@@ -1,4 +1,4 @@
-import Item from "./item_component";
+import Item from "./components/item_component";
 
 export default function WriteReviewPage() {
   var items = [];
@@ -35,12 +35,12 @@ export default function WriteReviewPage() {
         </div>
         <div className="w-full lg:py-16 lg:px-20 sm:px-32 py-10 px-8">
           <img
-            src="write_review/write_review_page_process_bar.png"
+            src="/write_review/write_review_page_process_bar.png"
             alt=""
-            className="lg:block hidden"
+            className="lg:block hidden w-full"
           />
           <img
-            src="write_review/write_review_page_process_bar_mobile.png"
+            src="/write_review/write_review_page_process_bar_mobile.png"
             alt=""
             className="lg:hidden block"
           />
@@ -90,7 +90,7 @@ export default function WriteReviewPage() {
             );
           })}
           <button className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-10 h-10 rounded-full grid place-content-center">
-            <img src="write_review\icons\next.png" alt="" />
+            <img src="/write_review\icons\next.png" alt="" />
           </button>
         </div>
       </div>

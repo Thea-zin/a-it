@@ -14,8 +14,8 @@ const navbar = () => {
                   
                 </a>
                     <div className='categories'> <Link href='/pages/home' >Software categories</Link></div>
-                    <div className='update'>Update</div>
-                    <div className='write a Review'><Link href='/pages/updates'>Write a Revie</Link>w</div>
+                    <div className='update'><Link href='/pages/updates'>Update</Link></div>
+                    <div className='write a Review'><Link href='/pages/write_review_page'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
             </div>
             <div className=' flex gap-5 justify-center items-center'>
