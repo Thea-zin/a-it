@@ -29,7 +29,6 @@ export default function RootLayout({ children }) {
         ></link>
       </head>
       <body className={inter.className}>
-        {/* <WriteReviewPage></WriteReviewPage> */}
         <ReviewForm3></ReviewForm3>
       </body>
     </html>
