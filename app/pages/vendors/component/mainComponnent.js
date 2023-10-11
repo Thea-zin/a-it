@@ -1,13 +1,13 @@
 function MainComponent(){
     return (
         <div className="p-6 rounded-[16px] sticky">
-                    <div className="w-[100%] h-[450px] border border-white rounded-[26px] bg-triangle">
-                              <div className="grid grid-cols-3 ">
-                                <div className="col-span-2 p-8 space-y-6">
-                                    <p className="lg:text-display-lg md:text-display-md sm:text-display-md xsm:text-dsiplay-sm text-white">Start and make a different in your company</p>
+                    <div className="w-[100%] lg:h-[450px] md:h-[420px] sm:h-[400px] xsm-[400px] border border-white rounded-[26px] bg-triangle">
+                              <div className="lg:grid lg:grid-cols-3 lg:mt-[0%] md:mt-[10%] sm:mt-[10%]  ">
+                                <div className="col-span-2  p-8 space-y-6">
+                                    <p className="lg:text-display-lg md:text-display-md sm:text-display-md xsm:text-display-md text-white">Start and make a different in your company</p>
                                 <button className="bg-darkblue p-3 rounded-full text-white text-display-sm ">Post your service for free</button>
                                     </div>
-                                    <div className="flex relative">
+                                    <div className=" lg:flex md:hidden sm:hidden xsm:hidden relative">
                                         <img src={"../vendors/element.png"} className="mt-[2rem]"></img>
                                         <div className="absolute ml-[24%] mt-[32%]">
                     

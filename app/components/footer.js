@@ -1,9 +1,9 @@
 import Link from "next/link";
 function Footer(){
     return (
-        <div className="grid grid-cols-3 w-full h-full bg-black p-7 content-center lg:text-body-md md:body-sm sm:body-sm x xsm:text-body-sm ">
-            <div className="space-y-3 col-span-2 mt-[10%] mb-[10%]">
-                 <div><img src={"../aIT.png"}></img></div>
+        <div className="lg:grid lg:grid-cols-3 sm:flex-col xsm:flex-col w-full h-full bg-black p-7 content-center lg:text-body-md md:body-sm sm:body-sm x xsm:text-body-sm ">
+            <div className="space-y-3 lg:col-span-2 md:col-span-2  mt-[10%] lg:mb-[10%]">
+                 <div className="mb-[2rem]" ><img src={"../aIT.png"}  ></img></div>
                  <div className="space-y-[70px] ">
                     <div className="space-x-5">
                          <Link href="/vendors" className="underline decoration-white text-white">Categories</Link>
@@ -25,15 +25,15 @@ function Footer(){
                     </div>
             </div>
             </div>
-            <div className="space-y-[70px] mt-[30%]">
-                <p className="text-white text-center">Stay up to date</p>
+            <div className="sm:block space-y-[70px] lg:mt-[35%] md:mt-[20%] sm:mt-[10%] xsm:mt-[20%]">
+                <p className="text-white text-center sm:text-title-md xsm:text-[22px] font-bold">Stay up to date</p>
                 <div className="text-center ">
-                    <input type="email" className='p-2  sm:w-full md:w-auto lg:w-auto bg-basedark' placeholder="Email Address"></input>
-                    <div className="relative mt-[-7.5%] ml-[40%]">
-                        <button><img src="../send.png"></img></button>
+                    <div className="flex justify-center">
+                    <input type="email" className='p-2 absolute sm:w-1/2 md:w-1/2 lg:w-auto bg-basedark' placeholder="Email Address"></input>
+                        <button className="relative mt-[10px] lg:ml-[40%] md:ml-[50%] sm:ml-[40%] xsm:ml-[30%] "><img src="../send.png"></img></button>
                     </div>
                 </div>
-                <div className="flex space-x-2 justify-center">
+                <div className="flex lg:space-x-2 xsm:space-x-[30px] justify-center">
                     <Link href="/vendors"><img src={"../instagram.png"}></img></Link>
                     <Link href="/vendors"><img src={"../linkedin.png"}></img></Link>
                     <Link href="/vendors"><img src={"../twitter.png"}></img></Link>

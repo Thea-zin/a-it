@@ -4,7 +4,8 @@ import Header2 from "./components/updateHeader2";
 
 function Updates(){
     return (
-        <div className="font-dmsan space-y-5 ">
+        <div>
+                    <div className="font-dmsan space-y-5 ">
             <div className="lg:grid lg:grid-cols-3 w-full  h-auto bg-base">
                 <div className="lg:col-span-2 "><Update1></Update1></div>
                 <div className="lg:mt-[20px] lg:ml-[4.7rem] md:mt-[29rem] sm:mt-[20rem] xsm:mt-[20rem] "><Header2></Header2></div>
@@ -12,6 +13,7 @@ function Updates(){
                     <UpdateBody></UpdateBody>
 
         </div>
+</div>
       
     )
 }

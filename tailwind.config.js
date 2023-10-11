@@ -26,6 +26,8 @@ module.exports = {
         basedark:"#4a4a4a",
         divider:"#eeebeb",
         stroke:"#e3e6ea",
+        baselight:"#ababab",
+        link:"#005FC1"
 
       },
       screens:{
@@ -45,7 +47,8 @@ module.exports = {
         'body-sm':'12px',
         'label-lg':'18px',
         'label-md':'16px',
-        'label-sm':'12px'
+        'label-sm':'12px',
+        'body-xsm':'6px'
       }
       
     },

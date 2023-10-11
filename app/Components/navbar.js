@@ -3,16 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 const navbar = () => {
   return (
-    <div>
+    // <div >
       <header className='p-4  '>
         <div className='menu flex justify-between '>
             <div className='listing flex items-center gap-5  '>
-                <a className='logo ' href='/pages/home' >
+                <Link className='logo ' href='/pages/home' >
                   
                     <img 
                       src="/photo/logoAIT.png"/>
                   
-                </a>
+                </Link>
                     <div className='categories'> <Link href='/pages/home' >Software categories</Link></div>
                     <div className='update'><Link href={"/pages/updates"}>Updates</Link></div>
                     <div className='write a Review'><Link href='/'>Write a Review</Link></div>
@@ -26,7 +26,7 @@ const navbar = () => {
         </div>
       </header>
 
-    </div>
+    // </div>
   )
 }
 

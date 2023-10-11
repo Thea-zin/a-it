@@ -1,6 +1,6 @@
 function Header2(){
     return(
-        <div className="p-3 flex-col justify-center">
+        <div id="Header2" className="p-3 flex-col justify-center">
             <div className="space-y-16">
             <div>
                  <div className="lg:text-display-lg md:text-display-lg sm:text-display-lg xsm:text-display-lg text-cyan font-bold">  Article & Blog </div>
