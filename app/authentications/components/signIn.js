@@ -17,11 +17,12 @@ function SignIn({onClose}){
                         </div>
                 <div className="text-center text-darkblue font-bold text-display-md">Sign In</div>
                 <div className="flex justify-center">
-                    <input type='text' className="border p-4 border-basedark rounded-full w-[70%]" placeholder="Email Address"></input>
+                    <input type='text' className="border py-2 px-4 border-basedark rounded-full w-[70%]" placeholder="Email Address"></input>
                 </div>   
                 <div className="flex justify-center relative">
-                    <input type={isOpen?"text":"password"} className="border p-4 border-basedark rounded-full  w-[70%]" placeholder="Password"></input>
-                    <button onClick={showPassword} className="absolute lg:mt-[2.8%] xsm:mt-[17px] lg:ml-[57%] md:ml;[50%] xsm:ml-[50%]">{isOpen?<p className="text-basedark">show</p >:<p className="text-basedark">hide</p >}</button>
+                    <input type={isOpen?"text":"password"} className="border py-2 px-4 lg:pr-[12%] md:pr-[12%] sm:pr-[16%] xsm:pr-[20%] border-basedark rounded-full  w-[70%]" placeholder="Password"/>
+
+                    <button className="lg:ml-[60%] md:ml-[60%] sm:ml-[60%] xsm:ml-[50%] bottom-2 absolute" onClick={showPassword} >{isOpen?<p className="text-basedark">show</p >:<p className="text-basedark">hide</p >}</button>
                 </div>
                 <div className="flex justify-center" ><button className="bg-darkblue text-white p-2 rounded-full w-2/4 lg:text-[24px] md:text-[20px] sm:text-[15px] xsm:text-[13px] "  >Sign In</button></div>
                 <div className="text-center"> Doesnt have account ? <span className="text-cyan">Register</span></div>
