@@ -1,9 +1,23 @@
+'use client';
 import Link from "next/link";
-function SignUpWithThirdParty(){
+import SignUp from "./signUpEmailPassword";
+import { useState } from "react";
+function SignUpWithThirdParty({onClose}){
+    const [isPopUpSignUp,setIsPopUpSignUp] = useState(false);
+
+    const openPopUpSignUp = () =>{
+      setIsPopUpSignUp(true)
+    };
+    const closePopUpSignUp = () =>{
+      setIsPopUpSignUp(false)
+    };
     return (
+        <div className="relative">
+              <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-white  " >
         <div className="flex justify-center items-center p-4">
-               <div className="absolute lg:ml-[55%] lg:mt-[-65%] md:ml-[75%] md:mt-[2%] sm:ml-[73%] sm:mt-[3%] xsm:ml-[70%] xsm:mt-[3%]" >close</div>
-        <div className=" w-[65%] border bg-base rounded-[16px]  lg:p-20 md:p-10 sm:p-7 xsm:p-8 ">
+                <div className="relative">
+        <div className="absolute lg:ml-[93%] lg:mt-[4%] md:ml-[93%] md:mt-[4%] sm:ml-[93%] sm:mt-[4%] xsm:ml-[90%] xsm:mt-[4%]" onClick={onClose}><img src={"../cross-bold.png"} className="w-5 h-5"></img></div>
+        <div className=" lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px] border bg-base rounded-[16px]  lg:p-22 md:p-10 sm:p-7 xsm:p-8 ">
             <div className="space-y-4">
                 <div className="flex justify-center items-center">
                     <img src={"logo.png"}></img>
@@ -15,7 +29,7 @@ function SignUpWithThirdParty(){
                                        <img src="../vendors/ticks.png" ></img>
                       
                                     </div> */}
-                                   <div className="font-bold text-white lg:text-display-sm md:text-body-sm sm:text-body-sm xsm:text-body-sm">Create an account</div>
+                                   <div className="font-bold text-white lg:text-display-sm md:text-body-sm sm:text-body-sm xsm:text-body-sm" onClick={openPopUpSignUp}>Create an account</div>
                         </div>
                     </div>
                 </div>
@@ -62,6 +76,10 @@ function SignUpWithThirdParty(){
            
 
         </div>
+        </div>
+        </div>
+        </div>
+        {isPopUpSignUp && <SignUp onClose={closePopUpSignUp}></SignUp>}
         </div>
     )
 }
