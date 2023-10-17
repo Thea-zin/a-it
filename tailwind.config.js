@@ -25,6 +25,7 @@ module.exports = {
         basedark: "#4a4a4a",
         divider: "#eeebeb",
         stroke: "#e3e6ea",
+        bgray: "#909090",
       },
       screens: {
         xsm: "100px",
