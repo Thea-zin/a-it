@@ -41,6 +41,7 @@ function Footer(){
 
                 </div>
             </div>
+            <div>hi</div>
         
 
         </div>
