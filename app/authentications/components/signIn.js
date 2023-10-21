@@ -1,14 +1,29 @@
 'use client';
 import { useState } from "react";
-
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
 function SignIn({onClose}){
+    const {login} = useAuth();
     const [isOpen,setIsOpen]=useState(false);
+    const router=useRouter();
     const showPassword = ()=>{
         setIsOpen(!isOpen)
     }
+    const handleLogin = async (e) =>{
+        e.preventDefault();
+        const user={
+            username: "helloworld"
+        }
+        login(user);
+        onClose();
+
+
+        router.push('/pages/home');
+        
+    }
     return(
 
-        <div className="relative">
+        <div className="relative" onSubmit={handleLogin}>
 
             <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-white  " >
             <div className="relative">
@@ -17,7 +32,7 @@ function SignIn({onClose}){
             <div className=" lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px]  border bg-base rounded-[16px]   md:p-10 sm:p-7 xsm:p-8 ">
                 <div className="space-y-4">
                     <div className="flex justify-center items-center">
-                        <img src={"logo.png"}></img>
+                        <img src={"../Logo.png"}></img>
                         </div>
                 <div className="text-center text-darkblue font-bold text-display-md">Sign In</div>
                 <div className="flex justify-center">
@@ -28,7 +43,7 @@ function SignIn({onClose}){
 
                     <button className="lg:ml-[60%] md:ml-[60%] sm:ml-[60%] xsm:ml-[50%] bottom-2 absolute" onClick={showPassword} >{isOpen?<p className="text-basedark">show</p >:<p className="text-basedark">hide</p >}</button>
                 </div>
-                <div className="flex justify-center" ><button className="bg-darkblue text-white p-2 rounded-full w-2/4 lg:text-[24px] md:text-[20px] sm:text-[15px] xsm:text-[13px] "  >Sign In</button></div>
+                <div className="flex justify-center" ><button className="bg-darkblue text-white p-2 rounded-full w-2/4 lg:text-[24px] md:text-[20px] sm:text-[15px] xsm:text-[13px] "  onClick={handleLogin}>Sign In</button></div>
                 <div className="text-center"> Doesnt have account ? <span className="text-cyan">Register</span></div>
                 </div>
             </div>

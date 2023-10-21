@@ -20,7 +20,7 @@ function SignUpWithThirdParty({onClose}){
         <div className=" lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px] border bg-base rounded-[16px]  lg:p-22 md:p-10 sm:p-7 xsm:p-8 ">
             <div className="space-y-4">
                 <div className="flex justify-center items-center">
-                    <img src={"logo.png"}></img>
+                    <img src={"../Logo.png"}></img>
                 </div>
                  <div className="flex justify-center">
                     <div className="  rounded-full w-[70%] border-1 bg-darkblue hover:bg-darkblue-[600px]  p-2"> 

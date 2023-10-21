@@ -59,9 +59,9 @@ function ProfilePage(){
                         <div className="p-2 font-bold"><label>Headline <span className="text-red">*</span></label></div>
                         <input type="text" placeholder="Mao Timong" className="text-gray-300 rounded-full border-darkgray border-[1px] w-full p-2"></input>
                     </div>
-                    <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm ">
+                    <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
                     <div className="p-2 font-bold"><label>Country <span className="text-red">*</span></label></div>
-                        <select placeholder='Select country' className='text-gray-300 rounded-full border-darkgray border-[1px] w-full px-3 py-2 ' >
+                        <select placeholder='Select country' className=' text-gray-300 rounded-full border-darkgray border-[1px] w-full px-3 py-2 ' >
                             {
                                 industies.map((industry)=>(
                                     <option key={industry.id} value={industry.name}>
