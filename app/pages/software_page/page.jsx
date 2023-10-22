@@ -114,7 +114,7 @@ export default function SoftwarePage() {
                   <div>
                     {[1, 2, 3].map((item, index) => {
                       return (
-                        <div className="flex place-items-center mt-5">
+                        <div className="flex place-items-center mt-5" key={index}>
                           <div className="text-3xl">
                             <iconify-icon icon="mdi:user-star"></iconify-icon>
                           </div>
