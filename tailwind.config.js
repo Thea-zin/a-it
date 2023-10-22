@@ -26,6 +26,7 @@ module.exports = {
         divider: "#eeebeb",
         stroke: "#e3e6ea",
         bgray: "#909090",
+        bblue: "#005FC1",
       },
       screens: {
         xsm: "100px",
