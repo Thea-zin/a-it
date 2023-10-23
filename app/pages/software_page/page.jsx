@@ -258,7 +258,7 @@ export default function SoftwarePage() {
                   <div className="w-36 text-center  flex flex-col">
                     <div className="p-7 bg-white w-full h-36 flex place-content-center flex-1 rounded-lg border-[1px] border-divider">
                       <img
-                        src={`write_review/icons/${item[3]}.png`}
+                        src={`/write_review/icons/${item[3]}.png`}
                         alt=""
                         className=""
                       />
