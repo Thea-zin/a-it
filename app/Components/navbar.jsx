@@ -6,7 +6,7 @@ import { useState } from 'react'
 import SignIn from '../authentications/components/signIn';
 import SignUp from '../authentications/components/signUpEmailPassword';
 import SignUpWithThirdParty from '../authentications/components/signUpWith3rdParty';
-const navbar = () => {
+const Navbar = () => {
   const [isPopUpSignIn,setIsPopUpSignIn] = useState(false);
   const [isPopUpSignUp,setIsPopUpSignUp] = useState(false);
   const openPopUpSignIn = () =>{
@@ -54,4 +54,4 @@ const navbar = () => {
   )
 }
 
-export default navbar
+export default Navbar

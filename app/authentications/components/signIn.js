@@ -10,7 +10,7 @@ function SignIn({onClose}){
 
         <div className="relative">
 
-            <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-white  " >
+            <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-transparent/50" >
             <div className="relative">
                     <div className="absolute lg:ml-[93%] lg:mt-[2%] md:ml-[93%] md:mt-[2%] sm:ml-[93%] sm:mt-[3%] xsm:ml-[90%] xsm:mt-[3%]" onClick={onClose}><img src={"../cross-bold.png"} className="w-5 h-5"></img></div>
                  <div className="flex justify-center items-center p-2">
