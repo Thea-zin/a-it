@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -12,8 +12,8 @@ module.exports = {
         'triangle':'linear-gradient(to bottom right,#000 60%,#fff 50%)',
 
       },
-      fontFamily:{
-        dmsan:["dmsan"]
+      fontFamily: {
+        dmsan: ["dmsan"],
       },
       colors:{
         cyan:'#1dcdfe',
@@ -27,14 +27,28 @@ module.exports = {
         divider:"#eeebeb",
         stroke:"#e3e6ea",
         baselight:"#ababab",
-        link:"#005FC1"
-
+        link:"#005FC1",
+        bgray: "#909090",
+        bblue: "#005FC1",
       },
-      screens:{
-        'xsm':'100px',
-        'sm':'640px',
-        'md':'900px',
-        'lg':'1024px'
+      screens: {
+        xsm: "100px",
+        sm: "640px",
+        md: "900px",
+        lg: "1024px",
+      },
+      fontSize: {
+        "display-lg": "56px",
+        "display-md": "32px",
+        "display-sm": "24px",
+        "title-lg": "24px",
+        "title-md": "20px",
+        "body-lg": "18px",
+        "body-md": "16px",
+        "body-sm": "12px",
+        "label-lg": "18px",
+        "label-md": "16px",
+        "label-sm": "12px",
       },
       fontSize:{
         'display-lg':'56px',
@@ -54,4 +68,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
