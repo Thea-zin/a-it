@@ -74,7 +74,7 @@ const Home = () => {
 
               <div id="logo">
                 <img 
-                src='../photo/logo.png'/>
+                src='../photo/icon/zendek.png'/>
               </div>
               <div id="name" className=''>
                   <div className="product text-xl font-normal ">Zendesk</div>
@@ -134,7 +134,7 @@ const Home = () => {
 
               <div id="logo">
                 <img 
-                src='../photo/dropbox.png'/>
+                src='../photo/icon/dropbox.png'/>
               </div>
               <div id="name" className=''>
                   <div className="product text-xl font-normal ">Dropbox</div>
@@ -194,7 +194,7 @@ const Home = () => {
 
               <div id="logo">
                 <img 
-                src='../photo/asana.png'/>
+                src='../photo/icon/asana.png'/>
               </div>
               <div id="name" className=''>
                   <div className="product text-xl font-normal ">Asana</div>
