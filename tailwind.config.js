@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       backgroundSize:{'100':'100% 100%'},
       backgroundImage:{
-        'triangle':'linear-gradient(to bottom right,#000 60%,#fff 50%)'
+        'triangle':'linear-gradient(to bottom right,#000 60%,#fff 50%)',
+
       },
       fontFamily:{
         dmsan:["dmsan"]
@@ -25,6 +26,8 @@ module.exports = {
         basedark:"#4a4a4a",
         divider:"#eeebeb",
         stroke:"#e3e6ea",
+        baselight:"#ababab",
+        link:"#005FC1"
 
       },
       screens:{
@@ -44,7 +47,8 @@ module.exports = {
         'body-sm':'12px',
         'label-lg':'18px',
         'label-md':'16px',
-        'label-sm':'12px'
+        'label-sm':'12px',
+        'body-xsm':'6px'
       }
       
     },

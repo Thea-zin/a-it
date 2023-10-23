@@ -1,4 +1,5 @@
 import SignUp from "./components/signUpEmailPassword";
+import SignUpWithThirdParty from "./components/signUpWith3rdParty";
 
 const { default: SignIn } = require("./components/signIn");
 
@@ -13,8 +14,8 @@ function Authentication(){
     return (
         <div className="font-dmsan">
             <SignIn></SignIn>
-            <button></button>
             <SignUp></SignUp>
+            <SignUpWithThirdParty></SignUpWithThirdParty>
         </div>
     )
 }

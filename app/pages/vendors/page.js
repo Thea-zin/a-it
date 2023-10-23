@@ -10,25 +10,23 @@ import Testimonial from "./component/testimonial";
 
 function Vendor(){
     return (
-        <div className="font-dmsan bg-base  ">
-            <div>
+        <main className="font-dmsan bg-base  ">
+
                 <MainComponent></MainComponent>
-            </div>
-            <div>
+
+
                 <Advertisement></Advertisement>
-            </div>
-            <div>
+
                 <Testimonial></Testimonial>
-            </div>
-            <div>
+
                 <CustomerReview></CustomerReview>
-            </div>
+
             <div className="grid lg:grid-cols-2 md:grid-cols-1 p-2 ">
                 <div className="mt-10"> <Booking ></Booking></div>
                 <PublishForm></PublishForm>
             </div>
 
-        </div>
+        </main>
        
 
     )

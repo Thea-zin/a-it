@@ -1,6 +1,3 @@
-'use client';
-import { data } from "autoprefixer";
-import { useState } from "react";
 function CustomerReview(){
     const customerReviewList=[
         {id:1,name:"Wen Junhui",pic:"../vendors/people-4.png",role:"Software Engineer",message:"A-IT has been instrumental in helping me share my thoughts and insights about software. It's been rewarding to see my reviews gaining momentum and providing value to others. It's been rewarding to see my reviews gaining momentum and providing value to others."},
