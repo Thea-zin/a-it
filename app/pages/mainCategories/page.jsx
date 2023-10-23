@@ -351,10 +351,16 @@ const page = () => {
                   <div className='text-[#4A4A4A] mb-5'>See more below to select the best Content Marketing software.</div>
 
                   <div className="popular bg-white rounded-2xl p-6 border-2 border-gray">
-                        <div className="text mb-5">
+                        <div className='flex justify-between'> 
+                            <div className="text mb-5">
                             <div className='font-semibold text-2xl'>Popular Product</div>
                             <div className='text-[#4A4A4A] '>Popular Content Analytics products used by Content Marketing professionals.</div>
+                            </div>
+                            <div>
+                                <button className='bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black'>comparison</button>
+                            </div>
                         </div>
+                        
                         <div className='ml-4'>
                              <CardItem ></CardItem>
                 

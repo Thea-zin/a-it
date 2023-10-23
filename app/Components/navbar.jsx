@@ -32,7 +32,10 @@ const navbar = () => {
                       src="/photo/logoAIT.png"/>
                   
                 </Link>
-                    <div className='categories'> <Link href='/pages/home' >Software categories</Link></div>
+                
+                    <div className='categories flex items-center'> 
+                       <Link href='/pages/mainCategories'>Software Categories</Link>
+                    </div>
                     <div className='update'><Link href='/pages/updates'>Update</Link></div>
                     <div className='write_Review'><Link href='/pages/write_review_page'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
