@@ -29,13 +29,28 @@ module.exports = {
         baselight:"#ababab",
         link:"#005FC1"
 
+
       },
-      screens:{
-        'xsm':'100px',
-        'sm':'640px',
-        'md':'900px',
-        'lg':'1024px'
+      screens: {
+        xsm: "100px",
+        sm: "640px",
+        md: "900px",
+        lg: "1024px",
       },
+      fontSize: {
+        "display-lg": "56px",
+        "display-md": "32px",
+        "display-sm": "24px",
+        "title-lg": "24px",
+        "title-md": "20px",
+        "body-lg": "18px",
+        "body-md": "16px",
+        "body-sm": "12px",
+        "label-lg": "18px",
+        "label-md": "16px",
+        "label-sm": "12px",
+      },
+
       fontSize:{
         'display-lg':'56px',
         'display-md':'32px',
