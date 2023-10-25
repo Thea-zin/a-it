@@ -23,10 +23,10 @@ function SignUp({onClose}){
                 
                 <div className="space-y-4">
                     <div className="flex justify-center items-center">
-                        <img src={"../Logo.png"}></img>
+                        <img src={"../../Logo.png"}></img>
                         </div>
 
-                <div className="text-center text-darkblue font-bold lg:text-display-sm md:text-body-sm sm:text-body-sm xsm:text-body-sm">Register</div>
+                <div className="text-center text-darkblue font-bold lg:text-display-sm md:text-body-md sm:text-body-md xsm:text-body-lg">Register</div>
                 <div className="flex justify-center lg:text-body-lg md:text-body-sm sm:text-body-sm xsm:text-body-sm">
                     <input type='text' className="border py-2 px-4 border-basedark rounded-full w-[70%]" placeholder="First Name"></input>
                 </div>   

@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import SignIn from '../authentications/components/signIn';
 import SignUpWithThirdParty from '../authentications/components/signUpWith3rdParty';
-import { useRouter } from "next/router";
 import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
 const navbar = () => {
 
   const {isAuth,user,logout} = useAuth();

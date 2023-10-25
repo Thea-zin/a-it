@@ -3,7 +3,7 @@ function Footer(){
     return (
         <div className="lg:grid lg:grid-cols-3 sm:flex-col xsm:flex-col w-full h-full bg-black p-7 content-center lg:text-body-md md:body-sm sm:body-sm x xsm:text-body-sm ">
             <div className="space-y-3 lg:col-span-2 md:col-span-2  mt-[10%] lg:mb-[10%]">
-                 <div className="mb-[2rem]" ><img src={"../aIT.png"}  ></img></div>
+                 <div className="mb-[2rem]" ><img src={"../../aIT.png"}  ></img></div>
                  <div className="space-y-[70px] ">
                     <div className="space-x-5">
                          <Link href="/vendors" className="underline decoration-white text-white">Categories</Link>

@@ -1,9 +1,11 @@
 'use client';
+import { useRouter } from "next/navigation";
 import { createContext,useContext,useState } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({children}){
+    const router = useRouter();
     const [isAuth,setIsAuth] = useState(false)
     const [user,setUser] = useState(null);
 
@@ -14,6 +16,7 @@ export function AuthProvider({children}){
     const logout =()=>{
         setUser(null);
         setIsAuth(false);
+        router.push("/pages/home")
     };
     return(<AuthContext.Provider value={{user,isAuth,login,logout}}>
         {children}
