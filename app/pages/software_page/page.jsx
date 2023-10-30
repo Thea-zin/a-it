@@ -99,11 +99,7 @@ export default function SoftwarePage() {
               </button>
               <p className="mt-8 text-lg font-semibold">Product Description</p>
               <p className="mt-3 text-basedark">
-                Google Analytics not only lets you measure sales and
-                conversions, but also gives you fresh insights into how visitors
-                use your site, how they arrived on your site, and how you can
-                keep them coming back. Delivered on Google's world-class
-                platform.
+                {"Google Analytics not only lets you measure sales and conversions, but also gives you fresh insights into how visitors use your site, how they arrived on your site, and how you can keep them coming back. Delivered on Google's world-class platform."}
               </p>
 
               <hr className="my-8 border-divider" />

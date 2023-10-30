@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "./Components/navbar";
 
 import Footer from "./Components/footer";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+        <Script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></Script>
       </head>
       <body className={inter.className}>
         <Navbar />
