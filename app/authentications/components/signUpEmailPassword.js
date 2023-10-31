@@ -19,7 +19,8 @@ function SignUp({onClose}){
                 
                 <div className="space-y-4">
                     <div className="flex justify-center items-center">
-                        <img src={"logo.png"}></img>
+                    <img 
+                      src="/photo/logoAIT.png"/>
                         </div>
 
                 <div className="text-center text-darkblue font-bold text-display-md">Register</div>
