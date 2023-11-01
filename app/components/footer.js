@@ -30,14 +30,14 @@ function Footer(){
                 <div className="text-center ">
                     <div className="flex justify-center">
                     <input type="email" className='p-2 absolute sm:w-1/2 md:w-1/2 lg:w-auto bg-basedark' placeholder="Email Address"></input>
-                        <button className="relative mt-[10px] lg:ml-[40%] md:ml-[50%] sm:ml-[40%] xsm:ml-[30%] "><img src="../send.png"></img></button>
+                        <button className="relative mt-[10px] lg:ml-[40%] md:ml-[50%] sm:ml-[40%] xsm:ml-[30%] "><img src="../../send.png"></img></button>
                     </div>
                 </div>
                 <div className="flex lg:space-x-2 xsm:space-x-[30px] justify-center">
-                    <Link href="/vendors"><img src={"../instagram.png"}></img></Link>
-                    <Link href="/vendors"><img src={"../linkedin.png"}></img></Link>
-                    <Link href="/vendors"><img src={"../twitter.png"}></img></Link>
-                    <Link href="/vendors"><img src={"../facebook.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../../instagram.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../../linkedin.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../../twitter.png"}></img></Link>
+                    <Link href="/vendors"><img src={"../../facebook.png"}></img></Link>
 
                 </div>
             </div>

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from "react";
+import {Image} from "next/image"
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import SignUp from "./signUpEmailPassword";
@@ -36,7 +37,7 @@ function SignIn({onClose}){
 
             <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-white  " >
             <div className="relative">
-                    <div className="absolute lg:ml-[93%] lg:mt-[2%] md:ml-[93%] md:mt-[2%] sm:ml-[93%] sm:mt-[3%] xsm:ml-[90%] xsm:mt-[3%]" onClick={onClose}><img src={"../cross-bold.png"} className="w-5 h-5"></img></div>
+                    <div className="absolute lg:ml-[93%] lg:mt-[2%] md:ml-[93%] md:mt-[2%] sm:ml-[93%] sm:mt-[3%] xsm:ml-[90%] xsm:mt-[3%]" onClick={onClose}><Image src={"../cross-bold.png"} className="w-5 h-5" alt="close" /></div>
                  <div className="flex justify-center items-center p-2">
             <div className="space-y-4 lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px]  border bg-base rounded-[16px]   md:p-10 sm:p-7 xsm:p-8 ">
                 <div className="space-y-4">

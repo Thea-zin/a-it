@@ -58,6 +58,7 @@ function SignUp({onClose}){
         </div>
         </div>
         </div>
+        
         </div>
     )
 }
