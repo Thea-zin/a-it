@@ -1,4 +1,4 @@
-
+"use client";
 import Advertisement from "./component/advertisement";
 import Booking from "./component/booking";
 import BookingForm from "./component/bookingForm";
@@ -11,6 +11,7 @@ import Testimonial from "./component/testimonial";
 function Vendor(){
     return (
         <main className="font-dmsan bg-base  ">
+            <div>
 
                 <MainComponent></MainComponent>
 
@@ -20,7 +21,7 @@ function Vendor(){
                 <Testimonial></Testimonial>
 
                 <CustomerReview></CustomerReview>
-
+            </div>
             <div className="grid lg:grid-cols-2 md:grid-cols-1 p-2 ">
                 <div className="mt-10"> <Booking ></Booking></div>
                 <PublishForm></PublishForm>

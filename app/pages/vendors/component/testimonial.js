@@ -6,7 +6,7 @@ function Testimonial(){
         {id:3,heading:"Marketing",icon:"../vendors/flat-color-icons_stack-of-photos.png",factors:["Organic exposure expansion","Greater negotiation opportunities","Strengthen and renew branding"],summary:"Reviews improve product and service quality, making it easier to understand and increase customer satisfaction. They also represent the voices of the silent majority and customers who don’t usually speak up."}
     ]
     return(
-    
+    <div>
         <div className="p-4 ">
           <div className="text-center space-y-2">
               <div className="text-cyan lg:text-display-md md:display-sm sm:display-sm x xsm:text-display-sm font-medium">
@@ -45,6 +45,7 @@ function Testimonial(){
               </div>
           </div>
         </div>
+    </div>
     )
 }
 export default Testimonial;

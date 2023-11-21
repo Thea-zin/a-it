@@ -18,6 +18,7 @@ module.exports = {
       colors:{
         cyan:'#1dcdfe',
         darkblue:'#2f455c',
+        darkblue_hover:'#27394D',
         white:"#ffffff",
         darkgray:"#4a4a4a",
         red:"#ff3535",

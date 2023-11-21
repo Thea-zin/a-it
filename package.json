@@ -9,16 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.18",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.6",
     "@next/font": "^13.5.3",
     "axios": "^1.5.1",
     "countries-list": "^3.0.5",
     "country-list-js": "^3.1.7",
     "express": "^4.18.2",
     "firebase": "^10.5.2",
+    "firebase-admin": "^11.11.0",
     "flickity": "^3.0.0",
-    "next": "^13.5.6",
+    "net": "^1.0.2",
+    "next": "^14.0.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-component": "^2.8.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
@@ -26,5 +32,13 @@
     "eslint-config-next": "latest",
     "postcss": "^8.4.30",
     "tailwindcss": "^3.3.3"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false,
+    "tls": false,
+    "child_process": false,
+    "net": false
   }
 }
