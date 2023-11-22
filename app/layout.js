@@ -5,6 +5,7 @@ import Navbar from "./Components/navbar";
 
 import Footer from "./Components/footer";
 import SoftwarePage from "./pages/software_page/page";
+import ComparisonPage from "./pages/comparison_page/page";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <Navbar />
-        <SoftwarePage />
+        <ComparisonPage />
 
         <Footer />
       </body>

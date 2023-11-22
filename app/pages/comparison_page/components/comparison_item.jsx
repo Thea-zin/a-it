@@ -3,7 +3,7 @@
 export default function ComparisonItems() {
   return (
     <div className="">
-      <p className="text-xl ml-8 mt-7 font-medium">Comparison Items</p><br />
+      <p className="text-xl ml-2 md:ml-8 mt-7 font-medium text-center flex">Comparison Items</p><br />
       <hr className="text-[#E3E6EA] w-full"/>
       <div className="ml-8 mt-3 mb-6 text-lg text-[#4A4A4A] font-medium">
         <div className="">

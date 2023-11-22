@@ -2,51 +2,28 @@ import ReviewBox from "./components/review_box";
 import Item from "../write_review_page/components/item_component";
 import TapSoftwareComponent from "./components/tap_component";
 import { useRouter } from "next/navigation";
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  getDoc,
-  doc,
-} from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBhXJSE0Ca1XURIIyySCWnUUmAHRDFvQxY",
-  authDomain: "test-98d79.firebaseapp.com",
-  projectId: "test-98d79",
-  storageBucket: "test-98d79.appspot.com",
-  messagingSenderId: "10225661",
-  appId: "1:10225661:web:7f4fc5f6ada3f0dcba3b94",
-};
-
-// const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
+import getImageURL from "@/app/api/getImage";
 
 export default async function SoftwarePage() {
-  // const docRef = doc(db, "softwares", "1");
-  // const docSnap = await getDoc(docRef);
-  let data = {name: 'ChatGPT'};
-
-  // if (docSnap.exists()) {
-  //   // console.log("Document data:", docSnap.data());
-  //   data = docSnap.data();
-  // } else {
-  //   // docSnap.data() will be undefined in this case
-  //   // useRouter().push('/')
-  // }
-
+  let data = { name: "ChatGPT" };
   return (
-    <div className="xl:px-10 px-3 pt-7 pb-10 bg-base font-dmsan">
+    <div className="sm:px-2 xl:px-10 pt-7 pb-10 bg-base font-dmsan">
       <div className="">
-        <img src="/write_review\software_hero.png" alt="" className="hidden sm:block"/>
-        <img src="/write_review\software_hero_mobile.png" alt="" className="sm:hidden"/>
+        <img
+          src="/write_review\software_hero.png"
+          alt=""
+          className="hidden sm:block"
+        />
+        <img
+          src="/write_review\software_hero_mobile.png"
+          alt=""
+          className="sm:hidden"
+        />
       </div>
       <div className="bg-white flex justify-between px-3 sm:px-8 relative h-40 xm:h-52 lg:h-auto ">
         <div className="flex">
           <div className="p-2 xm:p-5 sm:p-7 w-20 xm:w-28 sm:w-[9.3rem] h-20 xm:h-28 sm:h-[9.3rem] border-[1px] border-divider -translate-y-5 sm:-translate-y-8 bg-white flex rounded-lg">
-            <img src="/write_review/icons/7.png" alt="" />
+            <img src={await getImageURL('7.png')} alt="" />
           </div>
           <div className="ml-5 mt-1">
             <p className="text-xl sm:text-3xl font-semibold">{data.name}</p>
@@ -89,7 +66,7 @@ export default async function SoftwarePage() {
 
       <hr className="border-divider" />
 
-      <div className="lg:flex xl:p-8 p-4 bg-white relative xl:bg-red lg:bg-green-600">
+      <div className="lg:flex xl:p-8 p-4 bg-white relative">
         <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
           <p className="text-xl xm:text-3xl font-bold mt-3">
             {`${data.name} Reviews & Product Details`}
@@ -97,7 +74,7 @@ export default async function SoftwarePage() {
           <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl">
             <p className="text-[1rem] xm:text-2xl font-bold">{`${data.name} Overview`}</p>
             <hr className="border-divider my-3" />
-            <p className="font-medium text-xs xm:text-base ">
+            <p className="font-medium text-xs xm:text-nbase ">
               <span className="font-semibold text-sm xm:text-[1rem]">{`What is ${data.name}?`}</span>
               <br />
               <br />
@@ -125,7 +102,9 @@ export default async function SoftwarePage() {
             <hr className="border-divider my-5" />
 
             <div className="mt-10">
-              <p className="text-[1rem] xm:text-2xl font-bold">Google Analytics Overview</p>
+              <p className="text-[1rem] xm:text-2xl font-bold">
+                Google Analytics Overview
+              </p>
               <button className="flex place-items-center mt-2">
                 <div className="text-darkblue text-2xl xm:text-3xl flex place-items-center">
                   <iconify-icon icon="cryptocurrency:chat"></iconify-icon>
@@ -134,8 +113,10 @@ export default async function SoftwarePage() {
                   Contact ChatGPT Company
                 </p>
               </button>
-              <p className="mt-8 text-sm xm:text-lg font-semibold">Product Description</p>
-              <p className="mt-3 text-basedark text-xs xm:text-base">
+              <p className="mt-8 text-sm xm:text-lg font-semibold">
+                Product Description
+              </p>
+              <p className="mt-3 text-basedark text-xs xm:text-nbase">
                 Google Analytics not only lets you measure sales and
                 conversions, but also gives you fresh insights into how visitors
                 use your site, how they arrived on your site, and how you can
@@ -146,27 +127,24 @@ export default async function SoftwarePage() {
               <hr className="my-8 border-divider" />
 
               <div>
-                <p className="mt-8 text-sm xm:text-lg font-semibold">Seller Details</p>
-                <div className="xm:flex justify-between">
-                  <div>
-                    {[1, 2, 3].map((item, index) => {
-                      return (
-                        <div
-                          className="flex place-items-center mt-5"
-                          key={index}
-                        >
-                          <div className="text-3xl">
-                            <iconify-icon icon="mdi:user-star"></iconify-icon>
-                          </div>
-                          <div className="font-medium ml-3 text-xs xm:text-base">
-                            <p className="font-bold xm:font-normal">Elon Musk</p>
-                            <p className="-translate-y-1">Seller</p>
-                          </div>
+                <p className="mt-8 text-sm xm:text-lg font-semibold">
+                  Seller Details
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {[1, 2, 3, 4, 5, 6].map((item, index) => {
+                    return (
+                      <div className="flex place-items-center mt-5 relative" key={index}>
+                        <div className="text-3xl">
+                          <iconify-icon icon="mdi:user-star"></iconify-icon>
                         </div>
-                      );
-                    })}
-                  </div>
-
+                        <div className="font-medium ml-3 text-xs xm:text-nbase overflow-clip">
+                          <p className="font-bold xm:font-normal line-clamp-1">Elon Musk</p>
+                          <p className="-translate-y-1 line-clamp-1">Seller</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {/* 
                   <div className="">
                     {[1, 2, 3].map((item, index) => {
                       return (
@@ -177,17 +155,19 @@ export default async function SoftwarePage() {
                           <div className="text-3xl">
                             <iconify-icon icon="mdi:user-star"></iconify-icon>
                           </div>
-                          <div className="font-medium ml-3 text-xs xm:text-base">
+                          <div className="font-medium ml-3 text-xs xm:text-nbase">
                             <p className="font-bold xm:font-normal">Elon Musk</p>
                             <p className="-translate-y-1">Seller</p>
                           </div>
                         </div>
                       );
                     })}
-                  </div>
+                  </div> */}
                 </div>
-                <p className="mt-7 text-sm xm:text-lg font-semibold">Seller Description</p>
-                <p className="text-basedark mt-1 text-xs xm:text-base">
+                <p className="mt-7 text-sm xm:text-lg font-semibold">
+                  Seller Description
+                </p>
+                <p className="text-basedark mt-1 text-xs xm:text-nbase">
                   Organize the world’s information and make it universally
                   accessible and useful.
                 </p>
@@ -199,7 +179,7 @@ export default async function SoftwarePage() {
                 <div className="w-10 xm:w-16 h-10 xm:h-16 flex rounded-full overflow-hidden">
                   <img src="/write_review/profile_1.png" alt="" />
                 </div>
-                <div className="ml-3 text-xs xm:text-base flex-1">
+                <div className="ml-3 text-xs xm:text-nbase flex-1">
                   <p className="text-basedark">Overviewed Provided by:</p>
                   <p className="font-semibold">Mao Timong</p>
                 </div>
@@ -208,9 +188,11 @@ export default async function SoftwarePage() {
               <hr className="border-divider my-7" />
 
               <div className="relatvie">
-                <p className="mt-7 text-sm xm:text-lg font-semibold">Values & Ethics</p>
+                <p className="mt-7 text-sm xm:text-lg font-semibold">
+                  Values & Ethics
+                </p>
                 <div className="xm:flex justify-between mt-3">
-                  <div className="xm:w-[300px] text-xs xm:text-base">
+                  <div className="xm:w-[300px] text-xs xm:text-nbase mb-4">
                     <button
                       className="bg-cyan px-3 rounded-full text-white"
                       disabled
@@ -222,7 +204,7 @@ export default async function SoftwarePage() {
                       flexible technology without vendor lock-in.
                     </p>
                   </div>
-                  <div className="xm:w-[300px] text-xs xm:text-base">
+                  <div className="xm:w-[300px] text-xs xm:text-nbase mb-4">
                     <button
                       className="bg-cyan px-3 rounded-full text-white"
                       disabled
@@ -240,8 +222,10 @@ export default async function SoftwarePage() {
           </div>
 
           <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
-            <p className="text-basedark text-sm xm:text-base sm:ml-5 mb-3 sm:mb-0">Software user?</p>
-            <button className="bg-darkblue text-white text-sm xm:text-base sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
+            <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
+              Software user?
+            </p>
+            <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
               Write a Review
             </button>
           </div>
@@ -291,7 +275,9 @@ export default async function SoftwarePage() {
           <p className="font-medium text-[1rem] xm:text-2xl text-darkblue ">
             Hard to make a dicision?
           </p>
-          <p className="font-medium text-sm xm:text-[1rem]">Compare with other products</p>
+          <p className="font-medium text-sm xm:text-[1rem]">
+            Compare with other products
+          </p>
           <button className="bg-darkblue mt-4 text-white text-sm xm:text-xl font-semibold py-3 xm:px-20 px-10 rounded-full">
             Compare
           </button>
@@ -321,7 +307,9 @@ export default async function SoftwarePage() {
                         className=""
                       />
                     </div>
-                    <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">{item[0]}</p>
+                    <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">
+                      {item[0]}
+                    </p>
                   </div>
                   <p className="mt-10 xm:mt-16 sm:mt-20">VS</p>
                   <div className="text-center xm:w-28 sm:w-36 w-20 relative">
@@ -332,7 +320,9 @@ export default async function SoftwarePage() {
                         className=""
                       />
                     </div>
-                    <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">{item[2]}</p>
+                    <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">
+                      {item[2]}
+                    </p>
                   </div>
                 </div>
               );
@@ -355,7 +345,10 @@ export default async function SoftwarePage() {
                   "Strengthen and renew branding",
                 ].map((item, index) => {
                   return (
-                    <div className="flex place-items-center items-start mt-5" key={index}>
+                    <div
+                      className="flex place-items-center items-start mt-5"
+                      key={index}
+                    >
                       <div className="text-cyan flex mt-1">
                         <iconify-icon icon="octicon:feed-star-16"></iconify-icon>
                       </div>
@@ -387,7 +380,9 @@ export default async function SoftwarePage() {
           </div>
 
           <div className="mt-5 bg-base pt-4 pb-8 rounded-2xl">
-            <p className="font-semibold text-[1rem] xm:text-2xl text-center">Explore more</p>
+            <p className="font-semibold text-[1rem] xm:text-2xl text-center">
+              Explore more
+            </p>
             <div className="lg:block flex place-content-center">
               <div className="px-16 mt-6">
                 {[
@@ -401,11 +396,20 @@ export default async function SoftwarePage() {
                   "Financial",
                 ].map((item, index) => {
                   return (
-                    <button className="my-1 flex place-content-start text-bblue mt-3" key={index}>
+                    <button
+                      className="my-1 flex place-content-start text-bblue mt-3"
+                      key={index}
+                    >
                       <div className="w-5 xm:w-10">
-                        <img src="/write_review/icons/next_blue.png" alt="" className=""/>
+                        <img
+                          src="/write_review/icons/next_blue.png"
+                          alt=""
+                          className=""
+                        />
                       </div>
-                      <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1">{item}</p>
+                      <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1">
+                        {item}
+                      </p>
                     </button>
                   );
                 })}

@@ -1,4 +1,4 @@
-export default function ReviewBox(imgs, name, title) {
+export default function ReviewBox({imgs, name, title}) {
   return (
     <div className="px-4">
       <div className="flex place-items-center">

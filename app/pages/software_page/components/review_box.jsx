@@ -24,7 +24,7 @@ export default function ReviewBox() {
       <p className="mt-3 font-semibold text-sm xm:text-lg">
         A platform that answers any questions
       </p>
-      <p className="mt-6 text-basedark text-xs xm:text-base">
+      <p className="mt-6 text-basedark text-xs xm:text-nbase">
         With Google Analytics, a powerful web analytics tool, website owners,
         marketers, and analysts can measure, track, and analyse website traffic,
         user behaviour, and conversion goals. Some of Google Analytics' best
