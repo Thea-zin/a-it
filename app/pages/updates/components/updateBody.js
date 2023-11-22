@@ -38,7 +38,7 @@ function UpdateBody(){
                             <div className="grid grid-cols-3 lg:space-x-[70%] sm:space-x-[50%] xsm:space-x-[25%]" >
                                 <div className="col-span-2"> <button className="rounded-full bg-divider hover:bg-divider_hover text-center p-2" >Design</button></div>
                                     <div className="flex  space-x-3">
-                                        <div className="hover:bg-divider rounded-full w-10 h-10 text-center "><button><img src={"../updates/bookMark.png"}></img></button></div>
+                                        <div className="hover:bg-divider_ rounded-full w-10 h-10 text-center "><button><img src={"../updates/bookMark.png"}></img></button></div>
                                         <div className="hover:bg-divider rounded-full w-10 h-10 text-center"><button><img src={"../updates/edit.png"}></img></button></div>
                                     </div>
         
