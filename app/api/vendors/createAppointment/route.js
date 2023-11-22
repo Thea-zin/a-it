@@ -2,7 +2,7 @@ import { db } from '../../../../firebase'
 import { NextResponse } from 'next/server'
 export  async function POST(request,reponse){
         const body = await request.json()
-        const my_appointment = await db.collection('appointment').
+        const my_appointment = await db.collection('appointments').
                                          where('email','==',body['email']).
                                          where('date','==',body['date']).
                                          where('companyName','==',body['companyName']).

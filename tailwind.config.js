@@ -26,6 +26,7 @@ module.exports = {
         base:"#f7f8fa",
         basedark:"#4a4a4a",
         divider:"#eeebeb",
+        divider_hover:"#A6A4A4",
         stroke:"#e3e6ea",
         baselight:"#ababab",
         link:"#005FC1"
