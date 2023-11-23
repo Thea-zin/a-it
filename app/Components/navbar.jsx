@@ -6,7 +6,10 @@ import { useState } from 'react'
 import SignIn from '../authentications/components/signIn';
 import SignUp from '../authentications/components/signUpEmailPassword';
 import SignUpWithThirdParty from '../authentications/components/signUpWith3rdParty';
+import { AuthContext } from '../context/AuthContext';
+import {useContext} from 'react'
 const Navbar = () => {
+ 
   const [isPopUpSignIn,setIsPopUpSignIn] = useState(false);
   const [isPopUpSignUp,setIsPopUpSignUp] = useState(false);
   const openPopUpSignIn = () =>{
@@ -40,10 +43,11 @@ const Navbar = () => {
                     <div className='write_Review'><Link href='/pages/write_review_page'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
             </div>
-            <div className=' flex gap-5 justify-center items-center'>
+             <div className=' flex gap-5 justify-center items-center' >
                 <button onClick={openPopUpSignIn}>Log in</button>
                 <button onClick={openPopUpSignUp} className='bg-darkblue p-2 text-white text-center rounded-full w-24 hover:bg-sky-700 cursor-pointer'>Sign Up</button>
             </div>
+           
             
         </div>
         {isPopUpSignIn && <SignIn onClose={closePopUpSignIn}></SignIn>}
