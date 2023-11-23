@@ -1,19 +1,12 @@
-import ReviewBox from "./components/review_box";
-import Item from "../write_review_page/components/item_component";
-import TapSoftwareComponent from "./components/tap_component";
+import ReviewBox from "./review_box";
+import Item from "../../write_review_page/components/item_component";
+import TapSoftwareComponent from "./tap_component";
 import { getSoftware, getIconURL } from "@/app/api/firebase";
-import { Suspense } from "react";
 
-export default async function SoftwarePage({ searchParams }) {
-  let data = { name: "ChatGPT" };
-  let iconUrl = ''
-  try {
-    data = await getSoftware(searchParams.id);
-    iconUrl = await getIconURL(`${data.icon}.png`);
-  } catch (e) {
-    data = { name: "ChatGPT" }
-    iconUrl = ''
-  }
+export default async function Main({id}) {
+  let data = { name: "ChatGPT" }
+  data = await getSoftware(id)
+  const iconUrl = await getIconURL(`${data.icon}.png`)
 
   return (
     <div className="sm:px-2 xl:px-10 pt-7 pb-10 bg-base font-dmsan">
@@ -315,7 +308,11 @@ export default async function SoftwarePage({ searchParams }) {
                 >
                   <div className="text-center xm:w-28 sm:w-36 relative">
                     <div className="xm:p-7 p-3 bg-white w-full xm:h-28 sm:h-36 h-20 flex place-content-center flex-1 rounded-lg border-[1px] border-divider">
-                      <img src={item[1]} alt="" className="" />
+                      <img
+                        src={item[1]}
+                        alt=""
+                        className=""
+                      />
                     </div>
                     <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">
                       {item[0]}
