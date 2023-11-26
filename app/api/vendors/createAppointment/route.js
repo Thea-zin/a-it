@@ -7,11 +7,9 @@ export  async function POST(request,reponse){
                                          where('date','==',body['date']).
                                          where('companyName','==',body['companyName']).
                                          get()
-        console.log(my_appointment)
-        console.log(body)
         try{
            if (my_appointment.size == 0){
-               const res = await db.collection('appointment').add(body)
+               const res = await db.collection('appointments').add(body)
                if (res){
                 //   return new Response({message:"Book successfully",status:200}).json()
                 return  NextResponse.json({message:"Book successful"},{status:200})

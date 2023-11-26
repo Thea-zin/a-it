@@ -5,9 +5,13 @@ const serviceAccount = require('./serviceAccountKey.json');
 
 if (admin.apps.length==0){
   initializeApp({
-    credential: cert(serviceAccount)
+    credential: cert(serviceAccount),
+    storageBucket:process.env.FIREBASE_STORAGE_BUCKET
   });
 }
 
-export const db = getFirestore();
+const db = getFirestore();
+const storage = admin.storage().bucket("gs://a-it-f5457.appspot.com");
+
+module.exports={db,storage};
 

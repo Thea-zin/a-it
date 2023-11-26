@@ -13,21 +13,15 @@ import  Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import  Stack  from '@mui/material/Stack';
 import { Reviews } from '@mui/icons-material';
-export default function AddBlog({open,handleAddBlogClose}) {
-  const [tags,setTags] = useState([]);
-  const [title,setTitle]=useState('');
-  const [content,setContent]=useState('');
-  const [image,setImage]=useState(null);
+export default function UpdateBlog({open,handleAddBlogClose,oldBlog}) {
+  const [tags,setTags] = useState(oldBlog.tags);
+  const [title,setTitle]=useState(oldBlog.title);
+  const [content,setContent]=useState(oldBlog.content);
+  const [image,setImage]=useState(oldBlog.imageRef);
   const [inputTag,setInputTags] = useState('');
   const [nullWarning,setNullWarning]=useState(false);
   const [errorMessage,setErrorMessage]=useState('');
   const [severity,setSeverity]=useState('');
-  const handleOpenAddBlog = () => {
-    setAddBlogOpen(true);
-  };
-const handleCloseAddBlog =()=>{
-    setAddBlogOpen(false);
-}
   const handleAddTag=()=>{
     if(inputTag.trim() !== '' && !tags.includes(inputTag)){
       const updateTags = [...tags,inputTag]
@@ -45,8 +39,11 @@ const handleCloseAddBlog =()=>{
   }
   const addBlog = async (e) =>{
     e.preventDefault();
-    console.log(image)
-    if ((title != '') && (content != '') && (tags !='')  ){
+    console.log(title)
+    if (image==null){
+        await setImage(oldBlog.imageRef)
+    }
+    if ((title != '') && (content != '') &&(length(tags)!==0) ){
         // setNullWarning(false)
         try{
             const form = new FormData();
@@ -56,17 +53,16 @@ const handleCloseAddBlog =()=>{
             form.append('content',content)
             form.append('publishedAt',new Date())
             form.append('tags',tags)
-            const response = await fetch('/api/updates/addBlog', {
-                method:'POST',
+            form.append('blogId',oldBlog.blogId)
+            console.log(oldBlog.blogId)
+            const response = await fetch('/api/updates/updateBlog', {
+                method:'PUT',
                 body:form
             })
             const message = await response.json()
             console.log(message)
             if (response.ok){
-               await setContent('')
-               await setTitle('')
-               await setImage('')
-               await setInputTags([])
+               
                await setNullWarning(true);
                await setErrorMessage('Successfuly added');
                await handleAddBlogClose();
@@ -109,6 +105,7 @@ const handleCloseAddBlog =()=>{
           <TextField value={title} onChange={(e)=>{setTitle(e.target.value)}}  color="secondary" style={{fontFamily:'dmsan',margin:'10px'}} margin="dense" id="name" label="Blog title" type="text" fullWidth variant="standard"/>
           {/* <FileUpload accept={['.jpg','.jpeg','.png']} value={image} onChange={(e)=>{setImage(}} ></FileUpload> */}
           <input className='m-[10px] font-dmsan bg-cyan' type="file"  onChange={(e)=>{setImage(e.target.files[0])}}></input>
+         
           <TextField value={content} onChange={(e)=>{setContent(e.target.value)}} id="filled-multiline-static" style={{fontFamily:'dmsan',border:'1px',margin:'10px'}} margin="dense"  label="Blog content" type="text" multiline fullWidth  maxRows={30} variant="standard"/>
           <span style={{margin:'10px'}}>
             <label>Tags : </label>
@@ -138,4 +135,3 @@ const handleCloseAddBlog =()=>{
 
   );
 }
-

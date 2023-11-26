@@ -4,7 +4,7 @@ export  async function POST(request,reponse){
         console.log(body)
         try{
           
-           const res = await db.collection('products').add(body)
+           const res = await db.collection('requestProducts').add(body)
            if (res){
             return new Response({message:"Add successfully",status:200})
            }else{

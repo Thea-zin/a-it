@@ -26,13 +26,20 @@ function BookingForm({onClose}){
                       date:date,
                       time:time,
                       companyName:companyName,
-                      email:email
+                      email:email,
+                      bookedAt:new Date()
                     })
                 })
                 const message = await response.json()
                 
                
                 if (response.ok){
+                    await setName("")
+                    await setDate("")
+                    await setEmail("")
+                    await setTime("")
+                    await setCompanyName("")
+                    await onClose()
                     console.log("Add successfully")
                 }else{
                     setErrorMessage(message['message'])

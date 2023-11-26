@@ -1,24 +1,25 @@
 "use client"
 import { useState } from "react";
 import Alert from '@mui/material/Alert';
+import { SwitchAccessShortcutOutlined } from "@mui/icons-material";
 function PublishForm(){
-    const [companyName,setCompanyName] = useState(null);
-    const [phoneNumber,setPhoneNumber]= useState(null);
-    const [namePersonInCharge,setNamePersonInCharge]= useState(null);
-    const [occupation,setOccupation] = useState(null);
-    const [companyURL,setCompanyURL]=useState(null)
-    const [serviceName,setServiceName]=useState(null)
-    const [serviceURL,setServiceURL]=useState(null)
-    const [preferPlan,setPreferPlan]= useState(null)
-    const [desireProduct,setDesireProduct]=useState(null)
-    const [remark,setRemark]=useState(null)
+    const [companyName,setCompanyName] = useState("");
+    const [phoneNumber,setPhoneNumber]= useState("");
+    const [namePersonInCharge,setNamePersonInCharge]= useState("");
+    const [occupation,setOccupation] = useState("");
+    const [companyURL,setCompanyURL]=useState("")
+    const [serviceName,setServiceName]=useState("")
+    const [serviceURL,setServiceURL]=useState("")
+    const [preferPlan,setPreferPlan]= useState("")
+    const [desireProduct,setDesireProduct]=useState("")
+    const [remark,setRemark]=useState("")
     const [nullWarning,setNullWarning]=useState(false);
 
 
  
     const addPublishForm = async (e) =>{
         e.preventDefault();
-        if ((companyName != null) && (phoneNumber != null) &&(namePersonInCharge != null) && (occupation != null) && (companyURL != null) && (serviceName != null) && (serviceURL != null)&&(preferPlan != null) && (desireProduct != null)){
+        if ((companyName != "") && (phoneNumber != "") &&(namePersonInCharge != "") && (occupation != "") && (companyURL != "") && (serviceName !="") && (serviceURL != "")&&(preferPlan != "") && (desireProduct != "")&&(remark!="")){
             setNullWarning(false)
             try{
                 const response = await fetch('/api/vendors/createProduct', {
@@ -34,11 +35,22 @@ function PublishForm(){
                         serviceURL:serviceURL,
                         preferPlan:preferPlan,
                         desireProduct:desireProduct,
-                        remark:remark
+                        remark:remark,
+                        requestedAt: new Date()
                     })
                 })
                 if (response.ok){
-                    console.log("Add successfully")
+                    await setCompanyName("")
+                    await setPhoneNumber("")
+                    await setNamePersonInCharge("")
+                    await setCompanyName("")
+                    await setCompanyURL("")
+                    await setServiceName("")
+                    await setServiceURL("")
+                    await setPreferPlan("")
+                    await setDesireProduct("")
+                    await setRemark("")
+                    await setOccupation("")
                 }else{
                     console.log("fail to add")
                 }
