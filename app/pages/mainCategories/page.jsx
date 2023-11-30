@@ -1,8 +1,39 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import CardItem from "./component/box";
 import CardItem2 from "./component/box2";
 import Link from "next/link";
 const page = () => {
+  // const [ids, setIds] = useState(["start"]);
+  let tids = [];
+
+  function addIds(id, add) {
+    if (add) {
+      tids.push(id);
+    } else {
+      tids.splice(tids.indexOf(id), 1);
+    }
+
+    localStorage.setItem("ait_soft_ids", tids.join());
+    // const index = ids.indexOf("start");
+    // if (index > -1) {
+    //   ids.splice(index, 1);
+    //   setIds([...ids]);
+    // }
+    // if (add) {
+    //   ids.push(id);
+    //   setIds([...ids])
+    // } else {
+    //   ids.splice(ids.indexOf(id), 1);
+    //   setIds([...ids])
+    // }
+  }
+
+  useEffect(() => {
+    localStorage.setItem("ait_soft_ids", "");
+  }, []);
+
   return (
     <div>
       <div className="content-top bg-black h-44 ">
@@ -58,9 +89,9 @@ const page = () => {
           <button className=" rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
             Price
           </button>
-          <label class="relative  items-center cursor-pointer -translate-y-10">
-            <input type="checkbox" value="" class="sr-only peer" />
-            <div class="w-11 h-6 border-[#1DCDFE] bg-gray peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <label className="relative  items-center cursor-pointer -translate-y-10">
+            <input type="checkbox" value="" className="sr-only peer" />
+            <div className="w-11 h-6 border-[#1DCDFE] bg-gray peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
       </div>
@@ -174,7 +205,7 @@ const page = () => {
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
-                <Link href={"/pages/software_page?id=2"}>Learn More</Link>
+                <Link href={"/pages/software_page?id=1"}>Learn More</Link>
               </button>
             </div>
           </div>
@@ -230,7 +261,7 @@ const page = () => {
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
-                <Link href={"/pages/software_page?id=3"}>Learn More</Link>
+                <Link href={"/pages/software_page?id=2"}>Learn More</Link>
               </button>
             </div>
           </div>
@@ -286,7 +317,7 @@ const page = () => {
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
-                <Link href={"/pages/software_page?id=4"}>Learn More</Link>
+                <Link href={"/pages/software_page?id=3"}>Learn More</Link>
               </button>
             </div>
           </div>
@@ -342,7 +373,7 @@ const page = () => {
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
-                <Link href={"/pages/software_page?id=5"}>Learn More</Link>
+                <Link href={"/pages/software_page?id=4"}>Learn More</Link>
               </button>
             </div>
           </div>
@@ -362,16 +393,16 @@ const page = () => {
               <div className="software mt-5">
                 <div className="title mt-5 font-semibold">Software Rating </div>
                 <div className="checkbox mt-5">
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -388,16 +419,16 @@ const page = () => {
                       <div className="text-white font-bold">4.4</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -414,16 +445,16 @@ const page = () => {
                       <div className="text-white font-bold">4.5 & above</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -445,86 +476,86 @@ const page = () => {
               <div className="busineses">
                 <div className="title mt-5 font-semibold">Business type</div>
                 <div className="checkbox mt-5">
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                     >
                       <div className="text-black ">Student</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                     >
                       <div className="text-black">Start Up</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                     >
                       <div className="text-black ">Freelancer</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                     >
                       <div className="text-black ">SMEs</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                     >
                       <div className="text-black ">Agency</div>
                     </label>
                   </div>
-                  <div class="flex items-center mb-2">
+                  <div className="flex items-center mb-2">
                     <input
                       id="default-checkbox"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      for="default-checkbox"
-                      class="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      htmlFor="default-checkbox"
+                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                     >
                       <div className="text-black ">Enterprise</div>
                     </label>
@@ -603,14 +634,20 @@ const page = () => {
                     </div>
                   </div>
                   <div>
-                    <button className="bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black">
+                    <Link
+                      href={{
+                        pathname: "/pages/comparison_page",
+                        query: {},
+                      }}
+                      className="bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black"
+                    >
                       comparison
-                    </button>
+                    </Link>
                   </div>
                 </div>
 
                 <div className="ml-4">
-                  <CardItem></CardItem>
+                  <CardItem addIds={addIds}></CardItem>
                 </div>
               </div>
               <div className="popular bg-white rounded-2xl p-6 border-2 border-gray mt-5">
@@ -622,7 +659,7 @@ const page = () => {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <CardItem2></CardItem2>
+                  <CardItem2 addIds={addIds}></CardItem2>
                 </div>
               </div>
             </div>

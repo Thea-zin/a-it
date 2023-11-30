@@ -1,14 +1,20 @@
-import React from 'react'
+'use client';
 
-function box  (){
+import React from 'react';
+import Link from 'next/link';
+
+function box  ({addIds}){
+    let ids = new Set()
+
+    
   return (
     <div>
       <div className=' grid grid-cols-4'>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                     <div className='flex justify-between'>
                             <p>Goolge Doc</p>
-                            <div class="flex items-center mb-4 rounded-full">
-                                <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                            <div className="flex items-center mb-4 rounded-full">
+                                <input onChange={(event) => {addIds("9", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                             </div>
                     </div>
@@ -30,16 +36,16 @@ function box  (){
                       </svg>
                       <p className='text-gray'>(2,145)</p>
                   </div>
-                  <div className="pic flex justify-center my-5 ">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 9}}} className="pic flex justify-center my-5 ">
                     <img src="/photo/icon/Grammerly.png" alt="" />
-                  </div>
+                  </Link>
                    
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                     <div className='flex justify-between'>
                         <p>Goolge Doc</p>
-                        <div class="flex items-center mb-4 rounded-full">
-                            <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                        <div className="flex items-center mb-4 rounded-full">
+                            <input onChange={(event) => {addIds("10", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                         </div>
                      </div>
@@ -62,15 +68,15 @@ function box  (){
                       <p className='text-gray'>(2,145)</p>
             
                   </div>
-                  <div className="pic flex justify-center my-5 h-20">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 10}}} className="pic flex justify-center my-5 h-20">
                     <img src="/photo/icon/image 22.png" alt="" />
-                  </div>
+                  </Link>
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                     <div className='flex justify-between'>
                         <p>Goolge Doc</p>
-                         <div class="flex items-center mb-4 rounded-full">
-                        <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                         <div className="flex items-center mb-4 rounded-full">
+                        <input onChange={(event) => {addIds("11", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                      </div>
                   </div>
@@ -92,15 +98,15 @@ function box  (){
                       </svg>
                       <p className='text-gray'>(2,145)</p>
                   </div>
-                  <div className="pic flex justify-center my-5 h-20">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 11}}} className="pic flex justify-center my-5 h-20">
                     <img src="/photo/icon/image 23.png " alt="" />
-                  </div>
+                  </Link>
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                     <div className='flex justify-between'>
                         <p>Goolge Doc</p>
-                        <div class="flex items-center mb-4 rounded-full">
-                            <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                        <div className="flex items-center mb-4 rounded-full">
+                            <input onChange={(event) => {addIds("12", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                         </div>
                     </div>
@@ -123,16 +129,16 @@ function box  (){
                       <p className='text-gray'>(2,145)</p>
                    
                   </div>
-                  <div className="pic flex justify-center my-5 ">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 12}}} className="pic flex justify-center my-5 ">
                     <img src="/photo/icon/image 31.png" alt="" />
-                  </div>
+                  </Link>
                    
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                     <div className='flex justify-between'>
                             <p>Goolge Doc</p>
-                            <div class="flex items-center mb-4 rounded-full">
-                                <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                            <div className="flex items-center mb-4 rounded-full">
+                                <input onChange={(event) => {addIds("13", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                             </div>
                         </div>
@@ -155,16 +161,16 @@ function box  (){
                       <p className='text-gray'>(2,145)</p>
                    
                   </div>
-                  <div className="pic flex justify-center my-5 ">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 13}}} className="pic flex justify-center my-5 ">
                     <img src="/photo/icon/image 25.png" alt="" />
-                  </div>
+                  </Link>
                    
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                     <div className='flex justify-between'>
                         <p>Goolge Doc</p>
-                        <div class="flex items-center mb-4 rounded-full">
-                            <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                        <div className="flex items-center mb-4 rounded-full">
+                            <input onChange={(event) => {addIds("14", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                         </div>
                   </div>
@@ -187,16 +193,16 @@ function box  (){
                       <p className='text-gray'>(2,145)</p>
                      
                   </div>
-                  <div className="pic flex justify-center my-5 ">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 14}}} className="pic flex justify-center my-5 ">
                     <img src="/photo/icon/image 30.png" alt="" />
-                  </div>
+                  </Link>
                    
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                   <div className='flex justify-between'>
                     <p>Goolge Doc</p>
-                    <div class="flex items-center mb-4 rounded-full">
-                        <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                    <div className="flex items-center mb-4 rounded-full">
+                        <input onChange={(event) => {addIds("3", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                     </div>
                   </div>
@@ -218,16 +224,16 @@ function box  (){
                       </svg>
                       <p className='text-gray'>(2,145)</p>
                   </div>
-                  <div className="pic flex justify-center my-5 ">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 3}}} className="pic flex justify-center my-5 ">
                     <img src="/photo/icon/dropbox.png" alt="" />
-                  </div>
+                  </Link>
                    
               </div>
               <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
                   <div className='flex justify-between'>
                     <p>Goolge Doc</p>
-                    <div class="flex items-center mb-4 rounded-full">
-                        <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
+                    <div className="flex items-center mb-4 rounded-full">
+                        <input onChange={(event) => {addIds("5", event.currentTarget.checked)}} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  " />
 
                     </div>
                   </div>
@@ -252,9 +258,9 @@ function box  (){
                       <p className='text-gray'>(2,145)</p>
                     
                   </div>
-                  <div className="pic flex justify-center my-5 ">
+                  <Link href={{pathname:'/pages/software_page', query: {id: 5}}} className="pic flex justify-center my-5 ">
                     <img src="/photo/icon/GogleDOC.png" alt="" />
-                  </div>
+                  </Link>
                                 
                    
               </div>

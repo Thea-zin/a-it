@@ -1,6 +1,6 @@
 export default function Item(id, name, iconid) {
   return (
-    <div className="m-3 p-2 border-[1px] rounded-md" key={id}>
+    <div className="m-3 p-2 border-[1px] rounded-md overflow-clip" key={id}>
       <p className="font-semibold text-sm xm:text-[1rem]">{name}</p>
       <div className="flex text-[#F3B146] relative z-10 text-sm xm:text-[1rem] place-items-center">
         <iconify-icon icon="clarity:star-solid"></iconify-icon>
