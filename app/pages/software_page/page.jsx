@@ -13,7 +13,7 @@ export default async function SoftwarePage({ searchParams }) {
     iconUrl = await getIconURL(`${data.icon}.png`);
   } catch (e) {
     console.log(e);
-    data = { name: "ChatGPT" };
+    data = { name: "-------" };
     iconUrl = null;
   }
 
@@ -121,7 +121,18 @@ export default async function SoftwarePage({ searchParams }) {
               </p>
               <button className="flex place-items-center mt-2">
                 <div className="text-darkblue text-2xl xm:text-3xl flex place-items-center">
-                  <iconify-icon icon="cryptocurrency:chat"></iconify-icon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      d="M16 32C7.163 32 0 24.837 0 16S7.163 0 16 0s16 7.163 16 16s-7.163 16-16 16zm.28-8.675c1.028.711 2.332 1.134 3.744 1.134c.351 0 .698-.026 1.039-.077c.117.048.23.107.369.187c.3.176.701.446 1.2.81c.409.299.988.01.988-.493v-1.461c.21-.136.408-.283.595-.442C25.345 22.025 26 20.715 26 19.31c0-.925-.28-1.79-.772-2.537a7.929 7.929 0 0 1-.627 1.53c.104.323.159.66.159 1.007c0 1.034-.488 2.01-1.352 2.742a4.679 4.679 0 0 1-.717.499a.612.612 0 0 0-.311.531v.624c-.593-.38-1-.559-1.31-.559a.627.627 0 0 0-.104.009a5.696 5.696 0 0 1-2.602-.17a11.45 11.45 0 0 1-2.083.34zm-7.466-2.922a9.27 9.27 0 0 0 1.044.765v2.492c0 .63.725.99 1.236.616c1.41-1.03 2.39-1.612 2.635-1.67c.566.09 1.144.135 1.728.135c5.2 0 9.458-3.607 9.458-8.12c0-4.514-4.259-8.121-9.458-8.121S6 10.107 6 14.62c0 2.21 1.03 4.271 2.814 5.783zm4.949.666c-.503 0-1.238.355-2.354 1.104v-1.437a.765.765 0 0 0-.39-.664a7.815 7.815 0 0 1-1.196-.833C8.37 18.01 7.55 16.366 7.55 14.62c0-3.61 3.516-6.588 7.907-6.588c4.392 0 7.907 2.978 7.907 6.588s-3.515 6.589-7.907 6.589c-.53 0-1.053-.044-1.564-.13a.784.784 0 0 0-.13-.01zm-2.337-4.916c.685 0 1.24-.55 1.24-1.226c0-.677-.555-1.226-1.24-1.226c-.685 0-1.24.549-1.24 1.226c0 .677.555 1.226 1.24 1.226zm4.031 0c.685 0 1.24-.55 1.24-1.226c0-.677-.555-1.226-1.24-1.226c-.685 0-1.24.549-1.24 1.226c0 .677.555 1.226 1.24 1.226zm4.031 0c.685 0 1.24-.55 1.24-1.226c0-.677-.555-1.226-1.24-1.226c-.685 0-1.24.549-1.24 1.226c0 .677.555 1.226 1.24 1.226z"
+                    />
+                  </svg>
                 </div>
                 <p className="text-bblue font-semibold ml-3 text-sm xm:text-[1rem]">
                   Contact ChatGPT Company
@@ -152,7 +163,17 @@ export default async function SoftwarePage({ searchParams }) {
                         key={index}
                       >
                         <div className="text-3xl">
-                          <iconify-icon icon="mdi:user-star"></iconify-icon>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="33"
+                            height="33"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M15 14c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4m0-2a4 4 0 0 0 4-4a4 4 0 0 0-4-4a4 4 0 0 0-4 4a4 4 0 0 0 4 4M5 13.28l2.45 1.49l-.65-2.81L9 10.08l-2.89-.25L5 7.19L3.87 9.83L1 10.08l2.18 1.88l-.68 2.81L5 13.28Z"
+                            />
+                          </svg>
                         </div>
                         <div className="font-medium ml-3 text-xs xm:text-nbase overflow-clip">
                           <p className="font-bold xm:font-normal line-clamp-1">
@@ -361,11 +382,21 @@ export default async function SoftwarePage({ searchParams }) {
                 ].map((item, index) => {
                   return (
                     <div
-                      className="flex place-items-center items-start mt-5"
+                      className="flex place-items-center items-center mt-5"
                       key={index}
                     >
-                      <div className="text-cyan flex mt-1">
-                        <iconify-icon icon="octicon:feed-star-16"></iconify-icon>
+                      <div className="text-cyan flex">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16Zm.252-12.932a.476.476 0 0 0-.682.195l-1.2 2.432l-2.684.39a.477.477 0 0 0-.266.816l1.944 1.892l-.46 2.674a.479.479 0 0 0 .694.504L8 10.709l2.4 1.261a.478.478 0 0 0 .694-.504l-.458-2.673L12.578 6.9a.479.479 0 0 0-.265-.815l-2.685-.39l-1.2-2.432a.473.473 0 0 0-.176-.195Z"
+                          />
+                        </svg>
                       </div>
                       <p className="ml-1 text-sm xm:text-[1rem]">{item}</p>
                     </div>
@@ -412,7 +443,7 @@ export default async function SoftwarePage({ searchParams }) {
                 ].map((item, index) => {
                   return (
                     <button
-                      className="my-1 flex place-content-start text-bblue mt-3"
+                      className="my-1 flex place-content-start items-center text-bblue mt-3"
                       key={index}
                     >
                       <div className="w-5 xm:w-10">

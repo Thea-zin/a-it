@@ -3,7 +3,7 @@ import firebase_app from "../firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
-export async function GET(req) {
+export async function GET(req, res) {
   try {
     const firestore = getFirestore(firebase_app);
     const id = req.url.split('=').pop()
@@ -12,9 +12,10 @@ export async function GET(req) {
       doc(firestore, "softwares", `${id}`)
     );
     let data = data_raw.data();
-    data.icon = await getIconURL(data.icon)
+    // res.status(200).send({})
     return NextResponse.json(data, { status: 200 });
   } catch (e) {
+    console.log(e)
     return NextResponse.json(
       { message: "something wrong on the server side!" },
       { status: 500 }

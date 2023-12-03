@@ -1,9 +1,11 @@
-export default function ReviewForm1() {
+'use client';
+
+export default function ReviewForm1({setShowForm}) {
   return (
-    <div className="w-full font-dmsan">
+    <div className="w-[400px] xm:w-full font-dmsan z-20 bg-white">
       <div className="sm:px-5 md:px-20 lg:px-32 py-8 bg-[#2F455C]">
         <img
-          src="write_review\proccess_product_rating.png"
+          src="/write_review/proccess_product_rating.png"
           alt=""
           className="relative w-full"
         />
@@ -144,6 +146,11 @@ export default function ReviewForm1() {
         </div>
 
         <div className="h-32"></div>
+      </div>
+      <div className="h-24 w-full flex place-content-end place-items-center">
+        <button onClick={() => {setShowForm(2)}} className="bg-basedark py-2 px-10 font-medium rounded-full text-white mr-10 text-xl xm:text-2xl">
+          Next: About the Product
+        </button>
       </div>
     </div>
   );

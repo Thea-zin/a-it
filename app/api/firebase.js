@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
@@ -23,8 +29,13 @@ export async function getIconURL(name) {
 }
 
 export async function getSoftware(id) {
-  const dataRef = await getDoc(doc(firestore, "softwares", `${id}`));
-  return dataRef.data();
+  if (!id) throw new Error("id is null!");
+  try {
+    const dataRef = await getDoc(doc(firestore, "softwares", `${id}`));
+    return dataRef.data();
+  } catch (e) {
+    throw new Error("Something wrong when getting document!");
+  }
 }
 
 // for updating demo data
@@ -244,7 +255,7 @@ export async function populate() {
     await updateDoc(doc(firestore, "softwares", `${i}`), {
       name: `${data.name}`,
       icon: `${data.icon}`,
-      features: software_demo[i%4]
+      features: software_demo[i % 4],
     });
   }
 }

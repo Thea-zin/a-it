@@ -1,16 +1,21 @@
-export default function ReviewForm2() {
+"use client";
+
+export default function ReviewForm2({ setShowForm }) {
   return (
-    <div className="w-full font-dmsan">
+    <div className="w-[400px] xm:w-full font-dmsan">
       <div className="sm:px-5 md:px-20 lg:px-32 py-8 bg-[#2F455C]">
         <img
-          src="write_review\process_about_product.png"
+          src="/write_review/process_about_product.png"
           alt=""
           className="relative w-full"
         />
       </div>
 
       <div className="px-3 sm:px-10">
-        <p className="mt-10"><span className="text-red-600">* </span>For which purpose did you use ChatGPT?</p>
+        <p className="mt-10">
+          <span className="text-red-600">* </span>For which purpose did you use
+          ChatGPT?
+        </p>
         <div className="mt-5 relative w-full">
           <select
             className="outline-none bg-[#E3E6EA] py-2 px-4 rounded-full relative w-full"
@@ -20,7 +25,10 @@ export default function ReviewForm2() {
           </select>
         </div>
 
-        <p className="mt-10"><span className="text-red-600">* </span>For which purpose did you use ChatGPT?</p>
+        <p className="mt-10">
+          <span className="text-red-600">* </span>For which purpose did you use
+          ChatGPT?
+        </p>
         <textarea
           name=""
           id=""
@@ -111,6 +119,16 @@ export default function ReviewForm2() {
         </div>
 
         <div className="h-32"></div>
+      </div>
+      <div className="h-24 w-full flex place-content-end place-items-center">
+        <button
+          onClick={() => {
+            setShowForm(3);
+          }}
+          className="bg-basedark py-2 px-10 font-medium rounded-full text-white mr-10 text-xl xm:text-2xl"
+        >
+          Next: About You
+        </button>
       </div>
     </div>
   );

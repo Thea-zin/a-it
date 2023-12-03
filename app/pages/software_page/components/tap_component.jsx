@@ -1,12 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function TapSoftwareComponent({ id }) {
   const [tap, setTap] = useState(0);
+  const router = useRouter();
 
-  if (isNaN(parseInt(id))) useRouter().push("/pages/mainCategories");
+  useEffect(() => {
+    if (isNaN(parseInt(id))) router.push("/pages/mainCategories");
+  });
 
   return (
     <div className="text-white xl:ml-44 lg:ml-32 text-[1.15rem] font-medium">
