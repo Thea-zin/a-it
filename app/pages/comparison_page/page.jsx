@@ -74,7 +74,7 @@ export default function ComparisonPage() {
       <FilterComponent></FilterComponent>
 
       <p className="text-3xl font-semibold ml-10 mt-7">
-        Let's us help you find the perfect product!
+        {"Let's us help you find the perfect product!"}
       </p>
       <div className={`w-full bg-[#F7F8FA] mt-7 px-6 xl:px-10 py-5`}>
         <div className="border-2 border-[#E3E6EA] rounded-2xl p-4">
