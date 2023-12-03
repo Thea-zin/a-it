@@ -25,10 +25,7 @@ export default function ReviewBox() {
         A platform that answers any questions
       </p>
       <p className="mt-6 text-basedark text-xs xm:text-nbase">
-        With Google Analytics, a powerful web analytics tool, website owners,
-        marketers, and analysts can measure, track, and analyse website traffic,
-        user behaviour, and conversion goals. Some of Google Analytics' best
-        qualities include the ones listed below:
+        {"With Google Analytics, a powerful web analytics tool, website owners, marketers, and analysts can measure, track, and analyse website traffic, user behaviour, and conversion goals. Some of Google Analytics' best qualities include the ones listed below:"}
         <br />
         <br />
         Users that use customizable dashboards may keep track of the metrics

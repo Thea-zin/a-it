@@ -129,8 +129,7 @@ export default function WriteReviewPage() {
                 Start and make a different in your company.
               </p>
               <p className="relative xl:w-[55%] w-[55%] xl:text-2xl md:text-xl text-sm xl:mt-6 mt-2 xl:ml-12 ml-7 text-[#2F455C]">
-                Not being able to convey the goodness of our products because
-                people think it's just a sales pitch after all.{" "}
+                {"Not being able to convey the goodness of our products because people think it's just a sales pitch after all."}
               </p>
               <button className="bg-[#2F455C] relative xl:ml-12 ml-5 xl:mt-20 mt-5 xl:mb-11 mb-7 xl:py-5 md:py-3 xl:px-14 md:px-7 xl:text-2xl md:text-xl text-sm px-4 py-2 font-semibold text-white rounded-full">
                 Post your service for free

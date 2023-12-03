@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import CardItem from "./component/box";
 import CardItem2 from "./component/box2";
 import Link from "next/link";
-const page = () => {
+const Page = () => {
   // const [ids, setIds] = useState(["start"]);
   let tids = [];
 
@@ -99,11 +99,7 @@ const page = () => {
         <div className="text-3xl font-medium ml-10">What is your problem ?</div>
         <div className="box-service">
           <div className="text ml-10 p-2 mt-5 mb-5">
-            You can choose the appropriate IT category based on common business
-            challenges and objectives. Choose the most appropriate IT products
-            and services based on your specific objectives, such as " paperless
-            " to reduce costs or " personnel planning that takes advantage of
-            employees strengths and backgrounds " to utilize human resources.
+            {'You can choose the appropriate IT category based on common business challenges and objectives. Choose the most appropriate IT products and services based on your specific objectives, such as " paperless " to reduce costs or " personnel planning that takes advantage of employees strengths and backgrounds " to utilize human resources.'}
           </div>
           <div className="pr-10 pl-10 ">
             <div className="box bg-black h-64 rounded-xl p-5 mt-5">
@@ -201,7 +197,7 @@ const page = () => {
               </div>
             </div>
             <div className="text p-7">
-              Canva's AI features including Text to Image.
+              {"Canva's AI features including Text to Image."}
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
@@ -257,7 +253,7 @@ const page = () => {
               </div>
             </div>
             <div className="text p-7">
-              Canva's AI features including Text to Image.
+              {"Canva's AI features including Text to Image."}
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
@@ -313,7 +309,7 @@ const page = () => {
               </div>
             </div>
             <div className="text p-7">
-              Canva's AI features including Text to Image.
+              {"Canva's AI features including Text to Image."}
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
@@ -369,7 +365,7 @@ const page = () => {
               </div>
             </div>
             <div className="text p-7">
-              Canva's AI features including Text to Image.
+              {"Canva's AI features including Text to Image."}
             </div>
             <div className=" flex justify-center mb-8">
               <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
@@ -566,7 +562,7 @@ const page = () => {
             <div className="filter  bg-[#2F455C] rounded-t-xl p-8 mt-5 text-white">
               <div className="text text-xl font-bold text-center text-white ">
                 <p>Have Questions?</p>
-                <p>Let's us help!</p>
+                <p>{"Let's us help!"}</p>
               </div>
               <div className="text-center mt-3 text-sm">
                 <p>Get personalized recommedations</p>
@@ -670,4 +666,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
