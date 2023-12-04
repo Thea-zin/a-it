@@ -13,7 +13,7 @@ function SignUpWithThirdParty({onClose}){
     };
     return (
         <div className="relative">
-              <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-white  " >
+              <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-transparent/50  " >
         <div className="flex justify-center items-center p-4">
                 <div className="relative">
         <div className="absolute lg:ml-[93%] lg:mt-[4%] md:ml-[93%] md:mt-[4%] sm:ml-[93%] sm:mt-[4%] xsm:ml-[90%] xsm:mt-[4%]" onClick={onClose}><img src={"../../cross-bold.png"} className="w-5 h-5"></img></div>

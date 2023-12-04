@@ -30,6 +30,15 @@ body {
   font-family: "dmsan";
   src: url("../public/DMSans.ttf");
 }
+
+
+.progress-ring__circle {
+  stroke-dasharray: 400, 400;
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
 .svg-container:hover .profile-svg{
   fill:green;
 }
@@ -37,3 +46,4 @@ body {
   fill:cyan;
   color:'#1dcdfe';
 }
+
