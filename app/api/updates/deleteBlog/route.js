@@ -2,12 +2,6 @@
 import { db ,storage} from '../../../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
 import {doc,deleteDoc} from "firebase/firestore";
-export const config ={
-    api:{
-        bodyParser:false
-    },
-};
-
 export  async function DELETE(request,response){
         const body = await request.json()
         const blogId = await body["blogId"]

@@ -1,4 +1,4 @@
-
+import SignUp from "./signUpEmailPassword";
 function SignIn({onClose}){
     const [isOpen,setIsOpen]=useState(false);
     const showPassword = ()=>{
@@ -38,7 +38,7 @@ function SignIn({onClose}){
                 {isPopUpSignUp && <SignUp onClose={closePopUpSignUp}></SignUp>}
             </div>
   
-        // </div>
+         </div>
 
 
     )
