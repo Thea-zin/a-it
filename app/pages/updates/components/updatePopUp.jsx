@@ -43,7 +43,7 @@ export default function UpdateBlog({open,handleAddBlogClose,oldBlog}) {
     if (image==null){
         await setImage(oldBlog.imageRef)
     }
-    if ((title != '') && (content != '') &&(length(tags)!==0) ){
+    if ((title != '') && (content != '') &&(tags!='') ){
         // setNullWarning(false)
         try{
             const form = new FormData();
