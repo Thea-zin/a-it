@@ -1,21 +1,28 @@
 import { NextResponse } from "next/server";
 import firebase_app from "../firebase";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  getDocs,
+  collection
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 export async function GET(req, res) {
   try {
     const firestore = getFirestore(firebase_app);
-    const id = req.url.split('=').pop()
-    console.log(id)
-    const data_raw = await getDoc(
-      doc(firestore, "softwares", `${id}`)
-    );
-    let data = data_raw.data();
-    // res.status(200).send({})
-    return NextResponse.json(data, { status: 200 });
+    const querySnapshot = await getDocs(collection(firestore, "softwares"));
+    let softwares = [];
+    for (let doc of querySnapshot.docs) {
+      let temp = doc.data();
+      temp.icon = await getIconURL(temp.icon);
+      temp.id = doc.id;
+      softwares.push(temp);
+    }
+    return NextResponse.json({ softwares: softwares }, { status: 200 });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return NextResponse.json(
       { message: "something wrong on the server side!" },
       { status: 500 }

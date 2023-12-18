@@ -1,4 +1,4 @@
-export default function Item({ id, name, iconid, setShowForm}) {
+export default function Item(id, name, iconid) {
   return (
     <div className="m-3 p-2 border-[1px] rounded-md overflow-clip" key={id}>
       <p className="font-semibold text-sm xm:text-[1rem]">{name}</p>
@@ -11,13 +11,9 @@ export default function Item({ id, name, iconid, setShowForm}) {
         <p>(2134)</p>
       </div>
       <div className="w-full h-28 grid place-content-center relative z-0">
-        <button
-          onClick={() => {
-            setShowForm(id);
-          }}
-        >
-          <img src={iconid} alt="" />
-        </button>
+        <div>
+          <img src={`/write_review/icons/${iconid}.png`} alt="" />
+        </div>
       </div>
     </div>
   );

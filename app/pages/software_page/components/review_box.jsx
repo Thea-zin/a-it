@@ -1,4 +1,4 @@
-export default function ReviewBox() {
+export default function ReviewBox({ review = null }) {
   return (
     <div className="bg-base xm:p-10 p-3 pb-0">
       <div className="flex place-items-center">
@@ -19,27 +19,47 @@ export default function ReviewBox() {
           <iconify-icon icon="clarity:star-solid"></iconify-icon>
           <iconify-icon icon="clarity:star-solid"></iconify-icon>
         </div>
-        <p className="text-xs xm:text-[1rem] ml-2 font-medium text-bgray">Sep 22, 2023</p>
+        {review != null ? (
+          <p className="text-xs xm:text-[1rem] ml-2 font-medium text-bgray">
+            {review.date}
+          </p>
+        ) : (
+          <p className="text-xs xm:text-[1rem] ml-2 font-medium text-bgray">
+            Sep 22, 2023
+          </p>
+        )}
       </div>
-      <p className="mt-3 font-semibold text-sm xm:text-lg">
-        A platform that answers any questions
-      </p>
-      <p className="mt-6 text-basedark text-xs xm:text-nbase">
-        With Google Analytics, a powerful web analytics tool, website owners,
-        marketers, and analysts can measure, track, and analyse website traffic,
-        user behaviour, and conversion goals. Some of Google Analytics' best
-        qualities include the ones listed below:
-        <br />
-        <br />
-        Users that use customizable dashboards may keep track of the metrics
-        that matter most to their companies.
-        <br />
-        Users gain access to information about the visitors and behaviour to
-        their websites in real-time through real-time reporting.
-        <br />
-        Users can set up and measure specific targets, such as form fills,
-        sales, or page visits.
-      </p>
+      {review != null ? (
+        <p className="mt-3 font-semibold text-sm xm:text-lg">{review.title}</p>
+      ) : (
+        <p className="mt-3 font-semibold text-sm xm:text-lg">
+          A platform that answers any questions
+        </p>
+      )}
+
+      {review != null ? (
+        <p className="mt-6 text-basedark text-xs xm:text-nbase">
+          {review.comment}
+        </p>
+      ) : (
+        <p className="mt-6 text-basedark text-xs xm:text-nbase">
+          With Google Analytics, a powerful web analytics tool, website owners,
+          marketers, and analysts can measure, track, and analyse website
+          traffic, user behaviour, and conversion goals. Some of Google
+          Analytics' best qualities include the ones listed below:
+          <br />
+          <br />
+          Users that use customizable dashboards may keep track of the metrics
+          that matter most to their companies.
+          <br />
+          Users gain access to information about the visitors and behaviour to
+          their websites in real-time through real-time reporting.
+          <br />
+          Users can set up and measure specific targets, such as form fills,
+          sales, or page visits.
+        </p>
+      )}
+
       <div className="hidden xm:block border-y-[1px] border-divider mt-10 py-4 text-basedark">
         <div className="flex flex-wrap justify-between">
           <button className="flex place-items-center">
