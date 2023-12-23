@@ -5,7 +5,9 @@ import {
   getDoc,
   getFirestore,
   getDocs,
-  collection
+  collection,
+  query,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
@@ -35,14 +37,26 @@ export async function POST(req) {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
     var data = [];
-    for (let id of request.ids) {
-      const data_raw = await getDoc(doc(firestore, "softwares", `${id}`));
-      let temp = data_raw.data();
+    const q = query(
+      collection(firestore, "softwares"),
+      where("id", "in", request.ids)
+    );
+    const querySnapshot = await getDocs(q);
+    // for (let id of request.ids) {
+    //   const data_raw = await getDoc(doc(firestore, "softwares", `${id}`));
+    //   let temp = data_raw.data();
+    //   temp.icon = await getIconURL(temp.icon);
+    //   data.push(temp);
+    // }
+    for (let doc of querySnapshot.docs) {
+      let temp = doc.data();
       temp.icon = await getIconURL(temp.icon);
+      temp.id = doc.id;
       data.push(temp);
     }
     return NextResponse.json({ data: data }, { status: 200 });
   } catch (e) {
+    console.log(e);
     return NextResponse.json(
       { message: "something wrong on the server side!" },
       { status: 500 }

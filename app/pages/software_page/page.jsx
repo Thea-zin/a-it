@@ -10,14 +10,19 @@ import {
 import Stars from "./components/star_display";
 
 export default async function SoftwarePage({ searchParams }) {
-  let data = { name: "" };
+  let data = { name: "", icon: "" };
   let iconUrl = null;
   let reviews = [];
   // populate()
   try {
     data = await getSoftware(searchParams.id);
-    iconUrl = await getIconURL(`${data.icon}.png`);
-    reviews = await getReivews(searchParams.id);
+    if (typeof data != "undefined") {
+      iconUrl = await getIconURL(`${data.icon}.png`);
+      reviews = await getReivews(searchParams.id);
+    } else {
+      data = { name: "-------" };
+      iconUrl = null;
+    }
   } catch (e) {
     console.log(e);
     data = { name: "-------" };
@@ -283,7 +288,7 @@ export default async function SoftwarePage({ searchParams }) {
             {reviews.map((review, index) => {
               return (
                 <>
-                  <ReviewBox review={review} key={index}/>
+                  <ReviewBox review={review} key={index} />
                 </>
               );
             })}
