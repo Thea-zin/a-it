@@ -1,6 +1,12 @@
 'use strict';
 import { db ,storage} from '../../../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
+export const config ={
+    api:{
+        bodyParser:false
+    },
+};
+
 export  async function POST(request,response){
         const data = await request.formData();
         const title =data.get('title');
