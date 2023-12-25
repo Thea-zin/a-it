@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 
 function Profile(){
     const router = useRouter();
+    const {isAuth} = useAuth();
     const [activeItem,setActiveItem]=useState(null);
     const handleItemClick = (item) =>{
     setActiveItem(item);
@@ -18,6 +19,7 @@ function Profile(){
          router.push(`profile/${page}`)
    }
     return (
+        !isAuth?<div className="bg-base p-6"><UnauthorizePage/></div>:
         <div>
             <div className="hidden bg-base xsm:flex sm:flex md:hidden lg:hidden  mt-[3%] p-4 px-8">
                    <div className="  bg-white flex rounded-[16px] p-4 h-[auto] w-full mt-[3%] ml-[3%]">

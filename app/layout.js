@@ -2,7 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 
 import Navbar from "./Components/navbar";
-import Script from "next/script";
+
 import Footer from "./Components/footer";
 import SoftwarePage from "./pages/software_page/page";
 import ComparisonPage from "./pages/comparison_page/page";
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <Script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></Script>
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
       </head>
       <body className={inter.className}>
         <Navbar />
