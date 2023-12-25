@@ -1,13 +1,16 @@
 'use client';
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import firebase_app from "@/app/firebase";
+import { useState , useEffect } from 'react'
 import SignIn from '../authentications/components/signIn';
 import SignUp from '../authentications/components/signUpEmailPassword';
 import SignUpWithThirdParty from '../authentications/components/signUpWith3rdParty';
-import { AuthContext } from '../context/AuthContext';
-import {useContext} from 'react'
+
+import {
+  getAuth,
+  signOut
+} from 'firebase/auth'
 const Navbar = () => {
  
   const [isPopUpSignIn,setIsPopUpSignIn] = useState(false);
@@ -24,6 +27,19 @@ const Navbar = () => {
   const closePopUpSignUp = () =>{
     setIsPopUpSignUp(false)
   };
+
+  const [isUser, setIsUser] = useState(false);
+  const auth=getAuth(firebase_app)
+
+    useEffect(() => {
+      //signOut(auth);
+      const user = auth.currentUser;
+      setIsUser(user !== null && user.accessToken !== null);
+      
+  });
+ 
+
+
   return (
      <div >
       <header className='p-4  '>
@@ -43,10 +59,12 @@ const Navbar = () => {
                     <div className='write_Review'><Link href='/pages/write_review_page'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
             </div>
+        
              <div className=' flex gap-5 justify-center items-center' >
                 <button onClick={openPopUpSignIn}>Log in</button>
                 <button onClick={openPopUpSignUp} className='bg-darkblue p-2 text-white text-center rounded-full w-24 hover:bg-sky-700 cursor-pointer'>Sign Up</button>
             </div>
+            {isUser ?(<p>User</p>) : (<p>Is not a user</p>)}
            
             
         </div>

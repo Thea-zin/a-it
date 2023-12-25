@@ -1,7 +1,11 @@
 'use client';
 import { useState } from "react";
 import React from "react";
-import signIn from '@/app/firebase/signin'
+import firebase_app from "@/app/firebase";
+import{
+    getAuth,
+    signInWithEmailAndPassword
+} from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 
 function SignIn({onClose}){
@@ -9,23 +13,25 @@ function SignIn({onClose}){
     const showPassword = ()=>{
         setIsOpen(!isOpen)
     }
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
-    const router = useRouter()
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const router = useRouter();
+    const auth=getAuth(firebase_app);
 
     const handleForm = async (event) => {
         event.preventDefault()
 
-        const { result, error } = await signIn(email, password);
-
-        if (error) {
-            return console.log(error)
-        }
-        
-        // else successful
-        console.log(result)
-        onClose();
-        return router.push("/pages/home")
+        signInWithEmailAndPassword(auth,email,password)
+        .then((cred)=>{
+              console.log('user login', cred.user)
+    // else successful
+    
+    onClose();
+    return router.push("/pages/home")
+  })
+  .catch((err)=>{
+    console.log(err.massage)
+  })
    
     }
     return(

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import React from "react";
-import signUp from "@/app/firebase/signup"
+import { getAuth,createUserWithEmailAndPassword,} from "firebase/auth";
 import { useRouter } from 'next/navigation'
 
 function SignUp({onClose}){
@@ -16,24 +16,27 @@ function SignUp({onClose}){
       const [firstName, setfirstName] = React.useState('')
       const [lastName, setlastName] = React.useState('')
       const router = useRouter()
+      const auth=getAuth()
       const [isPopUpSignUp,setIsPopUpSignUp] = useState(true);
 
       const handleForm = async (event) => {
         
           event.preventDefault()
-
-          const { result, error } = await signUp(email, password,lastName,firstName);
-         
-  
-          if (error) {
-              return console.log(error)
-          }
-  
+          createUserWithEmailAndPassword(auth,email,password,firstName,lastName)
+          .then((cred)=>{
+            console.log("User login")
+            console.log(cred.user)
+            onClose();
+            setIsPopUpSignUp(false);
+            return router.push("/pages/home")
+          })
+          .catch((err)=>{
+            console.log(err.message)
+          })
           // else successful
           
-          console.log(result);
-          onClose();
-          setIsPopUpSignUp(false);
+         
+          
           
           return router.push("/pages/home")
       }
