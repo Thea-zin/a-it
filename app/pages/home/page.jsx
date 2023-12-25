@@ -1,7 +1,7 @@
 "use client";
 import React from 'react'
 
-const HomePage = () => {
+const Home = () => {
   return (
     <div className="">
       <div className='pl-7 pr-7'>
@@ -75,7 +75,7 @@ const HomePage = () => {
 
               <div id="logo">
                 <img 
-                src='../photo/icon/zendek.png'/>
+                src='../photo/logo.png'/>
               </div>
               <div id="name" className=''>
                   <div className="product text-xl font-normal ">Zendesk</div>
@@ -135,7 +135,7 @@ const HomePage = () => {
 
               <div id="logo">
                 <img 
-                src='../photo/icon/dropbox.png'/>
+                src='../photo/dropbox.png'/>
               </div>
               <div id="name" className=''>
                   <div className="product text-xl font-normal ">Dropbox</div>
@@ -195,7 +195,7 @@ const HomePage = () => {
 
               <div id="logo">
                 <img 
-                src='../photo/icon/asana.png'/>
+                src='../photo/asana.png'/>
               </div>
               <div id="name" className=''>
                   <div className="product text-xl font-normal ">Asana</div>
@@ -561,4 +561,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default Home

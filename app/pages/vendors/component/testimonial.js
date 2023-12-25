@@ -23,9 +23,9 @@ function Testimonial(){
                         <div className="flex justify-center"> <div className="border-2 border-white rounded-full bg-cyan w-[100px] h-[100px] "><img src={datas.icon} className="items-center p-3"></img></div></div>
                        <div className="lg:text-display-md md:text-display-sm sm:text-display-sm x xsm:text-display-sm font-bold text-darkblue">{datas.heading}</div>
                         {
-                            datas.factors.map((factor, index)=>(
+                            datas.factors.map((factor)=>(
                                 // <div className=" rounded-full border-1 bg-cyan  p-2 "> <span><img src="../vendors/ticks.png" className></img></span><span className="text-white lg:text-body-large md:text-body-md sm:text-body-sm xsm:text-body-sm">{factor}</span></div>
-                            <div className="rounded-full border-1 bg-cyan  p-2" key={index}> 
+                            <div className="rounded-full border-1 bg-cyan  p-2"> 
                                <div className="flex">
                                     <div className="">
                                        <img src="../vendors/ticks.png" ></img>

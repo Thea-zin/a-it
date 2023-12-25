@@ -1,19 +1,15 @@
-'use client';
+"use client";
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import SignIn from '../authentications/components/signIn';
 import SignUpWithThirdParty from '../authentications/components/signUpWith3rdParty';
-<<<<<<<< HEAD:app/components/navbar.js
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 const navbar = () => {
 
   const {isAuth,user,logout} = useAuth();
-========
-const Navbar = () => {
->>>>>>>> 9d0cc4f0859f0f73055b41c08a7472dad07b892c:app/Components/navbar.jsx
   const [isPopUpSignIn,setIsPopUpSignIn] = useState(false);
   const [isPopUpSignUp,setIsPopUpSignUp] = useState(false);
 
@@ -30,22 +26,19 @@ const Navbar = () => {
     setIsPopUpSignUp(false)
   };
   return (
-     <div >
+    // <div >
       <header className='p-4  '>
         <div className='menu flex justify-between '>
             <div className='listing flex items-center gap-5  '>
                 <Link className='logo ' href='/pages/home' >
                   
                     <img 
-                      src="/photo/LogoAIT.png"/>
+                      src="/photo/logoAIT.png"/>
                   
                 </Link>
-                
-                    <div className='categories flex items-center'> 
-                       <Link href='/pages/mainCategories'>Software Categories</Link>
-                    </div>
-                    <div className='update'><Link href='/pages/updates'>Update</Link></div>
-                    <div className='write_Review'><Link href='/pages/write_review_page'>Write a Review</Link></div>
+                    <div className='categories'> <Link href='/pages/home' >Software categories</Link></div>
+                    <div className='update'><Link href={"/pages/updates"}>Updates</Link></div>
+                    <div className='write a Review'><Link href='/'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
             </div>
             <div className=' flex gap-5 justify-center items-center'>
@@ -58,12 +51,8 @@ const Navbar = () => {
         {isPopUpSignUp && <SignUpWithThirdParty onClose={closePopUpSignUp}></SignUpWithThirdParty>}
       </header>
 
-     </div>
+    // </div>
   )
 }
 
-<<<<<<<< HEAD:app/components/navbar.js
 export default navbar;
-========
-export default Navbar
->>>>>>>> 9d0cc4f0859f0f73055b41c08a7472dad07b892c:app/Components/navbar.jsx

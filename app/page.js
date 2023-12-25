@@ -1,10 +1,13 @@
-import Link from "next/link";
-import HomePage from "./pages/home/page";
+
+import Link from 'next/link'
 export default function Home() {
   return (
+
     <main>
-      {/* <a href='/pages/vendors'>Vendor</a> */}
-      <HomePage />
+      
+        <a href='/pages/vendors'>Vendor</a>
+        
+      
     </main>
-  );
+  )
 }
