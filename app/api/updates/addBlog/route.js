@@ -1,6 +1,8 @@
 'use strict';
-import { db ,storage} from '../../../../firebase'
+import app from '../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
+import { getStorage, uploadBytes,ref,getDownloadURL,getSignedURL } from 'firebase/storage';
+import { setDoc,getFirestore,doc,query,collection,getDocs,where, addDoc } from 'firebase/firestore';
 export const config ={
     api:{
         bodyParser:false
@@ -8,6 +10,10 @@ export const config ={
 };
 
 export  async function POST(request,response){
+    //Initialization 
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+    //Get all the request data
         const data = await request.formData();
         const title =data.get('title');
         const imageFile = data.get('image');
@@ -17,22 +23,22 @@ export  async function POST(request,response){
         const blogID = Math.floor(Math.random() * 10000)
         const tags = data.get('tags').split(',');
         const content = data.get('content');
-        const my_blog = await db.collection('blogs').
-                                         where('title','==',title).
-                                         get();
+      //Find the available blog to ensure non-duplication
+       const q_blog =query(collection(db, "BLOGS"), where('title','==',title));
+       const my_blog = await getDocs(q_blog);
         try{
            if (my_blog.size == 0){
+            //Adding Image
                const path = `blogs/${userID}/images/${imageFile.name}`;
-               const storageRef = storage.file(path)
-               console.log(imageData)
                const buffer = new Uint8Array(imageData)
-               console.log(buffer)
-               const isUpload = await storageRef.save(buffer,{contentType:imageFile.type})
-               const imageUrl = await storageRef.getSignedUrl({
-                action:'read',
-                expires:'03-09-2090'
-               })
-               const res = await db.collection('blogs').add({
+               const storageRef= ref(storage,path)
+            //Upload image
+               const isUpload = await uploadBytes(storageRef,buffer);
+            //Get the download URL for adding inside the firestore document
+               const imageUrl = await getDownloadURL(storageRef);
+               console.log(imageUrl)
+            //Add blog document 
+               const res = await addDoc(collection(db,'blogs'),{
                   blogId:blogID,
                   authorId:userID,
                   title:title,
@@ -52,6 +58,6 @@ export  async function POST(request,response){
            }
 
         }catch(error){
-            return  NextResponse.json({message:error},{status:400})
+            return  NextResponse.json({message:error.message},{status:400})
         }
 };

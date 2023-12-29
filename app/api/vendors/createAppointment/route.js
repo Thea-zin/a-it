@@ -1,4 +1,4 @@
-import { db } from '../../../../firebase'
+import { db ,storage} from '@/firebase';
 import { NextResponse } from 'next/server'
 export  async function POST(request,reponse){
         const body = await request.json()

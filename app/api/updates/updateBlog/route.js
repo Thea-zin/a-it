@@ -1,6 +1,8 @@
 'use strict';
-import { db ,storage} from '../../../../firebase'
+import app from '../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
+import {doc,setDoc,getDocs,getDoc,query,where,collection,getFirestore,updateDoc} from "firebase/firestore";
+import { getStorage, uploadBytes,ref,getDownloadURL,getSignedURL } from 'firebase/storage';
 export const config ={
     api:{
         bodyParser:false
@@ -8,6 +10,10 @@ export const config ={
 };
 
 export  async function PUT(request,response){
+        var imageUrl;
+        const userID = "AIT00000" + Math.floor(Math.random() * 900000) 
+        const db = getFirestore(app);
+        const storage=getStorage(app);
         const data = await request.formData();
         const title =data.get('title');
         const imageFile = data.get('image');
@@ -15,54 +21,48 @@ export  async function PUT(request,response){
         const tags = data.get('tags').split(',');
         const content = data.get('content');
         const blogId = data.get('blogId')
-        const my_blog = await db.collection('blogs').
-        where('blogId','==',parseInt(blogId)).
-        get();
         console.log(blogId)
+        const q_blog = query(collection(db, "blogs"), where('blogId', '==', parseInt(blogId)));
+        const my_blog = await getDocs(q_blog);
+        console.log(imageFile)
         try{
-           if (my_blog.size !== 0 && typeof imageFile !== 'string'){
+           if (my_blog.size != 0 ){
+             if (typeof imageFile!='string'){
+                      //Adding Image
+               const imageFile = data.get('image');
                const imageData = await imageFile.arrayBuffer();
                const path = `blogs/${userID}/images/${imageFile.name}`;
-               const storageRef = storage.file(path)
-               console.log(imageData)
                const buffer = new Uint8Array(imageData)
-               console.log(buffer)
-               const isUpload = await storageRef.save(buffer,{contentType:imageFile.type})
-               const imageUrl = await storageRef.getSignedUrl({
-                action:'read',
-                expires:'03-09-2090'
-               })
-               const res = await my_blog.forEach(async (doc)=>{
-                db.collection("blogs").doc(doc.id).update(
-                    {
-                        title:title,
-                  content:content,
-                  tags:tags,
-                  imageRef:imageUrl,
-                  publishedAt:publishedAt,
-                  updatedAt:new Date()
-                    }
+               const storageRef= ref(storage,path)
+               console.log(storageRef)
+            //Upload image
+              await uploadBytes(storageRef,buffer);
+          
+               
+            //Get the download URL for adding inside the firestore document
+               imageUrl = await getDownloadURL(storageRef);
+               console.log(imageData)
+             }else{
+                imageUrl= imageFile;
+             }
+               const res = await my_blog.forEach(async (mydoc)=>{
+                await setDoc(doc(db,"blogs",mydoc.id),
+                {
+                      blogId:parseInt(blogId),
+                      title:title,
+                      content:content,
+                      tags:tags,
+                      imageRef:imageUrl,
+                      publishedAt:publishedAt,
+                      updatedAt:new Date()
+                        }
                 )
                })
               
                   return NextResponse.json({message:"Blog is update successfully"},{status:200})
                
-           } else if(my_blog.size !== 0 && typeof imageFile === 'string'){
-            const res = await my_blog.forEach(async (doc)=>{
-                db.collection("blogs").doc(doc.id).update(
-                    {
-                  
-                        title:title,
-                        content:content,
-                        tags:tags,
-                        publishedAt:publishedAt,
-                        updatedAt:new Date()
-                    }
-                )
-               })
             
             
-                return NextResponse.json({message:"Blog is update successfully"},{status:200})
              
 
            }
@@ -72,6 +72,6 @@ export  async function PUT(request,response){
            }
 
         }catch(error){
-            return  NextResponse.json({message:error},{status:400})
+            return  NextResponse.json({message:error.message},{status:400})
         }
 };

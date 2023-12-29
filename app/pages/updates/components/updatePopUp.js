@@ -13,11 +13,15 @@ import  Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import  Stack  from '@mui/material/Stack';
 import { Reviews } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import {useEffect} from 'react';
 export default function UpdateBlog({open,handleAddBlogClose,oldBlog}) {
+ 
+  console.log(oldBlog)
   const [tags,setTags] = useState(oldBlog.tags);
   const [title,setTitle]=useState(oldBlog.title);
   const [content,setContent]=useState(oldBlog.content);
-  const [image,setImage]=useState(oldBlog.imageRef);
+  const [image,setImage]=useState(null);
   const [inputTag,setInputTags] = useState('');
   const [nullWarning,setNullWarning]=useState(false);
   const [errorMessage,setErrorMessage]=useState('');
@@ -40,10 +44,13 @@ export default function UpdateBlog({open,handleAddBlogClose,oldBlog}) {
   const addBlog = async (e) =>{
     e.preventDefault();
     console.log(title)
+    console.log(content)
+    console.log(image==null)
     if (image==null){
         await setImage(oldBlog.imageRef)
     }
-    if ((title != '') && (content != '') &&(tags!='') ){
+    console.log(image)
+    if ((title != '') && (content != '')){
         // setNullWarning(false)
         try{
             const form = new FormData();
@@ -54,7 +61,9 @@ export default function UpdateBlog({open,handleAddBlogClose,oldBlog}) {
             form.append('publishedAt',new Date())
             form.append('tags',tags)
             form.append('blogId',oldBlog.blogId)
-            console.log(oldBlog.blogId)
+          //   for (let [key, value] of form.entries()) {
+          //     console.log(`${key}: ${value}`);
+          // }
             const response = await fetch('/api/updates/updateBlog', {
                 method:'PUT',
                 body:form
@@ -89,7 +98,7 @@ export default function UpdateBlog({open,handleAddBlogClose,oldBlog}) {
     <div className='space-y-8'>
 <React.Fragment>
       <Dialog   open={open} onClose={handleAddBlogClose} className="font-dmsan " maxWidth="md">
-        <DialogTitle style={{fontFamily:'dmsan'}} >Add new blog</DialogTitle>
+        <DialogTitle style={{fontFamily:'dmsan'}} >Update blog</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please insert your blog to be publish here ! 

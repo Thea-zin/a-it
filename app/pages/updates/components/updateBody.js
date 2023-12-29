@@ -15,11 +15,14 @@ function UpdateBody(){
     //     {id:5,author:"Sopheak Khoeurn",profile:'people-7.png',date:"2023-05-23",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
 
     // ]
+    const [selectedBlog, setSelectedBlog] = useState(null);
     const [updateBlogOpen, setUpdateBlogOpen] = React.useState(false);
-    const handleOpenUpdateBlog = () => {
+    const handleOpenUpdateBlog = (blog) => {
+        setSelectedBlog(blog)
         setUpdateBlogOpen(true);
       };
     const handleCloseUpdateBlog =()=>{
+        setSelectedBlog(null)
         setUpdateBlogOpen(false);
     }
     const [blogList,setBlogList]=useState([]);
@@ -38,7 +41,7 @@ function UpdateBody(){
                 console.log(message)
                 
                
-                if (response.ok){
+                if (response.status){
                     console.log("Add successfully")
                 }else{
                     // setErrorMessage(message['message'])
@@ -48,7 +51,7 @@ function UpdateBody(){
             } catch(error){
                 // setErrorMessage(error)
                 // setNullWarning(true)
-                console.log(error)
+                console.log(error.message)
             }
         }
     
@@ -58,13 +61,12 @@ function UpdateBody(){
                 const response = await fetch('/api/updates/getAllBlog')
                 const result = await response.json();
                 setBlogList(result['message'])
-                console.log(result['message'][1]['imageRef'][0])
             }catch(error){
                 console.log(error)
             }
         };
         fetchData()
-    })
+    },[])
    console.log(blogList)
     return (
         <div id="Body" className="space-y-2 p-3">
@@ -90,7 +92,7 @@ function UpdateBody(){
 
                                     </div>
                                     <div className="lg:ml-[55%] mt-[15%]" >
-                                    <img src={review.imageRef[0]} className="w-[100%]"></img>
+                                    <img src={review.imageRef} className="w-[100%]"></img>
                                 </div>
                    
                             </div>
@@ -100,7 +102,7 @@ function UpdateBody(){
                                         <IconButton >
                                             <BookmarkAddOutlined></BookmarkAddOutlined>
                                         </IconButton>
-                                        <IconButton onClick={handleOpenUpdateBlog} >
+                                        <IconButton onClick={()=>handleOpenUpdateBlog(review)} >
                                             <ModeEditOutlineOutlined></ModeEditOutlineOutlined>
                                         </IconButton>
                                        
@@ -108,7 +110,7 @@ function UpdateBody(){
                                             <DeleteOutlineOutlined></DeleteOutlineOutlined>
                                         </IconButton>
                                     </div>
-                                    <UpdateBlog oldBlog={{blogId:review.blogId,title:review.title,content:review.content,tags:review.tags,imageRef:review.imageRef[0]}} open={updateBlogOpen} handleAddBlogClose={handleCloseUpdateBlog}></UpdateBlog>
+                                    {updateBlogOpen && (<UpdateBlog oldBlog={selectedBlog} open={updateBlogOpen} handleAddBlogClose={handleCloseUpdateBlog}></UpdateBlog>)}
                                 </div>
                             </div>
                  
