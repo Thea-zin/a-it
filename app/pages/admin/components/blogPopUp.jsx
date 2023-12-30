@@ -7,7 +7,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import FileUpload,{File} from 'react-material-file-upload';
 import { useState } from 'react';
 import  Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';

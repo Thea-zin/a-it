@@ -7,7 +7,7 @@ import SignIn from '../authentications/components/signIn';
 import SignUpWithThirdParty from '../authentications/components/signUpWith3rdParty';
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
-const navbar = () => {
+const Navbar = () => {
 
   const {isAuth,user,logout} = useAuth();
   const [isPopUpSignIn,setIsPopUpSignIn] = useState(false);
@@ -55,4 +55,4 @@ const navbar = () => {
   )
 }
 
-export default navbar;
+export default Navbar;
