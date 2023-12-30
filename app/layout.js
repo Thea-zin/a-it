@@ -2,7 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 
-import Navbar from "./Components/navbar";
+import Navbar from "./components/navbar";
 
 import Footer from "./Components/footer";
 import SoftwarePage from "./pages/software_page/page";
