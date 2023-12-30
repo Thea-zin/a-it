@@ -7,7 +7,8 @@ import UnauthorizePage from '@/app/components/unauthorized';
 import { useRouter } from 'next/navigation';
 function ProfilePage() {
     const router =useRouter();
-    const { isAuth } = useAuth();
+    // const { isAuth } = useAuth();
+    const { isAuth } = useState(true);
     const companysizes = [
         { id: 1, name: "Large" },
         { id: 2, name: "Medium" },
