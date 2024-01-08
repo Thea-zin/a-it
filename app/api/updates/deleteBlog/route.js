@@ -1,15 +1,9 @@
 'use strict';
-import app from '../../firebase'
+import firebase_app from '../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
 import {doc,deleteDoc,getDocs,getDoc,query,where,collection,getFirestore} from "firebase/firestore";
-export const config ={
-    api:{
-        bodyParser:false
-    },
-};
-
 export  async function DELETE(request,response){
-        const db = getFirestore(app); 
+        const db = getFirestore(firebase_app); 
         const body = await request.json()
         const blogId = await body["blogId"]
         // const my_blog = await db.collection('blogs').

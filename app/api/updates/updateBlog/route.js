@@ -1,19 +1,13 @@
 'use strict';
-import app from '../../firebase'
+import firebase_app from '../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
 import {doc,setDoc,getDocs,getDoc,query,where,collection,getFirestore,updateDoc} from "firebase/firestore";
 import { getStorage, uploadBytes,ref,getDownloadURL,getSignedURL } from 'firebase/storage';
-export const config ={
-    api:{
-        bodyParser:false
-    },
-};
-
 export  async function PUT(request,response){
         var imageUrl;
         const userID = "AIT00000" + Math.floor(Math.random() * 900000) 
-        const db = getFirestore(app);
-        const storage=getStorage(app);
+        const db = getFirestore(firebase_app);
+        const storage=getStorage(firebase_app);
         const data = await request.formData();
         const title =data.get('title');
         const imageFile = data.get('image');

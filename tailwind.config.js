@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -31,13 +32,27 @@ module.exports = {
         baselight:"#ababab",
         link:"#005FC1"
 
+
       },
-      screens:{
-        'xsm':'100px',
-        'sm':'640px',
-        'md':'900px',
-        'lg':'1024px'
+      screens: {
+        xsm: "100px",
+        xm: '420px',
+        ...defaultTheme.screens
       },
+      fontSize: {
+        "display-lg": "56px",
+        "display-md": "32px",
+        "display-sm": "24px",
+        "title-lg": "24px",
+        "title-md": "20px",
+        "body-lg": "18px",
+        "body-md": "16px",
+        "body-sm": "12px",
+        "label-lg": "18px",
+        "label-md": "16px",
+        "label-sm": "12px",
+      },
+
       fontSize:{
         'display-lg':'56px',
         'display-md':'32px',
@@ -50,9 +65,9 @@ module.exports = {
         'label-lg':'18px',
         'label-md':'16px',
         'label-sm':'12px',
-        'body-xsm':'6px'
+        'body-xsm':'6px',
+        'nbase':['1rem', '1.5rem']
       }
-      
     },
   },
   plugins: [],

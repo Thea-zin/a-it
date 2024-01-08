@@ -1,8 +1,8 @@
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import { NextResponse,NextRequest } from 'next/server'
-import app from '../../firebase'
+import firebase_app from '../../firebase'
 export  async function GET(request,response){
-    const db = getFirestore(app);
+    const db = getFirestore(firebase_app);
     const blogs_list=[]
     const my_blog = await getDocs(collection(db,'blogs'))
     if (my_blog.size!==0){

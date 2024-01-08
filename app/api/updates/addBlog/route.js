@@ -1,18 +1,12 @@
 'use strict';
-import app from '../../firebase'
+import firebase_app from '../../firebase'
 import { NextResponse,NextRequest } from 'next/server'
 import { getStorage, uploadBytes,ref,getDownloadURL,getSignedURL } from 'firebase/storage';
 import { setDoc,getFirestore,doc,query,collection,getDocs,where, addDoc } from 'firebase/firestore';
-export const config ={
-    api:{
-        bodyParser:false
-    },
-};
-
 export  async function POST(request,response){
     //Initialization 
-        const db = getFirestore(app);
-        const storage = getStorage(app);
+        const db = getFirestore(firebase_app);
+        const storage = getStorage(firebase_app);
     //Get all the request data
         const data = await request.formData();
         const title =data.get('title');

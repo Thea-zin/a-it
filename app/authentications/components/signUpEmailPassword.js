@@ -19,7 +19,7 @@ function SignUp({onClose}){
         <div className="absolute lg:ml-[93%] lg:mt-[4%] md:ml-[93%] md:mt-[4%] sm:ml-[93%] sm:mt-[4%] xsm:ml-[90%] xsm:mt-[4%]" onClick={onClose}><img src={"../cross-bold.png"} className="w-5 h-5"></img></div>
         <div className="flex justify-center items-center p-2">
            
-            <div className="lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px] border bg-base rounded-[16px]  lg:p-22 md:p-10 sm:p-7 xsm:p-8 ">
+            <div className="lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px] border bg-white rounded-[16px]  lg:p-22 md:p-10 sm:p-7 xsm:p-8 ">
                 
                 <div className="space-y-4">
                     <div className="flex justify-center items-center">
