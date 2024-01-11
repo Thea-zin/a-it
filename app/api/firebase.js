@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {getStorage } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import {
   doc,
   getDoc,
