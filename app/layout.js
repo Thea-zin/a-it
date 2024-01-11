@@ -1,9 +1,10 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-
-import Navbar from "./Components/navbar";
 import Script from "next/script";
-import Footer from "./Components/footer";
+
+import Navbar from "./components/navbar";
+
+import Footer from "./components/footer";
 import SoftwarePage from "./pages/software_page/page";
 import ComparisonPage from "./pages/comparison_page/page";
 

@@ -19,7 +19,6 @@ module.exports = {
       colors:{
         cyan:'#1dcdfe',
         darkblue:'#2f455c',
-        darkblue_hover:'#27394D',
         white:"#ffffff",
         darkgray:"#4a4a4a",
         red:"#ff3535",
@@ -27,7 +26,6 @@ module.exports = {
         base:"#f7f8fa",
         basedark:"#4a4a4a",
         divider:"#eeebeb",
-        divider_hover:"#A6A4A4",
         stroke:"#e3e6ea",
         baselight:"#ababab",
         link:"#005FC1"

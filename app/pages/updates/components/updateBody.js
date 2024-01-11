@@ -6,15 +6,16 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { BookmarkAddOutlined } from "@mui/icons-material";
 import { ModeEditOutlineOutlined } from "@mui/icons-material";
 import UpdateBlog from "./updatePopUp";
-function UpdateBody(){
-    // const blogList = [
-    //     {id:1,author:"Sopheak Khoeurn",profile:'people-1.png',blog_pic:'../updates/blog1.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",pic:"",content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-    //     {id:2,author:"Park Jihoon",profile:'people-4.png',date:"2023-09-21",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog2.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-    //     {id:3,author:"Kim Taehyung",profile:'people-5.png',date:"2023-09-02",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog3.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-    //     {id:4,author:"Jeon Jungkook",profile:'people-6.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
-    //     {id:5,author:"Sopheak Khoeurn",profile:'people-7.png',date:"2023-05-23",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
 
-    // ]
+function UpdateBody(){
+    const reviewList = [
+        {id:1,author:"Sopheak Khoeurn",profile:'people-1.png',blog_pic:'../updates/blog1.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",pic:"",content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {id:2,author:"Park Jihoon",profile:'people-4.png',date:"2023-09-21",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog2.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {id:3,author:"Kim Taehyung",profile:'people-5.png',date:"2023-09-02",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog3.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {id:4,author:"Jeon Jungkook",profile:'people-6.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+        {id:5,author:"Sopheak Khoeurn",profile:'people-7.png',date:"2023-05-23",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
+
+    ]
     const [selectedBlog, setSelectedBlog] = useState(null);
     const [updateBlogOpen, setUpdateBlogOpen] = React.useState(false);
     const handleOpenUpdateBlog = (blog) => {
@@ -71,15 +72,15 @@ function UpdateBody(){
     return (
         <div id="Body" className="space-y-2 p-3">
                 {
-                    blogList.map((review)=>(
-                            <div className="flex-cols p-4 rounded-lg bg-base space-y-4" key={review.blogId}>
+                    reviewList.map((review)=>(
+                            <div className="flex-cols p-4 rounded-lg bg-base space-y-4" key={review.id}>
                                 <div className="lg:grid lg:grid-cols-3 md:grid md:grid-cols-3 p-5 ">
                                     <div className="lg:col-span-2 md:col-span-2   content-center">
                                         <div className="flex space-x-1 text-body-sm text-basedark  ">
                                             <div className="display-flex justify-center"> <img src={"../updates/"+review.profile} className="rounded-full w-14 h-14 "></img></div>
                                             <div className="content-center">
-                                            <div className="lg:text-body-lg">{review.authorId}</div>
-                                            <div className="lg:text-body-md">{review.publishedAt}</div>
+                                            <div className="lg:text-body-lg">{review.author}</div>
+                                            <div className="lg:text-body-md">{review.date}</div>
                                         </div>
                                     </div>
                                     <div className="text-display-md font-bold">
@@ -123,8 +124,7 @@ function UpdateBody(){
                 }
              </div>
          
-            
-    )
-            }
 
+    )
+}
 export default UpdateBody;

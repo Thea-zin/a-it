@@ -1,16 +1,28 @@
 import ReviewBox from "./components/review_box";
-import Item from "../write_review_page/components/item_component";
+import Item from "./components/item";
 import TapSoftwareComponent from "./components/tap_component";
-import { getSoftware, getIconURL, populate } from "@/app/api/firebase";
+import {
+  getSoftware,
+  getIconURL,
+  populate,
+  getReivews,
+} from "@/app/api/firebase";
 import Stars from "./components/star_display";
 
 export default async function SoftwarePage({ searchParams }) {
-  let data = { name: "" };
+  let data = { name: "", icon: "" };
   let iconUrl = null;
+  let reviews = [];
   // populate()
   try {
     data = await getSoftware(searchParams.id);
-    iconUrl = await getIconURL(`${data.icon}.png`);
+    if (typeof data != "undefined") {
+      iconUrl = await getIconURL(`${data.icon}.png`);
+      reviews = await getReivews(searchParams.id);
+    } else {
+      data = { name: "-------" };
+      iconUrl = null;
+    }
   } catch (e) {
     console.log(e);
     data = { name: "-------" };
@@ -269,7 +281,13 @@ export default async function SoftwarePage({ searchParams }) {
           <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
             <ReviewBox />
             <ReviewBox />
-            <ReviewBox />
+            {reviews.map((review, index) => {
+              return (
+                <>
+                  <ReviewBox review={review} key={index} />
+                </>
+              );
+            })}
           </div>
 
           <div className="grid place-items-center w-full">

@@ -6,6 +6,10 @@ import {
   getFirestore,
   setDoc,
   updateDoc,
+  getDocs,
+  query,
+  where,
+  collection,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -36,6 +40,24 @@ export async function getSoftware(id) {
     const dataRef = await getDoc(doc(firestore, "softwares", `${id}`));
     return dataRef.data();
   } catch (e) {
+    throw new Error("Something wrong when getting document!");
+  }
+}
+
+export async function getReivews(id) {
+  try {
+    const q = query(
+      collection(firestore, "reviews"),
+      where("soft_id", "==", id)
+    );
+    const querySnapshot = await getDocs(q);
+    let data = [];
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data());
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
     throw new Error("Something wrong when getting document!");
   }
 }

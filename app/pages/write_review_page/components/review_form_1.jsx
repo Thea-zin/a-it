@@ -54,7 +54,7 @@ export default function ReviewForm1({setShowForm}) {
             </div>
           </div>
         </div>
-
+{/*
         <div>
           <div className="sm:inline-block">
             <p className="mt-10 w-full">
@@ -143,7 +143,7 @@ export default function ReviewForm1({setShowForm}) {
               );
             })}
           </div>
-        </div>
+        </div> */}
 
         <div className="h-32"></div>
       </div>

@@ -7,7 +7,6 @@
 
 # testing
 /coverage
-.env
 
 # next.js
 /.next/
@@ -31,12 +30,7 @@ yarn-error.log*
 
 # vercel
 .vercel
-#config firebase 
-serviceAccountKey.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.env
-serviceAccountKey.json
-

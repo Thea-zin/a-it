@@ -29,7 +29,7 @@ const Navbar = () => {
                 <Link className='logo ' href='/pages/home' >
                   
                     <img 
-                      src="/photo/logoAIT.png"/>
+                      src="/photo/LogoAIT.png"/>
                   
                 </Link>
                 
@@ -39,7 +39,6 @@ const Navbar = () => {
                     <div className='update'><Link href='/pages/updates'>Update</Link></div>
                     <div className='write_Review'><Link href='/pages/write_review_page'>Write a Review</Link></div>
                     <div className='vendor'> <Link href='/pages/vendors'>For Vendors</Link></div>
-                    <div className='vendor'> <Link href='/pages/admin'>Admin</Link></div>
             </div>
             <div className=' flex gap-5 justify-center items-center'>
                 <button onClick={openPopUpSignIn}>Log in</button>

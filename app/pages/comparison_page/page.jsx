@@ -8,11 +8,26 @@ import ReviewBox from "./components/review_box";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
+import Link from "next/link";
 
 export default function ComparisonPage() {
   const [start, setStart] = useState(0);
   const [range, setRange] = useState(3); //the number of gap between two items
   const [products, setProducts] = useState([]);
+  const [comparingItems, setCompItems] = useState({
+    functionality: true,
+    feature: true,
+    customization: true,
+    integration: true,
+    scalability: true,
+    advantage: true,
+    support: true,
+    pricing: true,
+    resource: true,
+    review: true,
+    top: "functionality",
+    bottom: "review",
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -71,7 +86,7 @@ export default function ComparisonPage() {
         <TapComponent />
       </div>
 
-      <FilterComponent></FilterComponent>
+      {/* <FilterComponent></FilterComponent> */}
 
       <p className="text-3xl font-semibold ml-10 mt-7">
         {"Let's us help you find the perfect product!"}
@@ -80,7 +95,10 @@ export default function ComparisonPage() {
         <div className="border-2 border-[#E3E6EA] rounded-2xl p-4">
           <div className="w-full flex">
             <div className="w-[30%] rounded-2xl bg-white shadow-md">
-              <ComparisonItems />
+              <ComparisonItems
+                comparingItems={comparingItems}
+                setCompItems={setCompItems}
+              />
             </div>
             <div className="w-[70%] ml-10">
               <p className="text-3xl font-semibold mt-3">Comparison: AI</p>
@@ -123,11 +141,11 @@ export default function ComparisonPage() {
                           <p className={index > start ? "block" : "hidden"}>
                             VS
                           </p>
-                          <div className="text-center">
-                            <div className="bg-white p-7 border-[1px] border-[#E3E6EA] w-36 h-36 flex rounded-lg">
-                              <img src={item.icon} alt="" />
+                          <div className="flex flex-col place-items-center">
+                            <div className="bg-white p-7 border-[1px] border-[#E3E6EA] w-36 h-36 flex place-content-center rounded-lg">
+                              <img src={item.icon} alt="" className="h-full"/>
                             </div>
-                            <p className="text-2xl font-medium">{item.name}</p>
+                            <p className="text-2xl font-medium text-center">{item.name}</p>
                           </div>
                         </React.Fragment>
                       );
@@ -160,7 +178,504 @@ export default function ComparisonPage() {
             </div>
           </div>
 
-          <div className="bg-white text-basedark rounded-t-2xl py-6 px-10 mt-8 h-[27rem] flex flex-col border-b-[1px] border-divider">
+          <div className="rounded-2xl overflow-clip mt-8">
+            {comparingItems.functionality && (
+              <div
+                className={`bg-white text-basedark py-6 px-10 h-80 flex flex-col border-b-[1px] border-divider`}
+              >
+                <p className="text-2xl font-semibold relative text-black">
+                  Functionality
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      {"Software's introduciton"}
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <React.Fragment key={findex}>
+                                <div className="text-center px-5 line-clamp-6">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit. Quaerat, maiores dolor?
+                                  Fugit et ut adipisci cumque reiciendis ullam,
+                                  magni hic delectus eum ex quibusdam. Dolorem
+                                  exercitationem maxime aliquam inventore harum!
+                                </div>
+                                <Link
+                                  href={`/pages/software_page?id=${item.id}`}
+                                  className="font-bold text-link"
+                                >
+                                  Learn More
+                                </Link>
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.feature && (
+              <div className="bg-white text-basedark py-6 px-10 h-80 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Feature
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      {"Software's features"}
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <React.Fragment key={findex}>
+                                <div className="text-center px-5 line-clamp-6">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit. Quaerat, maiores dolor?
+                                  Fugit et ut adipisci cumque reiciendis ullam,
+                                  magni hic delectus eum ex quibusdam. Dolorem
+                                  exercitationem maxime aliquam inventore harum!
+                                </div>
+                                <Link
+                                  href={`/pages/software_page?id=${item.id}`}
+                                  className="font-bold text-link"
+                                >
+                                  Learn More
+                                </Link>
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.customization && (
+              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Customization
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      Allow customization
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <div
+                                key={findex}
+                                className="w-16 h-16 flex place-content-center place-items-center text-4xl text-cyan"
+                              >
+                                <iconify-icon icon="dashicons:yes"></iconify-icon>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.integration && (
+              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Integration
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      Ease of integration
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <div
+                                key={findex}
+                                className="w-16 h-16 flex place-content-center place-items-center text-4xl text-red"
+                              >
+                                <iconify-icon icon="dashicons:no"></iconify-icon>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.scalability && (
+              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Scalability
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      Is it scalable?
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <div
+                                key={findex}
+                                className="w-16 h-16 flex place-content-center place-items-center text-4xl text-red"
+                              >
+                                <iconify-icon icon="dashicons:no"></iconify-icon>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.advantage && (
+              <div className="bg-white text-basedark py-6 px-10 h-80 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Competitive Advantages
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      {"Software's competitive advantages"}
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <React.Fragment key={findex}>
+                                <div className="text-center px-5 line-clamp-6">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit. Quaerat, maiores dolor?
+                                  Fugit et ut adipisci cumque reiciendis ullam,
+                                  magni hic delectus eum ex quibusdam. Dolorem
+                                  exercitationem maxime aliquam inventore harum!
+                                </div>
+                                <Link
+                                  href={`/pages/software_page?id=${item.id}`}
+                                  className="font-bold text-link"
+                                >
+                                  Learn More
+                                </Link>
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.support && (
+              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Support
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      Is there support?
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <div
+                                key={findex}
+                                className="w-16 h-16 flex place-content-center place-items-center text-4xl text-red"
+                              >
+                                <iconify-icon icon="dashicons:no"></iconify-icon>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.pricing && (
+              <div className="bg-white text-basedark py-6 px-10 h-[20rem] flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Pricing
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">Free</p>
+                    <p className="flex-1 flex place-items-center">Free trial</p>
+                    <p className="flex-1 flex place-items-center">
+                      Paid/premium
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = Object.keys(item.features.pricing);
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            if (item.features.pricing[feature].value == true) {
+                              return (
+                                <div
+                                  key={findex}
+                                  className="w-16 h-16 flex place-content-center place-items-center text-4xl text-cyan"
+                                >
+                                  <iconify-icon icon="dashicons:yes"></iconify-icon>
+                                </div>
+                              );
+                            } else if (
+                              item.features.pricing[feature].value == false
+                            ) {
+                              return (
+                                <div
+                                  key={findex}
+                                  className="w-16 h-16 flex place-content-center place-items-center text-4xl text-red"
+                                >
+                                  <iconify-icon icon="dashicons:no"></iconify-icon>
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={findex}
+                                  className="w-16 h-16 flex place-content-center place-items-center"
+                                >
+                                  N/A
+                                </div>
+                              );
+                            }
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.resource && (
+              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Resources
+                </p>
+                <div className="flex flex-1">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="flex-1 flex place-items-center">
+                      Is there documentation and/or resources for the software?
+                    </p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = [1];
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            return (
+                              <div
+                                key={findex}
+                                className="w-16 h-16 flex place-content-center place-items-center text-4xl text-red"
+                              >
+                                <iconify-icon icon="dashicons:no"></iconify-icon>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {comparingItems.review && (
+              <div className="bg-white text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
+                <p className="text-2xl font-semibold relative text-black">
+                  Reviews
+                </p>
+                <div className="flex flex-1 mt-5">
+                  <div className="flex-1 flex flex-col justify-around">
+                    <p className="">Likelihood to recommend</p>
+                  </div>
+                  {products.length == 0 ? (
+                    <div className="flex flex-1 place-items-center pt-4 text-[80px]">
+                      <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
+                    </div>
+                  ) : (
+                    products.map((item, index) => {
+                      if (index < start || index > start + range) return;
+                      const features = Object.keys(item.features.reviews);
+                      return (
+                        <div
+                          key={index}
+                          className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
+                        >
+                          {features.map((feature, findex) => {
+                            if (item.features.reviews[feature].review == "1") {
+                              return (
+                                <ReviewBox
+                                  key={findex}
+                                  imgs="/write_review/profile_1.png"
+                                  name="Kamio Fuju"
+                                  title="Digital Researcher"
+                                  id={item.id}
+                                />
+                              );
+                            } else if (
+                              item.features.reviews[feature].review == "2"
+                            ) {
+                              return (
+                                <ReviewBox
+                                  key={findex}
+                                  imgs="/write_review/profile_2.png"
+                                  name="岩瀬洋志"
+                                  title="Digital Researcher"
+                                  id={item.id}
+                                />
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={findex}
+                                  className="flex place-content-center place-items-center"
+                                >
+                                  No Review Yet!
+                                </div>
+                              );
+                            }
+                          })}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* <div className="bg-white text-basedark rounded-t-2xl py-6 px-10 mt-8 h-[27rem] flex flex-col border-b-[1px] border-divider">
             <p className="text-2xl font-semibold relative text-black">
               Functions
             </p>
@@ -208,7 +723,7 @@ export default function ComparisonPage() {
                 })
               )}
             </div>
-          </div>
+          </div>  
 
           <div className="bg-white text-basedark py-6 px-10 h-[27rem] flex flex-col border-b-[1px] border-divider">
             <p className="text-2xl font-semibold relative text-black">
@@ -380,7 +895,7 @@ export default function ComparisonPage() {
                 })
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

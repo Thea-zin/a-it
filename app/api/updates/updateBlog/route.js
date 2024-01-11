@@ -51,19 +51,7 @@ export  async function PUT(request,response){
                       updatedAt:new Date()
                         }
                 )
-               })
-              
-                  return NextResponse.json({message:"Blog is update successfully"},{status:200})
-               
-            
-            
-             
-
-           }
-           else{
-         
-            return NextResponse.json({message:"Blog doesn't exist"},{status:400})
-           }
+               })}
 
         }catch(error){
             return  NextResponse.json({message:error.message},{status:400})
