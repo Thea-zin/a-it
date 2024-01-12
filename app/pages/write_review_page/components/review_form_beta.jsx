@@ -73,9 +73,9 @@ export default function ReviewFormBeta({ setShowForm, arr_id, items }) {
     <div className="w-[400px] xm:w-full font-dmsan z-20 bg-white">
       <div className="mx-2 xm:mx-4 sm:mx-8 md:mx-16 mt-10 mb-5 border-2 border-baselight rounded-xl">
         <div className="w-full flex place-content-center">
-          <div className="-translate-y-7 bg-white px-3">
-            <img src="/write_review/icons/1.png" alt="" />
-            <p className="text-center">Trello</p>
+          <div className="-translate-y-7 bg-white px-3 flex flex-col place-content-center">
+            <img src={`${items[arr_id].icon}`} alt="" />
+            <p className="text-center">{items[arr_id].name}</p>
           </div>
         </div>
         <div className="sm:px-10 px-2">

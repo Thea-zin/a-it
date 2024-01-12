@@ -11,7 +11,6 @@ import { getIconURL } from "@/app/api/firebase";
 export default function WriteReviewPage() {
   const [showForm, setShowForm] = useState(-1);
   const [items, setItems] = useState([]);
-  let soft_id = "";
 
   useEffect(() => {
     const getSoftwares = async () => {
@@ -25,6 +24,10 @@ export default function WriteReviewPage() {
     };
     getSoftwares();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [showForm]);
 
   if (showForm != -1) {
     return <ReviewFormBeta setShowForm={setShowForm} arr_id={showForm} items={items}/>;
