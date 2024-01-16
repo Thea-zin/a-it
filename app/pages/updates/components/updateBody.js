@@ -72,7 +72,7 @@ function UpdateBody(){
     return (
         <div id="Body" className="space-y-2 p-3">
                 {
-                    reviewList.map((review)=>(
+                   blogList.map((review)=>(
                             <div className="flex-cols p-4 rounded-lg bg-base space-y-4" key={review.id}>
                                 <div className="lg:grid lg:grid-cols-3 md:grid md:grid-cols-3 p-5 ">
                                     <div className="lg:col-span-2 md:col-span-2   content-center">
