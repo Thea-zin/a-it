@@ -11,6 +11,6 @@ export  async function GET(request,response){
         })
         return  NextResponse.json({message:blogs_list},{status:200})
     }else{
-        return NextResponse.json({message:[]},{status:200})
+        return NextResponse.json({message:[]},{status:400})
     }
 }
