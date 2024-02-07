@@ -72,7 +72,7 @@ function UpdateBody(){
                 }
             };
             fetchData();
-        }, []);
+        });
         
    console.log(blogList)
     return (
