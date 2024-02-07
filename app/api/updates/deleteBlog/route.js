@@ -13,12 +13,12 @@ export  async function DELETE(request,response){
         
         // Assuming 'db' is your Firestore database instance and 'blogId' is defined
         const q_blog = query(collection(db, "blogs"), where('blogId', '==', parseInt(blogId)));
-       const my_blog = await getDocs(q_blog);
+        const my_blog = await getDocs(q_blog);
         try{
            if (my_blog.size != 0){
-           const res = await my_blog.forEach(async (mydoc)=>{
-               await deleteDoc(doc(db,"blogs",mydoc.id))
-           })
+            for (const mydoc of my_blog.docs) {
+                await deleteDoc(doc(db, "blogs", mydoc.id));
+            }
  
             return NextResponse.json({message:"Blog is deleted successfully"},{status:200})
              
