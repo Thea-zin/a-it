@@ -163,7 +163,7 @@ const Page = () => {
                   <path d="M15.98 1.804a1 1 0 00-1.96 0l-.24 1.192a1 1 0 01-.784.785l-1.192.238a1 1 0 000 1.962l1.192.238a1 1 0 01.785.785l.238 1.192a1 1 0 001.962 0l.238-1.192a1 1 0 01.785-.785l1.192-.238a1 1 0 000-1.962l-1.192-.238a1 1 0 01-.785-.785l-.238-1.192zM6.949 5.684a1 1 0 00-1.898 0l-.683 2.051a1 1 0 01-.633.633l-2.051.683a1 1 0 000 1.898l2.051.684a1 1 0 01.633.632l.683 2.051a1 1 0 001.898 0l.683-2.051a1 1 0 01.633-.633l2.051-.683a1 1 0 000-1.898l-2.051-.683a1 1 0 01-.633-.633L6.95 5.684zM13.949 13.684a1 1 0 00-1.898 0l-.184.551a1 1 0 01-.632.633l-.551.183a1 1 0 000 1.898l.551.183a1 1 0 01.633.633l.183.551a1 1 0 001.898 0l.184-.551a1 1 0 01.632-.633l.551-.183a1 1 0 000-1.898l-.551-.184a1 1 0 01-.633-.632l-.183-.551z" />
                 </svg>
 
-                <div className="text text-black font-medium ">CopyAI</div>
+                <div className="text text-black font-medium ">Trending</div>
 
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +178,7 @@ const Page = () => {
             <div className="image flex justify-center mt-5">
               <img src="../photo/icon/CopyAI.png" alt="" />
             </div>
-            <div className="flex justify-center mt-5">ChatGPT</div>
+            <div className="flex justify-center mt-5">Copy.ai</div>
             <div className="flex justify-center star">
               <div className="text-[#EDA42D] w-20 flex justify-center bg-[#2F455C]  rounded-lg ">
                 <svg
@@ -234,7 +234,7 @@ const Page = () => {
             <div className="image flex justify-center mt-5 h-20">
               <img src="../photo/icon/Autoblog.png" alt="" />
             </div>
-            <div className="flex justify-center mt-5">ChatGPT</div>
+            <div className="flex justify-center mt-5">AutoBlog</div>
             <div className="flex justify-center star">
               <div className="text-[#EDA42D] w-20 flex justify-center bg-[#2F455C]  rounded-lg ">
                 <svg
