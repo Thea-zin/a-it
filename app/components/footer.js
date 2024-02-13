@@ -7,7 +7,7 @@ function Footer(){
                  <div className="space-y-[70px] ">
                     <div className="space-x-5">
                          <Link href="/vendors" className="underline decoration-white text-white">Categories</Link>
-                         <Link href="/vendors" className="underline decoration-white text-white">Write a Review</Link>
+                         {/* <Link href="/vendors" className="underline decoration-white text-white">Write a Review</Link> */}
                          <Link href="/vendors" className="underline decoration-white text-white">Blog</Link>
                          <Link href="/vendors" className="underline decoration-white text-white">Vendors</Link>
                          <Link href="/vendors" className="underline decoration-white text-white">About us</Link>

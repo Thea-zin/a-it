@@ -206,7 +206,7 @@ const HomePage = () => {
       <div className="p-4 m-4 border-solid border border-gray-500 rounded-lg ">
         {items_to_display.map((item, index) => {
           return (
-            <div className="border-solid border-2 border-gray-200 bg-gray-100  m-5 flex justify-between">
+            <div className="border-solid border-2 border-gray-200 bg-gray-100  m-5 flex justify-between" key={index}>
               <div
                 id="nameproduct"
                 className="flex gap-6 bg-gray-100 p-4 m-4 rounded-lg"

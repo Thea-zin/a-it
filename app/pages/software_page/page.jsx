@@ -8,6 +8,7 @@ import {
   getReivews,
 } from "@/app/api/firebase";
 import Stars from "./components/star_display";
+import Link from "next/link";
 
 export default async function SoftwarePage({ searchParams }) {
   let data = { name: "", icon: "" };
@@ -274,7 +275,9 @@ export default async function SoftwarePage({ searchParams }) {
               Software user?
             </p>
             <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
+            <Link href={`/pages/write_review_page?id=${searchParams.id}`}>
               Write a Review
+            </Link>
             </button>
           </div>
 
