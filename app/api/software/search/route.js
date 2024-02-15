@@ -1,51 +1,17 @@
 import { NextResponse } from "next/server";
 import firebase_app from "../../firebase";
 import {
-  doc,
-  getDoc,
   getFirestore,
-  getDocs,
   collection,
   query,
-  where,
   orderBy,
+  startAt,
+  endAt,
+  getDocs,
   limit,
   startAfter,
-  endAt,
-  startAt,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
-
-// export async function GET(req, res) {
-//   const firestore = getFirestore(firebase_app);
-
-//   // Query the first page of docs
-//   const first = query(
-//     collection(firestore, "softwares"),
-//     orderBy("name"),
-//     limit(8)
-//   );
-//   let documentSnapshots = await getDocs(first);
-//   console.log(documentSnapshots.docs[0].data());
-
-//   // Get the last visible document
-//   const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-//   console.log("last", lastVisible);
-
-//   // Construct a new query starting at this document,
-//   // get the next 25 cities.
-//   const next = query(
-//     collection(firestore, "softwares"),
-//     orderBy("name"),
-//     startAfter(lastVisible),
-//     limit(8)
-//   );
-//   documentSnapshots = await getDocs(next);
-
-//   console.log(documentSnapshots.docs[0].data());
-
-//   return NextResponse.json({}, { status: 200 });
-// }
 
 export async function POST(req) {
   try {
@@ -53,13 +19,25 @@ export async function POST(req) {
     const request = await req.json();
 
     var lastVisible = request.last;
+    let q = null;
     // console.log(request.last);
-    let q = query(
-      collection(firestore, "softwares"),
-      orderBy("name"),
-      startAfter(lastVisible),
-      limit(2)
-    );
+    if (request.last == request.search) {
+      q = query(
+        collection(firestore, "softwares"),
+        orderBy("name"),
+        startAt(request.last),
+        endAt(request.search + "~"),
+        limit(2)
+      );
+    } else {
+      q = query(
+        collection(firestore, "softwares"),
+        orderBy("name"),
+        startAfter(request.last),
+        endAt(request.search + "~"),
+        limit(2)
+      );
+    }
 
     const documentSnapshots = await getDocs(q);
 
@@ -70,6 +48,8 @@ export async function POST(req) {
       temp.id = doc.id;
       softwares.push(temp);
     }
+
+    console.log(softwares);
 
     return NextResponse.json({ softwares: softwares }, { status: 200 });
   } catch (e) {

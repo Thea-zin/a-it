@@ -4,28 +4,64 @@ import { useEffect, useState } from "react";
 
 export default function TestDashboard() {
   const [softwares, setSoftwares] = useState({});
-  const [pageInfo, setPageInfo] = useState({ page: 1, last: "" });
+  const [total, setTotal] = useState(0);
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+    last: "",
+    url: "/api/software/pagination",
+    search: "",
+  });
+  const [query, setQuery] = useState("");
+  const pageStep = 2;
 
   useEffect(() => {
+    getTotalNumberOfSoftwares();
     getSoftwares(pageInfo);
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(softwares).length == 0)
+      getSoftwares({
+        page: 1,
+        last: query,
+        url: "/api/software/search",
+        search: query,
+      });
+  }, [softwares]);
+
+  const getTotalNumberOfSoftwares = async () => {
+    const temp = await fetch("/api/software/total");
+    const res = await temp.json();
+    setTotal(res.count);
+  };
+
   const getSoftwares = async (pageInfo) => {
-    const temp = await fetch("/api/software/pagination", {
+    // console.log("pageInfo", pageInfo);
+    const temp = await fetch(pageInfo.url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(pageInfo),
     });
     const res = await temp.json();
-    console.log(res);
-
     let st = softwares;
-    st[pageInfo.page] = res.softwares;
+    if (res.softwares.length > 0) st[pageInfo.page] = res.softwares;
+
+    // console.log("RES", res.softwares);
+    // console.log("ST", st);
     setSoftwares(st);
+    // console.log("SOFTWARES", softwares);
     setPageInfo({
       page: pageInfo.page,
       last: res.softwares[res.softwares.length - 1].name,
+      url: pageInfo.url,
+      search: pageInfo.search,
     });
+  };
+
+  const onKeyDown = (bypass = false, event) => {
+    if (bypass || event.key === "Enter") {
+      setSoftwares({});
+    }
   };
 
   return (
@@ -50,8 +86,29 @@ export default function TestDashboard() {
         <div className="flex place-content-between">
           <p>Softwares</p>
           <div className="flex">
-            <div>search</div>
-            <div>filter</div>
+            <div className="text-black px-3 py-1 bg-white border-[#D9D9D9] border-[1px] rounded-full flex">
+              <button
+                className="pr-1 pt-1"
+                onClick={() => {
+                  onKeyDown(true);
+                }}
+              >
+                <iconify-icon icon="bi:search"></iconify-icon>
+              </button>
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search"
+                className="outline-none bg-transparent w-full ml-2"
+                onKeyDown={(e) => {
+                  onKeyDown(false, e);
+                }}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+            </div>
           </div>
         </div>
         <div className="w-full">
@@ -78,8 +135,39 @@ export default function TestDashboard() {
                       <td className="border-y-2">OpenAI</td>
                       <td className="border-y-2 border-r-2 rounded-r-xl">
                         <div className="flex place-content-center">
-                          <div>edit</div>
-                          <div>delete</div>
+                          <button>
+                            <div>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 256 256"
+                              >
+                                <g fill="currentColor">
+                                  <path
+                                    d="M221.66 90.34L192 120l-56-56l29.66-29.66a8 8 0 0 1 11.31 0L221.66 79a8 8 0 0 1 0 11.34"
+                                    opacity="0.2"
+                                  />
+                                  <path d="m227.32 73.37l-44.69-44.68a16 16 0 0 0-22.63 0L36.69 152A15.86 15.86 0 0 0 32 163.31V208a16 16 0 0 0 16 16h44.69a15.86 15.86 0 0 0 11.31-4.69l83.67-83.66l3.48 13.9l-36.8 36.79a8 8 0 0 0 11.31 11.32l40-40a8 8 0 0 0 2.11-7.6l-6.9-27.61L227.32 96a16 16 0 0 0 0-22.63M48 208v-28.69L76.69 208Zm48-3.31L51.31 160L136 75.31L180.69 120Zm96-96L147.32 64l24-24L216 84.69Z" />
+                                </g>
+                              </svg>
+                            </div>
+                          </button>
+                          <button>
+                            <div>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M8.5 4h3a1.5 1.5 0 0 0-3 0m-1 0a2.5 2.5 0 0 1 5 0h5a.5.5 0 0 1 0 1h-1.054l-1.194 10.344A3 3 0 0 1 12.272 18H7.728a3 3 0 0 1-2.98-2.656L3.554 5H2.5a.5.5 0 0 1 0-1zM5.741 15.23A2 2 0 0 0 7.728 17h4.544a2 2 0 0 0 1.987-1.77L15.439 5H4.561zM8.5 7.5A.5.5 0 0 1 9 8v6a.5.5 0 0 1-1 0V8a.5.5 0 0 1 .5-.5M12 8a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+                                />
+                              </svg>
+                            </div>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -88,7 +176,14 @@ export default function TestDashboard() {
             </tbody>
           </table>
           <div className="flex place-content-between">
-            <p>1 - 8 of 40 items</p>
+            {Object.keys(softwares).length > 0 && (
+              <p>
+                {(pageInfo.page - 1) * pageStep + 1} -{" "}
+                {(pageInfo.page - 1) * pageStep +
+                  softwares[pageInfo.page].length}{" "}
+                of {total} items
+              </p>
+            )}
             <div className="flex">
               <button
                 onClick={() => {
@@ -98,6 +193,8 @@ export default function TestDashboard() {
                     last: softwares[pageInfo.page - 1][
                       softwares[pageInfo.page - 1].length - 1
                     ].name,
+                    url: pageInfo.url,
+                    search: query,
                   });
                 }}
               >
@@ -106,20 +203,21 @@ export default function TestDashboard() {
               <button
                 onClick={() => {
                   // console.log(softwares);
-                  // console.log(pageInfo.page + 1);
                   if (Object.keys(softwares).length <= pageInfo.page) {
-                    console.log("CAll from NExt");
                     getSoftwares({
                       page: pageInfo.page + 1,
                       last: pageInfo.last,
+                      url: pageInfo.url,
+                      search: query,
                     });
                   } else {
-                    console.log(pageInfo.page);
                     setPageInfo({
                       page: pageInfo.page + 1,
                       last: softwares[pageInfo.page + 1][
                         softwares[pageInfo.page + 1].length - 1
                       ].name,
+                      url: pageInfo.url,
+                      search: query,
                     });
                   }
                 }}
