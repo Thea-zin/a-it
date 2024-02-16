@@ -7,6 +7,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+      
       backgroundSize:{'100':'100% 100%'},
       backgroundImage:{
         'triangle':'linear-gradient(to bottom right,#000 60%,#fff 50%)',
@@ -50,7 +51,7 @@ module.exports = {
         "label-md": "16px",
         "label-sm": "12px",
       },
-
+      
       fontSize:{
         'display-lg':'56px',
         'display-md':'32px',

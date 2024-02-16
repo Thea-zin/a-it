@@ -1,12 +1,13 @@
 import React from 'react'
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
     <div className="">
       <div className='pl-7 pr-7'>
         <div className=" scale-95 h-screen max-w-screen bg-cover bg-[url('/photo/background.png')] flex flex-col justify-center items-center rounded-lg" >
-                <div className='mb-64 text-center'>
-                  <h1 className='text-white font-simibold text-7xl'>Where Leading Company</h1>
+                <div className='mb-64 text-center animate-pulse'>
+                  <h1 className='text-white font-simibold text-7xl '>Where Leading Company</h1>
                   <h1 className='text-white font-simibold text-7xl'>fine best product</h1>
                 </div>
                 
@@ -31,38 +32,13 @@ const Home = () => {
 
         </div>
       </div>
-      <div className='flex justify-center -translate-y-24'>
-        <img className='scale-110' 
-          src="/photo/Facts.png" alt="" />
-      </div>
+     
 
       <div className="showproduct flex justify-between m-10">
         <h1 className='text-4xl  font-simibold'>
           Popular products
         </h1>
-        <div className="function flex gap-4 mx-35 ">
-            <button id="Categorise" data-dropdown-toggle="dropdown" class=" hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-full text-sm  px-9 py-2 text-center inline-flex items-center dark:bg-gray-300 " type="button">Categorise <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            <button id="Service" data-dropdown-toggle="dropdown" class=" hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-full text-sm  px-9 py-2 text-center inline-flex items-center dark:bg-gray-300 " type="button">Service <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            <button id="Categorise" data-dropdown-toggle="dropdown" class=" hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-full text-sm  px-9 py-2 text-center inline-flex items-center dark:bg-gray-300 " type="button">Budget <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            <button id="Categorise" data-dropdown-toggle="dropdown" class=" hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-full text-sm  px-9 py-2 text-center inline-flex items-center dark:bg-gray-300 " type="button">Rated <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            <button id="Categorise" data-dropdown-toggle="dropdown" class=" hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-full text-sm  px-9 py-2 text-center inline-flex items-center dark:bg-gray-300 " type="button">Industry <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            
-        </div>
+    
       </div>
 
       <div className='p-4 m-4 border-solid border border-gray-500 rounded-lg '>
@@ -249,38 +225,6 @@ const Home = () => {
       </div>
       
 
-
-
-
-      <div className='border-solid border border-gray-500 m-4 p-4 rounded-lg my-20'>
-        <div className='flex justify-between gap'>
-            <button className=''>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-
-            </button>
-            <img 
-               src="/photo/advertie.png" alt="" 
-               className='col-span-2' />
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </button>
-        </div>
-      </div>
-      <div className=' chart my-20'>
-        <div className='m-10'>
-          <h1 className='text-4xl  font-simibold'>
-              Trending Categories
-          </h1>
-        </div>
-          <div className='p-4 m-4 border-solid border border-gray-500 rounded-lg flex justify-center'>
-              <img 
-              src="/photo/chart.png" alt="" />
-          </div>
-      </div>
       <div className='popular software'>
           <div className='m-10'>
               <h1 className='text-4xl  font-simibold'>

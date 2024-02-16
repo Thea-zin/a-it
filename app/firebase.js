@@ -5,12 +5,14 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBO5gAh4_rwta4B4_5-AGWcu448AYWnmxU",
-  authDomain: "a-it-f5457.firebaseapp.com",
-  projectId: "a-it-f5457",
-  storageBucket: "a-it-f5457.appspot.com",
-  messagingSenderId: "809002111841",
-  appId: "1:809002111841:web:15416514d86aeaee4b2b20"
+  apiKey: "AIzaSyCQC5WjMnWXyHtSDjt067Tb26tf-N0EJw0",
+  authDomain: "authentication-app-ea9bb.firebaseapp.com",
+  databaseURL: "https://authentication-app-ea9bb-default-rtdb.firebaseio.com",
+  projectId: "authentication-app-ea9bb",
+  storageBucket: "authentication-app-ea9bb.appspot.com",
+  messagingSenderId: "705726676941",
+  appId: "1:705726676941:web:ea5bde4e926355cc0d8e84",
+  measurementId: "G-YJNC93NH1K"
 };
 
 // Initialize Firebase

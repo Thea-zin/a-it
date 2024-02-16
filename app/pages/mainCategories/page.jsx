@@ -1,7 +1,9 @@
 import React from 'react'
 import CardItem from './component/box'
 import CardItem2 from './component/box2'
+
 const page = () => {
+    
   return (
     <div>
       <div className="content-top bg-black h-44 ">
@@ -22,19 +24,7 @@ const page = () => {
                 <button className='border-solid border-white border-2 p-3 rounded-lg -translate-y-11 text-white ml-3'>Top Rates</button>
 
             </div>
-            <div className="btn2 flex mt-5">
-                <button className='bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3 text-'>Filter All</button>
-                <button className=' hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3'>Feature</button>
-                <button className=' hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-32 ml-3'>Company Size</button>
-                <button className=' hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3'>Intergration</button>
-                <button className=' rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3'>Price</button>
-                    <label class="relative  items-center cursor-pointer -translate-y-10">
-                        <input type="checkbox" value="" class="sr-only peer"/>
-                        <div class="w-11 h-6 border-[#1DCDFE] bg-gray peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                    </label>
-                    
-
-            </div>
+           
       </div>
       <div className="text ">
         <div className='text-3xl font-medium ml-10'>What is your problem ?</div>
@@ -42,20 +32,20 @@ const page = () => {
             <div className="text ml-10 p-2 mt-5 mb-5">{'You can choose the appropriate IT category based on common business challenges and objectives. Choose the most appropriate IT products and services based on your specific objectives, such as " paperless " to reduce costs or " personnel planning that takes advantage of employees strengths and backgrounds " to utilize human resources.'}</div>
             <div className='pr-10 pl-10 '>
                 <div className="box bg-black h-64 rounded-xl p-5 mt-5">
-                    <button type='checkbox' className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5 active:bg-white focus:bg-none border-[#1DCDFE]'>Cost Reduction</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2 ml-3 text-xs mt-5'>Sales expansion/marketing</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Utilization of human resources</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Security risk management</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Work style reform/improvement of productivity</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Cost Concerns</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Integration Issues</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>User Adoption</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Customization</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Security and Compliance</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Vendor Reliability</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Performance and Reliability</button>
-                    <button className='bg-[#1DCDFE] rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Legacy Systems</button>
-                
+                    <button type='checkbox' className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5 active:bg-white focus:bg-none border-[#1DCDFE]'>Cost Reduction</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2 ml-3 text-xs mt-5  hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 transition delay-50000 '>Sales expansion/marketing</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Utilization of human resources</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Security risk management</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Work style reform/improvement of productivity</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Cost Concerns</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Integration Issues</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>User Adoption</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Customization</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Security and Compliance</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Vendor Reliability</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Performance and Reliability</button>
+                    <button className='bg-white rounded-full text-[#2F455C] p-2  ml-3 text-xs mt-5'>Legacy Systems</button>
+                   
                 </div> 
             </div>
             
