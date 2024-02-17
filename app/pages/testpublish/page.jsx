@@ -24,7 +24,7 @@ export default function TestPublish() {
       </div>
       <div>
         <div>
-          <label htmlFor="seviceName">Software/Service's Name *</label><br />
+          <label htmlFor="seviceName">{"Software/Service's Name *"}</label><br />
           <input type="text" id="serviceName" />
         </div>
         <div>
