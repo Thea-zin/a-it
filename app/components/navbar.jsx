@@ -32,10 +32,10 @@ const Navbar = () => {
   const auth=getAuth(firebase_app)
 
     useEffect(() => {
-      signOut(auth);
+    //  signOut(auth);
       const user = auth.currentUser;
       setIsUser(user !== null && user.accessToken !== null);
-      
+      console.log(user)
   });
  
 
