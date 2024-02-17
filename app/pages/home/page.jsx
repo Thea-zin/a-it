@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from "framer-motion";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className="">
       <div className='pl-7 pr-7'>
@@ -504,4 +504,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomePage

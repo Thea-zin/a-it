@@ -48,7 +48,7 @@ const Navbar = () => {
                 <Link className='logo ' href='/pages/home' >
                   
                     <img 
-                      src="/photo/logoAIT.png"/>
+                      src="/photo/LogoAIT.png"/>
                   
                 </Link>
                 

@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -34,9 +35,8 @@ module.exports = {
       },
       screens: {
         xsm: "100px",
-        sm: "640px",
-        md: "900px",
-        lg: "1024px",
+        xm: '420px',
+        ...defaultTheme.screens
       },
       fontSize: {
         "display-lg": "56px",
@@ -64,9 +64,9 @@ module.exports = {
         'label-lg':'18px',
         'label-md':'16px',
         'label-sm':'12px',
-        'body-xsm':'6px'
+        'body-xsm':'6px',
+        'nbase':['1rem', '1.5rem']
       }
-      
     },
   },
   plugins: [],

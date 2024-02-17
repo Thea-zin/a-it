@@ -1,3 +1,12 @@
+'use client';
+import * as React from 'react';
+import { useState,useEffect } from "react";
+import { IconButton } from "@mui/material";
+import { DeleteOutlineOutlined } from "@mui/icons-material";
+import { BookmarkAddOutlined } from "@mui/icons-material";
+import { ModeEditOutlineOutlined } from "@mui/icons-material";
+import UpdateBlog from "./updatePopUp";
+
 function UpdateBody(){
     const reviewList = [
         {id:1,author:"Sopheak Khoeurn",profile:'people-1.png',blog_pic:'../updates/blog1.png',date:"2023-09-23",title:"Favorite AI toos for designers in 2023",pic:"",content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
@@ -7,10 +16,69 @@ function UpdateBody(){
         {id:5,author:"Sopheak Khoeurn",profile:'people-7.png',date:"2023-05-23",title:"Favorite AI toos for designers in 2023",blog_pic:'../updates/blog1.png',content:"Lorem ipsum dolor sit amet consectetur. Urna neque ac sit velit velit non. Tellus nibh tortor aliquam sollicitudin urna a vulputate. Nunc nunc volutpat tempor et sit faucibus non. Amet tortor vitae dictumst morbi augue volutpat orci non. Donec elit cursus non sit scelerisque. Sit amet senectus proin nulla adipiscing amet interdum in et. Sed nisl erat blandit donec malesuada lorem." },
 
     ]
+    const [selectedBlog, setSelectedBlog] = useState(null);
+    const [updateBlogOpen, setUpdateBlogOpen] = React.useState(false);
+    const handleOpenUpdateBlog = (blog) => {
+        setSelectedBlog(blog)
+        setUpdateBlogOpen(true);
+      };
+    const handleCloseUpdateBlog =()=>{
+        setSelectedBlog(null)
+        setUpdateBlogOpen(false);
+    }
+    const [blogList,setBlogList]=useState([]);
+    const deleteBlog = async (blogId) =>{
+        
+            console.log(blogId)
+            try{
+                const response = await fetch('/api/updates/deleteBlog', {
+                    method:'DELETE',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({
+                        blogId:blogId
+                    })
+                })
+                const message = await response.json()
+                console.log(message)
+                
+               
+                if (response.status){
+                    console.log("Delete successfully")
+                    location.reload()
+                }else{
+                    // setErrorMessage(message['message'])
+                    // setNullWarning(true)
+                    console.log("fail to add")
+                }
+            } catch(error){
+                // setErrorMessage(error)
+                // setNullWarning(true)
+                console.log(error.message)
+            }
+        }
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await fetch('/api/updates/getAllBlog', {
+                        method: 'GET',
+                        headers: {
+                            'Cache-Control': 'no-cache', // Instructs the browser not to cache the response
+                        },
+                    });
+                    const result = await response.json();
+                    setBlogList(result['message']);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            fetchData();
+        });
+        
+   console.log(blogList)
     return (
         <div id="Body" className="space-y-2 p-3">
                 {
-                    reviewList.map((review)=>(
+                   blogList.map((review)=>(
                             <div className="flex-cols p-4 rounded-lg bg-base space-y-4" key={review.id}>
                                 <div className="lg:grid lg:grid-cols-3 md:grid md:grid-cols-3 p-5 ">
                                     <div className="lg:col-span-2 md:col-span-2   content-center">
@@ -31,17 +99,25 @@ function UpdateBody(){
 
                                     </div>
                                     <div className="lg:ml-[55%] mt-[15%]" >
-                                    <img src={review.blog_pic} className="w-[100%]"></img>
+                                    <img src={review.imageRef} className="w-[100%]"></img>
                                 </div>
                    
                             </div>
                             <div className="grid grid-cols-3 lg:space-x-[70%] sm:space-x-[50%] xsm:space-x-[25%]" >
-                                <div className="col-span-2"> <button className="rounded-full bg-divider hover:bg-darkbase text-center p-2" >Design</button></div>
-                                    <div className="flex  space-x-3">
-                                        <div className=" rounded-full w-10 h-10 text-center "><button><img src={"../updates/bookMark.png"}></img></button></div>
-                                        <div className=" rounded-full w-10 h-10 text-center"><button><img src={"../updates/edit.png"}></img></button></div>
+                                <div className="col-span-2"> <button className="rounded-full bg-divider hover:bg-divider_hover text-center p-2" >Design</button></div>
+                                    <div className="flex mr-8  space-x-2">
+                                        <IconButton >
+                                            <BookmarkAddOutlined></BookmarkAddOutlined>
+                                        </IconButton>
+                                        <IconButton onClick={()=>handleOpenUpdateBlog(review)} >
+                                            <ModeEditOutlineOutlined></ModeEditOutlineOutlined>
+                                        </IconButton>
+                                       
+                                        <IconButton onClick={()=>deleteBlog(review.blogId)} aria-label="delete">
+                                            <DeleteOutlineOutlined></DeleteOutlineOutlined>
+                                        </IconButton>
                                     </div>
-        
+                                    {updateBlogOpen && (<UpdateBlog oldBlog={selectedBlog} open={updateBlogOpen} handleAddBlogClose={handleCloseUpdateBlog}></UpdateBlog>)}
                                 </div>
                             </div>
                  

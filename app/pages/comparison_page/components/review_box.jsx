@@ -1,13 +1,11 @@
-export default function ReviewBox(imgs, name, title) {
+import Link from "next/link";
+
+export default function ReviewBox({ imgs, name, title, id }) {
   return (
     <div className="px-4">
       <div className="flex place-items-center">
         <div className="w-12 h-12 flex place-items-center">
-          <img
-            src={imgs}
-            alt=""
-            className="rounded-full"
-          />
+          <img src={imgs} alt="" className="rounded-full" />
         </div>
         <div>
           <p>{name}</p>
@@ -23,7 +21,12 @@ export default function ReviewBox(imgs, name, title) {
         dolorum ut ex impedit, doloribus sit? Beatae cupiditate inventore a
         quam.
       </div>
-      <button className="mt-3 text-xs text-blue-700 font-bold">Read full review {">"}</button>
+      <Link
+        className="mt-3 text-xs text-blue-700 font-bold"
+        href={`/pages/software_page?id=${id}`}
+      >
+        Read full review {">"}
+      </Link>
     </div>
   );
 }
