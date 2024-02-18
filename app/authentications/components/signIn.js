@@ -1,6 +1,8 @@
 'use client';
 import { useState } from "react";
 import React from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import firebase_app from "@/app/firebase";
 import{
     getAuth,
@@ -13,6 +15,7 @@ function SignIn({onClose}){
     const showPassword = ()=>{
         setIsOpen(!isOpen)
     }
+    const notify = () => toast("Password error");
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const router = useRouter();
@@ -30,10 +33,11 @@ function SignIn({onClose}){
     return router.push("/pages/home")
   })
   .catch((err)=>{
-    console.log(err.massage)
+    notify();
+
   })
-   
     }
+     
     return(
 
         <div className="relative">
@@ -60,7 +64,10 @@ function SignIn({onClose}){
                         <button className="lg:ml-[60%] md:ml-[60%] sm:ml-[60%] xsm:ml-[50%] bottom-2 absolute" onClick={showPassword} >{isOpen?<p className="text-basedark">show</p >:<p className="text-basedark">hide</p >}</button>
                     </div>
                 
-           <div className="flex justify-center mt-2" ><button type='submit' className="bg-darkblue text-white p-2 rounded-full w-2/4 lg:text-[24px] md:text-[20px] sm:text-[15px] xsm:text-[13px] "  >Sign In</button></div>
+           <div className="flex justify-center mt-2" >
+           <button type='submit' className="bg-darkblue text-white p-2 rounded-full w-2/4 lg:text-[24px] md:text-[20px] sm:text-[15px] xsm:text-[13px] "  >Sign In</button>
+            <ToastContainer />
+            </div>
 
                 </form>
 
