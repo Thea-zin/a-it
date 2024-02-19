@@ -34,6 +34,7 @@ function SignIn({onClose}){
   })
   .catch((err)=>{
     notify();
+    console.log(err)
 
   })
     }

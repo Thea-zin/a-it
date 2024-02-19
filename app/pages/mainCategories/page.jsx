@@ -39,7 +39,7 @@ const Page = () => {
       <div className="content-top bg-black h-44 ">
         <div className="text flex justify-between p-4">
           <div className="text-[#1DCDFE] font-semibold text-3xl mt-9 ml-7">
-            Marketing
+            Software Page
           </div>
           <div className="bg-white flex h-9 w-96 rounded-full p-2 mt-9 ">
             <svg
@@ -73,27 +73,7 @@ const Page = () => {
             Top Rates
           </button>
         </div>
-        <div className="btn2 flex mt-5">
-          <button className="bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3 text-">
-            Filter All
-          </button>
-          <button className=" hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
-            Feature
-          </button>
-          <button className=" hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-32 ml-3">
-            Company Size
-          </button>
-          <button className=" hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
-            Intergration
-          </button>
-          <button className=" rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
-            Price
-          </button>
-          <label className="relative  items-center cursor-pointer -translate-y-10">
-            <input type="checkbox" value="" className="sr-only peer" />
-            <div className="w-11 h-6 border-[#1DCDFE] bg-gray peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          </label>
-        </div>
+        
       </div>
       <div className="text ">
         <div className="text-3xl font-medium ml-10">What is your problem ?</div>
