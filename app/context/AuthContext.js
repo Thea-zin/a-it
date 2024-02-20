@@ -1,27 +1,42 @@
-'use client';
-import { useRouter } from "next/navigation";
-import { createContext,useContext,useState } from "react";
+import React from 'react';
+import { onAuthStateChanged, getAuth, } from 'firebase/auth';
+import firebase_app from '@/app/firebase';
 
-const AuthContext = createContext();
 
-export function AuthProvider({children}){
-    const router = useRouter();
-    const [isAuth,setIsAuth] = useState(false)
-    const [user,setUser] = useState(null);
+const auth = getAuth(firebase_app);
 
-    async function  login(userData){
-        setUser(userData);
-        setIsAuth(true);
-    }
-    const logout =()=>{
-        setUser(null);
-        setIsAuth(false);
-        router.push("/pages/home")
-    };
-    return(<AuthContext.Provider value={{user,isAuth,login,logout}}>
-        {children}
-    </AuthContext.Provider>);
-}
-export function useAuth(){
-    return useContext(AuthContext);
-}
+export const AuthContext = React.createContext({
+ 
+});
+
+export const useAuthContext = () => React.useContext(AuthContext);
+
+export const AuthContextProvider = ({
+    children,
+}) => {
+    const [user, setUser] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
+
+
+    React.useEffect(() => {
+        tion
+       
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+
+            }
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ user }}>
+            {loading ? <div>Loading...</div> : children}
+        </AuthContext.Provider>
+    );
+};

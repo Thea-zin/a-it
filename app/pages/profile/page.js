@@ -11,7 +11,7 @@ function Profile(){
     setActiveItem(item);
 };
     return (
-        <div className="font-dmsan bg-base p-6 grid grid-cols-3" >
+        <div className="font-dmsan bg-base p-6 grid grid-cols-3 m-5" >
             <div className="col-span-1">
             <div className="bg-white flex rounded-[16px] p-4 h-[600px] w-[300px]">
        

@@ -7,9 +7,11 @@ function SignUpWithThirdParty({onClose}){
 
     const openPopUpSignUp = () =>{
       setIsPopUpSignUp(true)
+      
     };
     const closePopUpSignUp = () =>{
       setIsPopUpSignUp(false)
+      onClose();
     };
     return (
         <div className="relative">
@@ -20,7 +22,7 @@ function SignUpWithThirdParty({onClose}){
         <div className=" lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px] border bg-base rounded-[16px]  lg:p-22 md:p-10 sm:p-7 xsm:p-8 ">
             <div className="space-y-4">
                 <div className="flex justify-center items-center">
-                    <img src={"logo.png"}></img>
+                    <img src={"/photo/logoAIT.png"}></img>
                 </div>
                  <div className="flex justify-center">
                     <div className="  rounded-full w-[70%] border-1 bg-darkblue hover:bg-darkblue-[600px]  p-2"> 
@@ -29,10 +31,10 @@ function SignUpWithThirdParty({onClose}){
                                        <img src="../vendors/ticks.png" ></img>
                       
                                     </div> */}
-                                   <div className="font-bold text-white lg:text-display-sm md:text-body-sm sm:text-body-sm xsm:text-body-sm" onClick={openPopUpSignUp}>Create an account</div>
+                                   <div className="font-bold text-white lg:text-display-sm md:text-body-sm sm:text-body-sm xsm:text-body-sm" onClick={() => {openPopUpSignUp(); }}>Create an account</div>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
             <div className="flex justify-center">
                <div className="relative mt-[10%] w-[70%] ">

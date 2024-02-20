@@ -43,7 +43,8 @@ function UpdateBody(){
                 
                
                 if (response.status){
-                    console.log("Add successfully")
+                    console.log("Delete successfully")
+                    location.reload()
                 }else{
                     // setErrorMessage(message['message'])
                     // setNullWarning(true)
@@ -55,19 +56,24 @@ function UpdateBody(){
                 console.log(error.message)
             }
         }
-    
-    useEffect(()=>{
-        const fetchData= async()=>{
-            try{
-                const response = await fetch('/api/updates/getAllBlog')
-                const result = await response.json();
-                setBlogList(result['message'])
-            }catch(error){
-                console.log(error)
-            }
-        };
-        fetchData()
-    },[])
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await fetch('/api/updates/getAllBlog', {
+                        method: 'GET',
+                        headers: {
+                            'Cache-Control': 'no-cache', // Instructs the browser not to cache the response
+                        },
+                    });
+                    const result = await response.json();
+                    setBlogList(result['message']);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            fetchData();
+        });
+        
    console.log(blogList)
     return (
         <div id="Body" className="space-y-2 p-3">

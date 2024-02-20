@@ -31,7 +31,14 @@ body {
   src: url("../public/DMSans.ttf");
 }
 
-
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 .progress-ring__circle {
   stroke-dasharray: 400, 400;
   transition: stroke-dashoffset 0.35s;
