@@ -10,6 +10,7 @@ import {
   getDocs,
   limit,
   startAfter,
+  getCountFromServer,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
@@ -17,6 +18,7 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
+    const smax = 8;
 
     var lastVisible = request.last;
     let q = null;
@@ -27,7 +29,7 @@ export async function POST(req) {
         orderBy("name"),
         startAt(request.last),
         endAt(request.search + "~"),
-        limit(2)
+        limit(smax)
       );
     } else {
       q = query(
@@ -35,11 +37,18 @@ export async function POST(req) {
         orderBy("name"),
         startAfter(request.last),
         endAt(request.search + "~"),
-        limit(2)
+        limit(smax)
       );
     }
 
     const documentSnapshots = await getDocs(q);
+    const q2 = (q = query(
+      collection(firestore, "softwares"),
+      orderBy("name"),
+      startAfter(request.search),
+      endAt(request.search + "~")
+    ));
+    const snapshot = await getCountFromServer(q2);
 
     let softwares = [];
     for (let doc of documentSnapshots.docs) {
@@ -51,7 +60,10 @@ export async function POST(req) {
 
     console.log(softwares);
 
-    return NextResponse.json({ softwares: softwares }, { status: 200 });
+    return NextResponse.json(
+      { softwares: softwares, total: snapshot.data().count },
+      { status: 200 }
+    );
   } catch (e) {
     console.log(e);
     return NextResponse.json(

@@ -13,44 +13,15 @@ import {
   startAfter,
   endAt,
   startAt,
+  getCountFromServer,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
-
-// export async function GET(req, res) {
-//   const firestore = getFirestore(firebase_app);
-
-//   // Query the first page of docs
-//   const first = query(
-//     collection(firestore, "softwares"),
-//     orderBy("name"),
-//     limit(8)
-//   );
-//   let documentSnapshots = await getDocs(first);
-//   console.log(documentSnapshots.docs[0].data());
-
-//   // Get the last visible document
-//   const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-//   console.log("last", lastVisible);
-
-//   // Construct a new query starting at this document,
-//   // get the next 25 cities.
-//   const next = query(
-//     collection(firestore, "softwares"),
-//     orderBy("name"),
-//     startAfter(lastVisible),
-//     limit(8)
-//   );
-//   documentSnapshots = await getDocs(next);
-
-//   console.log(documentSnapshots.docs[0].data());
-
-//   return NextResponse.json({}, { status: 200 });
-// }
 
 export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
+    const smax = 8;
 
     var lastVisible = request.last;
     // console.log(request.last);
@@ -58,7 +29,7 @@ export async function POST(req) {
       collection(firestore, "softwares"),
       orderBy("name"),
       startAfter(lastVisible),
-      limit(2)
+      limit(smax)
     );
 
     const documentSnapshots = await getDocs(q);
@@ -71,7 +42,14 @@ export async function POST(req) {
       softwares.push(temp);
     }
 
-    return NextResponse.json({ softwares: softwares }, { status: 200 });
+    const snapshot = await getCountFromServer(
+      collection(firestore, "softwares")
+    );
+
+    return NextResponse.json(
+      { softwares: softwares, total: snapshot.data().count },
+      { status: 200 }
+    );
   } catch (e) {
     console.log(e);
     return NextResponse.json(

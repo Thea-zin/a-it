@@ -190,7 +190,7 @@ const HomePage = () => {
               </div>
               
             </div>
-          </div>
+          
           <div className=" grid grid-cols-3 gap-4 ml-80">
             <div className="Trello border borer-gray-500 p-3 rounded-lg h-48 w-56">
               <p>Trello</p>
@@ -813,6 +813,7 @@ const HomePage = () => {
                 <img src="/photo/icon/trello.png" alt="" />
               </div>
             </div>
+          </div>
           </div>
         </div>
 
