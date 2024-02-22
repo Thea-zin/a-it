@@ -6,6 +6,7 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { BookmarkAddOutlined } from "@mui/icons-material";
 import { ModeEditOutlineOutlined } from "@mui/icons-material";
 import UpdateBlog from "./updatePopUp";
+import Link from 'next/link';
 
 function UpdateBody(){
     const reviewList = [
@@ -17,21 +18,12 @@ function UpdateBody(){
 
     ]
     const [selectedBlog, setSelectedBlog] = useState(null);
-    const [updateBlogOpen, setUpdateBlogOpen] = React.useState(false);
-    const handleOpenUpdateBlog = (blog) => {
-        setSelectedBlog(blog)
-        setUpdateBlogOpen(true);
-      };
-    const handleCloseUpdateBlog =()=>{
-        setSelectedBlog(null)
-        setUpdateBlogOpen(false);
-    }
     const [blogList,setBlogList]=useState([]);
     const deleteBlog = async (blogId) =>{
         
             console.log(blogId)
             try{
-                const response = await fetch('/api/updates/deleteBlog', {
+                const response = await fetch('/api/deleteBlog', {
                     method:'DELETE',
                     headers:{'Content-Type':'application/json'},
                     body:JSON.stringify({
@@ -59,7 +51,7 @@ function UpdateBody(){
         useEffect(() => {
             const fetchData = async () => {
                 try {
-                    const response = await fetch('/api/updates/getAllBlog', {
+                    const response = await fetch('/api/getAllBlog', {
                         method: 'GET',
                         headers: {
                             'Cache-Control': 'no-cache', // Instructs the browser not to cache the response
@@ -72,7 +64,7 @@ function UpdateBody(){
                 }
             };
             fetchData();
-        });
+        },);
         
    console.log(blogList)
     return (
@@ -90,7 +82,7 @@ function UpdateBody(){
                                         </div>
                                     </div>
                                     <div className="text-display-md font-bold">
-                                        {review.title}
+                                        <Link href={`/pages/blog/${review.blogId}`}>{review.title}</Link>
                                     </div>
                                     <div className="lg:text-body-md md:text-body-md sm:text-body-sm xsm:text-body-sm">
                                         {review.content}
@@ -109,15 +101,13 @@ function UpdateBody(){
                                         <IconButton >
                                             <BookmarkAddOutlined></BookmarkAddOutlined>
                                         </IconButton>
-                                        <IconButton onClick={()=>handleOpenUpdateBlog(review)} >
-                                            <ModeEditOutlineOutlined></ModeEditOutlineOutlined>
-                                        </IconButton>
+                                
                                        
                                         <IconButton onClick={()=>deleteBlog(review.blogId)} aria-label="delete">
                                             <DeleteOutlineOutlined></DeleteOutlineOutlined>
                                         </IconButton>
                                     </div>
-                                    {updateBlogOpen && (<UpdateBlog oldBlog={selectedBlog} open={updateBlogOpen} handleAddBlogClose={handleCloseUpdateBlog}></UpdateBlog>)}
+                                   
                                 </div>
                             </div>
                  
