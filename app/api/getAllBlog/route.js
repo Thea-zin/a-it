@@ -1,7 +1,7 @@
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import { NextResponse,NextRequest } from 'next/server'
 import firebase_app from '../firebase'
-export  async function GET(request,response){
+export  async function POST(request,response){
     const db = getFirestore(firebase_app);
     const blogs_list=[]
     const my_blog = await getDocs(collection(db,'blogs'))

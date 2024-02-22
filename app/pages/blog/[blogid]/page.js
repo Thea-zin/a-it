@@ -13,7 +13,7 @@ const BlogComponent = ({ params }) => {
                 }
 
                 const response = await fetch(`/api/getBlog?blogid=${params.blogid}`, {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         'Cache-Control': 'no-cache',
                         'blogid':params.blogid
