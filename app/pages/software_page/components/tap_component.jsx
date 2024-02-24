@@ -8,7 +8,7 @@ export default function TapSoftwareComponent({ id }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (isNaN(parseInt(id))) router.push("/pages/mainCategories");
+    // if (isNaN(parseInt(id))) router.push("/pages/mainCategories");
   });
 
   return (

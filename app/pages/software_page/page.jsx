@@ -18,7 +18,8 @@ export default async function SoftwarePage({ searchParams }) {
   try {
     data = await getSoftware(searchParams.id);
     if (typeof data != "undefined") {
-      iconUrl = await getIconURL(`${data.icon}.png`);
+      // iconUrl = await getIconURL(`${data.icon}.png`);
+      iconUrl = data.icon;
       reviews = await getReivews(searchParams.id);
     } else {
       data = { name: "-------" };
@@ -46,7 +47,7 @@ export default async function SoftwarePage({ searchParams }) {
       </div>
       <div className="bg-white flex justify-between px-3 sm:px-8 relative h-40 xm:h-52 lg:h-auto ">
         <div className="flex">
-          <div className="p-2 xm:p-5 sm:p-7 w-20 xm:w-28 sm:w-[9.3rem] h-20 xm:h-28 sm:h-[9.3rem] border-[1px] border-divider -translate-y-5 sm:-translate-y-8 bg-white flex rounded-lg">
+          <div className="p-2 xm:p-5 sm:p-7 w-20 xm:w-28 sm:w-[9.3rem] h-20 xm:h-28 sm:h-[9.3rem] border-[1px] border-divider -translate-y-5 sm:-translate-y-8 bg-white flex rounded-lg place-content-center">
             <img src={iconUrl} alt="" placeholder="" />
           </div>
           <div className="ml-5 mt-1">
@@ -155,7 +156,9 @@ export default async function SoftwarePage({ searchParams }) {
                 Product Description
               </p>
               <p className="mt-3 text-basedark text-xs xm:text-nbase">
-                {"Google Analytics not only lets you measure sales and conversions, but also gives you fresh insights into how visitors use your site, how they arrived on your site, and how you can keep them coming back. Delivered on Google's world-class platform."}
+                {
+                  "Google Analytics not only lets you measure sales and conversions, but also gives you fresh insights into how visitors use your site, how they arrived on your site, and how you can keep them coming back. Delivered on Google's world-class platform."
+                }
               </p>
 
               <hr className="my-8 border-divider" />
@@ -275,9 +278,9 @@ export default async function SoftwarePage({ searchParams }) {
               Software user?
             </p>
             <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
-            <Link href={`/pages/write_review_page?id=${searchParams.id}`}>
-              Write a Review
-            </Link>
+              <Link href={`/pages/write_review_page?id=${searchParams.id}`}>
+                Write a Review
+              </Link>
             </button>
           </div>
 

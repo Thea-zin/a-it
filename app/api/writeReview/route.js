@@ -23,7 +23,7 @@ export async function GET(req, res) {
     let data = [];
     for (let doc of querySnapshot.docs) {
       let temp = doc.data();
-      temp.icon = await getIconURL(temp.icon);
+      // temp.icon = await getIconURL(temp.icon);
       temp.id = doc.id;
       data.push(temp);
     }

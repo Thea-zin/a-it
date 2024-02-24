@@ -37,7 +37,7 @@ export async function POST(req) {
     let softwares = [];
     for (let doc of documentSnapshots.docs) {
       let temp = doc.data();
-      temp.icon = await getIconURL(temp.icon);
+      // temp.icon = await getIconURL(temp.icon);
       temp.id = doc.id;
       softwares.push(temp);
     }
