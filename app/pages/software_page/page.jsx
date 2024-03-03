@@ -1,38 +1,89 @@
+"use client";
+
 import ReviewBox from "./components/review_box";
 import Item from "./components/item";
 import TapSoftwareComponent from "./components/tap_component";
-import {
-  getSoftware,
-  getIconURL,
-  populate,
-  getReivews,
-} from "@/app/api/firebase";
 import Stars from "./components/star_display";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function SoftwarePage({ searchParams }) {
-  let data = { name: "", icon: "" };
-  let iconUrl = null;
-  let reviews = [];
+export default function SoftwarePage({ searchParams }) {
+  const [data, setData] = useState({ name: "", icon: null });
+  const [reviews, setReview] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // let data = ;
+  // let iconUrl = null;
+  // let reviews = [];
   // populate()
-  try {
-    data = await getSoftware(searchParams.id);
-    if (typeof data != "undefined") {
-      // iconUrl = await getIconURL(`${data.icon}.png`);
-      iconUrl = data.icon;
-      reviews = await getReivews(searchParams.id);
-    } else {
-      data = { name: "-------" };
-      iconUrl = null;
-    }
-  } catch (e) {
-    console.log(e);
-    data = { name: "-------" };
-    iconUrl = null;
-  }
+  useEffect(() => {
+    getData();
+    // testGemini();
+  }, []);
 
-  return (
-    <div className="sm:px-2 xl:px-10 pt-7 pb-10 bg-base font-dmsan">
+  const getData = async () => {
+    const temp = await fetch("/api/software", {
+      method: "POST",
+      body: JSON.stringify({ ids: [searchParams.id] }),
+    });
+    const res = await temp.json();
+    console.log(res);
+    setData(res.data[0]);
+    setLoading(false);
+  };
+
+  const testGemini = async () => {
+    const temp = await fetch("/api/compare", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt:
+          "compare jasper ai, chatgpt, adobe sensei, zimmwriter, weverse. please give answer in sections including overview, feature, price (is it cheap, moderate or expensive?), free trial, and support. also seperate each ai into seperate section. wrap title of each section with $.",
+      }),
+    });
+    const res = await temp.json();
+    console.log(res);
+  };
+
+  // try {
+  //   // data = await getSoftware(searchParams.id);
+  //   if (typeof data != "undefined") {
+  //     // iconUrl = await getIconURL(`${data.icon}.png`);
+  //     iconUrl = data.icon;
+  //     // reviews = await getReivews(searchParams.id);
+  //   } else {
+  //     data = { name: "-------" };
+  //     iconUrl = null;
+  //   }
+  // } catch (e) {
+  //   console.log(e);
+  //   data = { name: "-------" };
+  //   iconUrl = null;
+  // }
+
+  return loading ? (
+    <div className="shadow rounded-md p-4 w-full mx-auto h-[600px]">
+      <div className="animate-pulse flex space-x-4">
+        <div className="flex-1 space-y-6 py-1">
+          <div className="h-2 bg-slate-200 rounded"></div>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => {
+            return (
+              <div className="space-y-3" key={index}>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-2 bg-slate-200 rounded col-span-2"></div>
+                  <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+                </div>
+                <div className="h-2 bg-slate-200 rounded"></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div
+      className={`sm:px-2 xl:px-10 pt-7 pb-10 bg-base font-dmsan ${
+        loading && "animate-pulse"
+      }`}
+    >
       <div className="">
         <img
           src="/write_review/software_hero.png"
@@ -48,7 +99,7 @@ export default async function SoftwarePage({ searchParams }) {
       <div className="bg-white flex justify-between px-3 sm:px-8 relative h-40 xm:h-52 lg:h-auto ">
         <div className="flex">
           <div className="p-2 xm:p-5 sm:p-7 w-20 xm:w-28 sm:w-[9.3rem] h-20 xm:h-28 sm:h-[9.3rem] border-[1px] border-divider -translate-y-5 sm:-translate-y-8 bg-white flex rounded-lg place-content-center">
-            <img src={iconUrl} alt="" placeholder="" />
+            <img src={data.icon} alt="" placeholder="" />
           </div>
           <div className="ml-5 mt-1">
             <p className="text-xl sm:text-3xl font-semibold">{data.name}</p>
@@ -349,10 +400,10 @@ export default async function SoftwarePage({ searchParams }) {
               {`${data.name} Comparision`}
             </p>
             {[
-              [data.name, iconUrl, "BingAI", 5],
-              [data.name, iconUrl, "CanvaAI", 3],
-              [data.name, iconUrl, "NotionAI", 6],
-              [data.name, iconUrl, "Google Doc AI", 4],
+              [data.name, data.icon, "BingAI", 5],
+              [data.name, data.icon, "CanvaAI", 3],
+              [data.name, data.icon, "NotionAI", 6],
+              [data.name, data.icon, "Google Doc AI", 4],
             ].map((item, index) => {
               return (
                 <div

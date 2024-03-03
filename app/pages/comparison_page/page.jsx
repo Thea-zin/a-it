@@ -69,8 +69,8 @@ export default function ComparisonPage() {
     <div className="w-[640px] sm:w-full font-dmsan">
       <div className="w-full bg-black">
         <div className="grid grid-cols-2 p-10">
-          <p className="text-[#1DCDFE] text-3xl font-semibold">Marketing</p>
-          <div className="text-black px-3 py-1 bg-[#D9D9D9] rounded-full flex w-full">
+          <p className="text-[#1DCDFE] text-3xl font-semibold">Products Comparision</p>
+          {/* <div className="text-black px-3 py-1 bg-[#D9D9D9] rounded-full flex w-full">
             <div className="pr-1 pt-1">
               <iconify-icon icon="bi:search"></iconify-icon>
             </div>
@@ -81,9 +81,8 @@ export default function ComparisonPage() {
               placeholder="Enter service name..."
               className="outline-none bg-transparent w-full ml-2"
             />
-          </div>
+          </div> */}
         </div>
-        <TapComponent />
       </div>
 
       {/* <FilterComponent></FilterComponent> */}
@@ -101,7 +100,7 @@ export default function ComparisonPage() {
               />
             </div>
             <div className="w-[70%] ml-10">
-              <p className="text-3xl font-semibold mt-3">Comparison: AI</p>
+              <p className="text-3xl font-semibold mt-3">Comparing</p>
               <p className="text-[#4A4A4A]">
                 See more below to select the best content marketign software.
               </p>
