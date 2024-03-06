@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function SoftwarePage({ searchParams }) {
-  const [data, setData] = useState({ name: "", icon: null });
+  const [data, setData] = useState({ name: "", icon: "" });
   const [reviews, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
   // let data = ;
@@ -17,8 +17,11 @@ export default function SoftwarePage({ searchParams }) {
   // populate()
   useEffect(() => {
     getData();
-    // testGemini();
   }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [data]);
 
   const getData = async () => {
     const temp = await fetch("/api/software", {
@@ -28,19 +31,6 @@ export default function SoftwarePage({ searchParams }) {
     const res = await temp.json();
     console.log(res);
     setData(res.data[0]);
-    setLoading(false);
-  };
-
-  const testGemini = async () => {
-    const temp = await fetch("/api/compare", {
-      method: "POST",
-      body: JSON.stringify({
-        prompt:
-          "compare jasper ai, chatgpt, adobe sensei, zimmwriter, weverse. please give answer in sections including overview, feature, price (is it cheap, moderate or expensive?), free trial, and support. also seperate each ai into seperate section. wrap title of each section with $.",
-      }),
-    });
-    const res = await temp.json();
-    console.log(res);
   };
 
   // try {

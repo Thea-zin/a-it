@@ -7,15 +7,19 @@ import Link from "next/link";
 const Page = () => {
   // const [ids, setIds] = useState(["start"]);
   let tids = [];
+  let names = [];
 
-  function addIds(id, add) {
+  function addIds(id, name, add) {
     if (add) {
       tids.push(id);
+      names.push(name);
     } else {
       tids.splice(tids.indexOf(id), 1);
+      names.splice(names.indexOf(name), "Copy.ai");
     }
 
     localStorage.setItem("ait_soft_ids", tids.join());
+    localStorage.setItem("ait_soft_names", names.join());
     // const index = ids.indexOf("start");
     // if (index > -1) {
     //   ids.splice(index, 1);
@@ -99,7 +103,9 @@ const Page = () => {
         <div className="text-3xl font-medium ml-10">What is your problem ?</div>
         <div className="box-service">
           <div className="text ml-10 p-2 mt-5 mb-5">
-            {'You can choose the appropriate IT category based on common business challenges and objectives. Choose the most appropriate IT products and services based on your specific objectives, such as " paperless " to reduce costs or " personnel planning that takes advantage of employees strengths and backgrounds " to utilize human resources.'}
+            {
+              'You can choose the appropriate IT category based on common business challenges and objectives. Choose the most appropriate IT products and services based on your specific objectives, such as " paperless " to reduce costs or " personnel planning that takes advantage of employees strengths and backgrounds " to utilize human resources.'
+            }
           </div>
           <div className="pr-10 pl-10 ">
             <div className="box bg-black h-64 rounded-xl p-5 mt-5">
@@ -630,9 +636,18 @@ const Page = () => {
                     </div>
                   </div>
                   <div>
-                    <Link
+                    {/* <Link
                       href={{
                         pathname: "/pages/comparison_page",
+                        query: {},
+                      }}
+                      className="bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black"
+                    >
+                      comparison
+                    </Link> */}
+                    <Link
+                      href={{
+                        pathname: "/pages/comparison",
                         query: {},
                       }}
                       className="bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black"
