@@ -5,37 +5,41 @@ import CardItem from "./component/box";
 import CardItem2 from "./component/box2";
 import Link from "next/link";
 const Page = () => {
-  // const [ids, setIds] = useState(["start"]);
-  let tids = [];
-  let names = [];
+  const [allowComp, setAllowComp] = useState(false);
+  const [tids, setTids] = useState([]);
+  const [names, setNames] = useState([]);
 
   function addIds(id, name, add) {
+    let tempid = tids;
+    let tempnames = names;
     if (add) {
-      tids.push(id);
-      names.push(name);
+      tempid.push(id);
+      tempnames.push(name);
     } else {
-      tids.splice(tids.indexOf(id), 1);
-      names.splice(names.indexOf(name), "Copy.ai");
+      const idindex = tempid.indexOf(id);
+      const nameindex = tempnames.indexOf(name);
+      if (idindex >= 0 || nameindex >= 0) {
+        tempid.splice(idindex, 1);
+        tempnames.splice(nameindex, 1);
+      }
     }
 
-    localStorage.setItem("ait_soft_ids", tids.join());
-    localStorage.setItem("ait_soft_names", names.join());
-    // const index = ids.indexOf("start");
-    // if (index > -1) {
-    //   ids.splice(index, 1);
-    //   setIds([...ids]);
-    // }
-    // if (add) {
-    //   ids.push(id);
-    //   setIds([...ids])
-    // } else {
-    //   ids.splice(ids.indexOf(id), 1);
-    //   setIds([...ids])
-    // }
+    localStorage.setItem("ait_soft_ids", tempid.join());
+    localStorage.setItem("ait_soft_names", tempnames.join());
+
+    if (tempid.length == 0 || tempnames.length == 0) {
+      setAllowComp(false);
+    } else {
+      setAllowComp(true);
+    }
+
+    setTids(tempid);
+    setNames(tempnames);
   }
 
   useEffect(() => {
     localStorage.setItem("ait_soft_ids", "");
+    localStorage.setItem("ait_soft_names", "");
   }, []);
 
   return (
@@ -43,7 +47,7 @@ const Page = () => {
       <div className="content-top bg-black h-44 ">
         <div className="text flex justify-between p-4">
           <div className="text-[#1DCDFE] font-semibold text-3xl mt-9 ml-7">
-            Marketing
+            Softwares
           </div>
           <div className="bg-white flex h-9 w-96 rounded-full p-2 mt-9 ">
             <svg
@@ -76,27 +80,6 @@ const Page = () => {
           <button className="border-solid border-white border-2 p-3 rounded-lg -translate-y-11 text-white ml-3">
             Top Rates
           </button>
-        </div>
-        <div className="btn2 flex mt-5">
-          <button className="bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3 text-">
-            Filter All
-          </button>
-          <button className=" hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
-            Feature
-          </button>
-          <button className=" hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-32 ml-3">
-            Company Size
-          </button>
-          <button className=" hover:bg-[#1DCDFE] rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
-            Intergration
-          </button>
-          <button className=" rounded-full -translate-y-11 text-[#2F455C] p-1 w-28 ml-3">
-            Price
-          </button>
-          <label className="relative  items-center cursor-pointer -translate-y-10">
-            <input type="checkbox" value="" className="sr-only peer" />
-            <div className="w-11 h-6 border-[#1DCDFE] bg-gray peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          </label>
         </div>
       </div>
       <div className="text ">
@@ -650,7 +633,9 @@ const Page = () => {
                         pathname: "/pages/comparison",
                         query: {},
                       }}
-                      className="bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black"
+                      className={`bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black ${
+                        allowComp ? "" : "pointer-events-none"
+                      }`}
                     >
                       comparison
                     </Link>

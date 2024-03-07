@@ -101,7 +101,7 @@ export default function ComparisonPage() {
         const temp = await fetch("/api/compare", {
           method: "POST",
           body: JSON.stringify({
-            prompt: `compare ${names}. please give answer in sections including overview, feature, customization, integration, scalability, maturity, support, price (is it cheap, moderate or expensive?), and free trial. seperate answer for each ai. mark the end of each ai with @ and mark the end of answer with @`,
+            prompt: `compare ${tnames.toString()}. please give answer in sections including overview, feature, customization, integration, scalability, maturity, support, price (is it cheap, moderate or expensive?), and free trial. seperate answer for each ai. mark the end of each ai with @ and mark the end of answer with @`,
           }),
         });
         const res = await temp.json();
@@ -275,7 +275,7 @@ export default function ComparisonPage() {
           <div className="rounded-2xl overflow-clip mt-8">
             {comparingItems.overview && (
               <div
-                className={`bg-white text-basedark py-6 px-10 h-80 flex flex-col border-b-[1px] border-divider`}
+                className={`bg-white text-basedark py-6 px-10 min-h-[100px] flex flex-col border-b-[1px] border-divider`}
               >
                 <p className="text-2xl font-semibold relative text-black">
                   Overview
@@ -298,15 +298,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[0]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -316,7 +316,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.feature && (
-              <div className="bg-white text-basedark py-6 px-10 h-80 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white text-basedark py-6 px-10 min-h-[100px] flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Feature
                 </p>
@@ -338,15 +338,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[1]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -356,7 +356,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.customization && (
-              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Customization
                 </p>
@@ -378,15 +378,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[2]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -396,7 +396,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.integration && (
-              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Integration
                 </p>
@@ -418,15 +418,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[3]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -436,7 +436,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.scalability && (
-              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Scalability
                 </p>
@@ -458,15 +458,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[4]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -476,7 +476,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.maturity && (
-              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Maturity
                 </p>
@@ -498,15 +498,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[5]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -516,7 +516,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.support && (
-              <div className="bg-white text-basedark py-6 px-10 h-64 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Support
                 </p>
@@ -538,15 +538,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[6]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -556,7 +556,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.pricing && (
-              <div className="bg-white text-basedark py-6 px-10 h-[20rem] flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Pricing
                 </p>
@@ -578,15 +578,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[7]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -596,7 +596,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.freetrial && (
-              <div className="bg-white text-basedark py-6 px-10 h-80 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Free Trial
                 </p>
@@ -618,15 +618,15 @@ export default function ComparisonPage() {
                           key={index}
                           className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
                         >
-                          <div className="text-center px-5 line-clamp-6 whitespace-break-spaces">
+                          <div className="text-center px-5 whitespace-break-spaces">
                             {item[8]}
                           </div>
-                          <Link
+                          {/* <Link
                             href={`/pages/software_page?id=${item.id}`}
                             className="font-bold text-link"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })
@@ -636,7 +636,7 @@ export default function ComparisonPage() {
             )}
 
             {comparingItems.review && (
-              <div className="bg-white text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
+              <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Reviews
                 </p>
