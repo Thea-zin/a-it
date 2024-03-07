@@ -55,7 +55,7 @@ const handleCloseAddBlog =()=>{
             form.append('content',content)
             form.append('publishedAt',new Date())
             form.append('tags',tags)
-            const response = await fetch('/api/updates/addBlog', {
+            const response = await fetch('/api/addBlog', {
                 method:'POST',
                 body:form
             })

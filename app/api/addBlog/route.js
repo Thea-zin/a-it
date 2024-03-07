@@ -1,5 +1,5 @@
 'use strict';
-import firebase_app from '../../firebase'
+import firebase_app from '../firebase'
 import { NextResponse,NextRequest } from 'next/server'
 import { getStorage, uploadBytes,ref,getDownloadURL,getSignedURL } from 'firebase/storage';
 import { setDoc,getFirestore,doc,query,collection,getDocs,where, addDoc } from 'firebase/firestore';

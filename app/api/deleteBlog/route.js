@@ -1,5 +1,5 @@
 'use strict';
-import firebase_app from '../../firebase'
+import firebase_app from '../firebase'
 import { NextResponse,NextRequest } from 'next/server'
 import {doc,deleteDoc,getDocs,getDoc,query,where,collection,getFirestore} from "firebase/firestore";
 export  async function DELETE(request,response){
