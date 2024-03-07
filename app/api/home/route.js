@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
-export async function GET(req, res) {
+export async function POST(req, res) {
   try {
     const firestore = getFirestore(firebase_app);
     var data = [];
