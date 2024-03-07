@@ -83,7 +83,7 @@ export default function ComparisonPage() {
     try {
       names = localStorage.getItem("ait_soft_names");
       tnames = names.split(",");
-      console.log(tnames);
+      // console.log(tnames);
       if (tnames.length == 0 || tnames[0] == "") throw new Error();
     } catch (e) {
       router.push("/pages/mainCategories");
@@ -138,7 +138,7 @@ export default function ComparisonPage() {
           }
         });
 
-        console.log(arrData);
+        // console.log(arrData);
 
         let count = 0;
         arrData.forEach((item) => {
