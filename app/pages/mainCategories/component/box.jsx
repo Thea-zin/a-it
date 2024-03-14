@@ -6,8 +6,8 @@ import Link from "next/link";
 function box({ addIds }) {
   return (
     <div>
-      <div className=" grid grid-cols-4">
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold  hover:bg-[#1e293b] hover:text-white">
+      <div className=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="Trello border border-gray p-3 rounded-lg  font-semibold  hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>Trello</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -92,7 +92,7 @@ function box({ addIds }) {
             <img src="/photo/icon/trello.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>Copy.ai</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -177,7 +177,7 @@ function box({ addIds }) {
             <img src="/photo/icon/CopyAI.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>ChatGPT</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -262,7 +262,7 @@ function box({ addIds }) {
             <img src="/photo/icon/ChatGPT.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>AutoBlog</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -347,7 +347,7 @@ function box({ addIds }) {
             <img src="/photo/icon/Autoblog.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg  font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>BingAI</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -432,7 +432,7 @@ function box({ addIds }) {
             <img src="/photo/icon/bing.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>Adobe Sensei</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -517,7 +517,7 @@ function box({ addIds }) {
             <img src="/photo/icon/Claude.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>Dropbox</p>
             <div className="flex items-center mb-4 rounded-full">
@@ -602,7 +602,7 @@ function box({ addIds }) {
             <img src="/photo/icon/dropbox.png" alt="" />
           </Link>
         </div>
-        <div className="Trello border border-gray p-3 rounded-lg h-48 w-56 mb-8 font-semibold hover:bg-[#1e293b] hover:text-white">
+        <div className="Trello border border-gray p-3 rounded-lg font-semibold hover:bg-[#1e293b] hover:text-white">
           <div className="flex justify-between">
             <p>Goolge Doc</p>
             <div className="flex items-center mb-4 rounded-full">

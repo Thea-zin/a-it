@@ -23,6 +23,7 @@ export async function POST(req) {
       icon: "",
       id: "",
       name: formData.get("serviceName"),
+      nci: formData.get("serviceName").toLowerCase(),
       reviews: 0,
       features: {
         pricing: true,

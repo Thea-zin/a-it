@@ -354,7 +354,7 @@ export default function SoftwarePage({ searchParams }) {
               </button>
             </div>
 
-            <div className="flex sm:hidden place-items-center mt-3">
+            <div className="flex place-items-center mt-3">
               {[1, 2, 3].map((item, index) => {
                 return (
                   <button
@@ -366,7 +366,22 @@ export default function SoftwarePage({ searchParams }) {
                 );
               })}
               <button className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center">
-                <img src="/write_review\icons\next.png" alt="" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.7em"
+                  height="1.7em"
+                  viewBox="0 0 48 48"
+                  className="fill-transparent"
+                >
+                  <g
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-width="4"
+                  >
+                    <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                    <path stroke-linecap="round" d="m21 33l9-9l-9-9" />
+                  </g>
+                </svg>
               </button>
             </div>
           </div>
