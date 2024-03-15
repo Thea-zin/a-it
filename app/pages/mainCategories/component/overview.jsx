@@ -101,7 +101,7 @@ export default function Overview() {
                 </div>
                 <div className=" flex justify-center mb-8">
                   <button className="text-xl font-medium w-60 text-white bg-[#2F455C] p-3 rounded-full">
-                    <Link href={"/pages/software_page?id=1"}>Learn More</Link>
+                    <Link href={"/pages/software?id=1"}>Learn More</Link>
                   </button>
                 </div>
               </div>

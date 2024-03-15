@@ -67,17 +67,17 @@ export default function Products() {
     setTotal(res.total);
   };
 
-  const getNextPage = async () => {
+  const goToPageNumber = async (pgn) => {
     try {
       const temp = await fetch("/api/software/products", {
         method: "POST",
-        body: JSON.stringify({ isLoadMore: false, pageNumber: pageNumber + 1 }),
+        body: JSON.stringify({ isLoadMore: false, pageNumber: pgn }),
       });
       const res = await temp.json();
 
       if (res.softwares.length != 0) {
         console.log("Get next page condition break throug!");
-        setPageNumber(pageNumber + 1);
+        setPageNumber(pgn);
         setSoftwares(res.softwares);
       }
     } catch (e) {}
@@ -172,173 +172,84 @@ export default function Products() {
               <div className="software mt-5">
                 <div className="title mt-5 font-semibold">Software Rating </div>
                 <div className="checkbox mt-5">
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6 "
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                          clipRule="evenodd"
+                  {[
+                    ["5", "rate5"],
+                    ["4", "rate4"],
+                    ["3", "rate3"],
+                    ["2", "rate2"],
+                    ["1", "rate1"],
+                    ["Not Enough Rating", "rate0"],
+                  ].map((item, index) => {
+                    return (
+                      <div className="flex items-center mb-2" key={index}>
+                        <input
+                          id={item[1]}
+                          type="checkbox"
+                          value=""
+                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
                         />
-                      </svg>
-                      <div className="text-white font-bold">4.4</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6 "
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <div className="text-white font-bold">4.5 & above</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6 "
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <div className="text-white font-bold">2.5 & above</div>
-                    </label>
-                  </div>
+                        <label
+                          htmlFor={item[1]}
+                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 bg-[#2F455C] flex items-center p-1 rounded-lg"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-6 h-6 "
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <div className="text-white font-bold mx-1">
+                            {item[0]}
+                          </div>
+                        </label>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className="busineses">
-                <div className="title mt-5 font-semibold">Business type</div>
+                <div className="title mt-5 font-semibold">Categories</div>
                 <div className="checkbox mt-5">
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                    >
-                      <div className="text-black ">Student</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                    >
-                      <div className="text-black">Start Up</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                    >
-                      <div className="text-black ">Freelancer</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                    >
-                      <div className="text-black ">SMEs</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                    >
-                      <div className="text-black ">Agency</div>
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                    >
-                      <div className="text-black ">Enterprise</div>
-                    </label>
-                  </div>
+                  {[
+                    ["Writing", "writing"],
+                    ["Speech to Text", "speechtotext"],
+                    ["Social Media", "socialmedia"],
+                    ["Music", "music"],
+                    ["Prompt AI", "promtai"],
+                    ["Education", "education"],
+                    ["Code Assistant", "codeassistant"],
+                    ["Architecture", "architecture"],
+                    ["Graphic Design", "graphicdesign"],
+                    ["Project Management", "projectmanagement"],
+                    ["Finance", "finance"],
+                    ["Logistic", "logistic"],
+                    ["CRM", "crm"],
+                    ["Marketing", "marketing"],
+                    ["E-Commerce", "e-commerce"],
+                  ].map((item, index) => {
+                    return (
+                      <div className="flex items-center mb-2" key={index}>
+                        <input
+                          id={item[1]}
+                          type="checkbox"
+                          value=""
+                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label
+                          htmlFor={item[1]}
+                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                        >
+                          <div className="text-black ">{item[0]}</div>
+                        </label>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -440,7 +351,7 @@ export default function Products() {
                                 id="default-checkbox"
                                 type="checkbox"
                                 value=""
-                                className="w-4 h-4 bg-white border-white rounded-full focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2  "
+                                className="appearance-none w-7 h-7 bg-white border-white rounded-full dark:ring-offset-gray-800"
                               />
                             </div>
                           </div>
@@ -466,7 +377,7 @@ export default function Products() {
                           </div>
                           <Link
                             href={{
-                              pathname: "/pages/software_page",
+                              pathname: "/pages/software",
                               query: { id: 8 },
                             }}
                             className="pic flex justify-center my-5 "
@@ -504,21 +415,30 @@ export default function Products() {
                         </svg>
                       </button>
                     )}
-                    {[1, 2, 3].map((item, index) => {
+                    {Array.from(
+                      new Array(Math.ceil(total / pageStep)),
+                      (x, i) => i + 1
+                    ).map((item, index) => {
                       return (
                         <button
                           key={index}
-                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full"
+                          className={`bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full ${
+                            pageNumber == index + 1 &&
+                            "bg-darkblue font-bold text-white"
+                          }`}
+                          onClick={() => {
+                            goToPageNumber(index + 1);
+                          }}
                         >
                           {item}
                         </button>
                       );
                     })}
-                    {pageNumber != Math.ceil(total / pageStep) && (
+                    {pageNumber != Math.min(Math.ceil(total / pageStep), 5) && (
                       <button
                         className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
                         onClick={() => {
-                          getNextPage();
+                          goToPageNumber(pageNumber + 1);
                         }}
                       >
                         <svg
