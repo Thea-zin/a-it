@@ -7,6 +7,7 @@ export default function Products() {
   const [allowComp, setAllowComp] = useState(false);
   const [tids, setTids] = useState([]);
   const [names, setNames] = useState([]);
+  const [icons, setIcons] = useState([]);
   const [softwares, setSoftwares] = useState([]);
   const [startAfter, setStartAfter] = useState("");
   const [startAt, setStartAt] = useState("");
@@ -14,18 +15,22 @@ export default function Products() {
   const [total, setTotal] = useState(0);
   const pageStep = 12;
 
-  function addIds(id, name, add) {
+  function addIds(id, name, add, icon = "") {
     let tempid = tids;
     let tempnames = names;
+    let tempicon = icons;
     if (add) {
       tempid.push(id);
       tempnames.push(name);
+      tempicon.push(icon);
     } else {
       const idindex = tempid.indexOf(id);
       const nameindex = tempnames.indexOf(name);
+      const iconindex = tempicon.indexOf(icon);
       if (idindex >= 0 || nameindex >= 0) {
         tempid.splice(idindex, 1);
         tempnames.splice(nameindex, 1);
+        tempicon.splice(iconindex, 1);
       }
     }
 
@@ -38,8 +43,9 @@ export default function Products() {
       setAllowComp(true);
     }
 
-    setTids(tempid);
-    setNames(tempnames);
+    setIcons([...tempicon]);
+    setTids([...tempid]);
+    setNames([...tempnames]);
   }
 
   useEffect(() => {
@@ -304,31 +310,50 @@ export default function Products() {
           </div>
 
           <div className="w-full flex-1">
-            <div className="text ml-5">
-              {/* <div className="font-bold text-2xl">
-                Best Content Marketing Software
-              </div>
-              <div className="text-[#4A4A4A] mb-5">
-                See more below to select the best Content Marketing software.
-              </div> */}
-
-              <div className="popular bg-white rounded-2xl p-6 border-2 border-gray">
-                <div className="flex place-content-center min-h-[50px]">
-                  <div>
+            <div className="bg-[#F7F8FA] ml-5">
+              <div className="bg-white rounded-2xl p-6 border-2 border-gray">
+                <div className="flex justify-between">
+                  <div className="flex">
+                    {icons.map((item, index) => {
+                      return (
+                        <button
+                          key={index}
+                          className="ml-2 s900:ml-10 border-[1px] border-gray rounded-lg overflow-clip"
+                        >
+                          <img src={item} alt="" className="h-16" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="grid place-content-center place-items-center">
                     <Link
                       href={{
                         pathname: "/pages/comparison",
                         query: {},
                       }}
-                      className={`bg-[#4A4A4A] p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black ${
+                      className={`bg-[#4A4A4A] flex place-content-center place-items-center p-2 rounded-lg font-semibold text-white hover:bg-white border-2 border-solid border-[#black] hover:text-black ${
                         allowComp ? "" : "pointer-events-none"
                       }`}
                     >
-                      Comparison
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1.6em"
+                        height="1.6em"
+                        viewBox="0 0 32 32"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M28 6H18V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2M4 15h6.17l-2.58 2.59L9 19l5-5l-5-5l-1.41 1.41L10.17 13H4V4h12v20H4Zm12 13v-2a2 2 0 0 0 2-2V8h10v9h-6.17l2.58-2.59L23 13l-5 5l5 5l1.41-1.41L21.83 19H28v9Z"
+                        />
+                      </svg>
+                      <p className="ml-2">Compare</p>
                     </Link>
                   </div>
                 </div>
-
+              </div>
+            </div>
+            <div className="text ml-5 mt-3">
+              <div className="popular bg-white rounded-2xl p-6 border-2 border-gray">
                 <div className="ml-4 min-h-[735px] relative">
                   <div className="grid grid-cols-2 s900:grid-cols-3 lg:grid-cols-4 gap-5 ">
                     {softwares.map((item, index) => {
@@ -345,13 +370,14 @@ export default function Products() {
                                   addIds(
                                     item.id,
                                     item.name,
-                                    event.currentTarget.checked
+                                    event.currentTarget.checked,
+                                    item.icon
                                   );
                                 }}
                                 id="default-checkbox"
                                 type="checkbox"
                                 value=""
-                                className="appearance-none w-7 h-7 bg-white border-white rounded-full dark:ring-offset-gray-800"
+                                className="w-7 h-7 bg-white border-white rounded-full dark:ring-offset-gray-800"
                               />
                             </div>
                           </div>
@@ -462,18 +488,6 @@ export default function Products() {
                   </div>
                 </div>
               </div>
-              {/* <div className="popular bg-white rounded-2xl p-6 border-2 border-gray mt-5">
-                <div className="text mb-5">
-                  <div className="font-semibold text-2xl">Popular Product</div>
-                  <div className="text-[#4A4A4A] ">
-                    Popular Content Analytics products used by Content Marketing
-                    professionals.
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <CardItem2 addIds={addIds}></CardItem2>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
