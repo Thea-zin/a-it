@@ -18,15 +18,13 @@ export default function Overview() {
     if (add) {
       tempid.push(id);
       tempnames.push(name);
-      tempicon.push(icon);
+      tempicon.push([icon, name, id]);
     } else {
       const idindex = tempid.indexOf(id);
-      const nameindex = tempnames.indexOf(name);
-      const iconindex = tempicon.indexOf(icon);
       if (idindex >= 0 || nameindex >= 0) {
         tempid.splice(idindex, 1);
-        tempnames.splice(nameindex, 1);
-        tempicon.splice(iconindex, 1);
+        tempnames.splice(idindex, 1);
+        tempicon.splice(idindex, 1);
       }
     }
 
@@ -347,8 +345,11 @@ export default function Overview() {
                   <button
                     key={index}
                     className="ml-10 border-[1px] border-gray rounded-lg overflow-clip"
+                    onClick={() => {
+                      addIds(item[2], item[1], false, item[0]);
+                    }}
                   >
-                    <img src={item} alt="" className="h-16" />
+                    <img src={item[0]} alt="" className="h-16" />
                   </button>
                 );
               })}
@@ -433,51 +434,67 @@ export default function Overview() {
                         return (
                           <div
                             key={index}
-                            className="border border-gray p-3 rounded-lg  font-semibold  hover:bg-[#1e293b] hover:text-white"
+                            className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
                           >
-                            <div className="flex justify-between">
-                              <p>{item.name}</p>
-                              <div className="flex items-center mb-4 rounded-full">
-                                <input
-                                  onChange={(event) => {
-                                    addIds(
-                                      item.id,
-                                      item.name,
-                                      event.currentTarget.checked,
-                                      item.icon
-                                    );
-                                  }}
-                                  id="default-checkbox"
-                                  type="checkbox"
-                                  value=""
-                                  className="w-7 h-7 bg-white border-white rounded-full dark:ring-offset-gray-800"
-                                />
+                            <div className="flex justify-between flex-wrap">
+                              <div>
+                                <p className="text-ellipsis">{item.name}</p>
+                                <div className="star flex flex-wrap">
+                                  <div className="flex">
+                                    {[1, 2, 3, 4, 5].map((it, ind) => {
+                                      return (
+                                        <svg
+                                          width="18"
+                                          height="17"
+                                          viewBox="0 0 18 17"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          key={ind}
+                                        >
+                                          <path
+                                            d="M9.00033 14.275L4.85033 16.775C4.667 16.8916 4.47533 16.9416 4.27533 16.9249C4.07533 16.9083 3.90033 16.8416 3.75033 16.725C3.60033 16.6083 3.48366 16.4623 3.40033 16.287C3.317 16.1116 3.30033 15.916 3.35033 15.7L4.45033 10.975L0.775329 7.79995C0.608662 7.64995 0.504662 7.47895 0.463329 7.28695C0.421996 7.09495 0.434329 6.90762 0.500329 6.72495C0.566996 6.54162 0.666995 6.39162 0.800329 6.27495C0.933662 6.15828 1.117 6.08328 1.35033 6.04995L6.20033 5.62495L8.07533 1.17495C8.15866 0.974952 8.288 0.824951 8.46333 0.724951C8.63866 0.624951 8.81766 0.574951 9.00033 0.574951C9.18366 0.574951 9.36266 0.624951 9.53733 0.724951C9.712 0.824951 9.84133 0.974952 9.92533 1.17495L11.8003 5.62495L16.6503 6.04995C16.8837 6.08328 17.067 6.15828 17.2003 6.27495C17.3337 6.39162 17.4337 6.54162 17.5003 6.72495C17.567 6.90829 17.5797 7.09595 17.5383 7.28795C17.497 7.47995 17.3927 7.65062 17.2253 7.79995L13.5503 10.975L14.6503 15.7C14.7003 15.9166 14.6837 16.1126 14.6003 16.288C14.517 16.4633 14.4003 16.609 14.2503 16.725C14.1003 16.8416 13.9253 16.9083 13.7253 16.9249C13.5253 16.9416 13.3337 16.8916 13.1503 16.775L9.00033 14.275Z"
+                                            fill="#F3B146"
+                                          />
+                                        </svg>
+                                      );
+                                    })}
+                                  </div>
+                                  <p className="text-gray text-ellipsis">
+                                    (2,145)
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                            <div className="star flex">
-                              {[1, 2, 3, 4, 5].map((it, ind) => {
-                                return (
-                                  <svg
-                                    width="18"
-                                    height="17"
-                                    viewBox="0 0 18 17"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    key={ind}
+
+                              <div className="flex items-center mb-4">
+                                {!tids.includes(item.id) && (
+                                  <button
+                                    className="p-1 group-hover:bg-white bg-[#1e293b] border-white rounded dark:ring-offset-gray-800"
+                                    onClick={() => {
+                                      addIds(
+                                        item.id,
+                                        item.name,
+                                        true,
+                                        item.icon
+                                      );
+                                    }}
                                   >
-                                    <path
-                                      d="M9.00033 14.275L4.85033 16.775C4.667 16.8916 4.47533 16.9416 4.27533 16.9249C4.07533 16.9083 3.90033 16.8416 3.75033 16.725C3.60033 16.6083 3.48366 16.4623 3.40033 16.287C3.317 16.1116 3.30033 15.916 3.35033 15.7L4.45033 10.975L0.775329 7.79995C0.608662 7.64995 0.504662 7.47895 0.463329 7.28695C0.421996 7.09495 0.434329 6.90762 0.500329 6.72495C0.566996 6.54162 0.666995 6.39162 0.800329 6.27495C0.933662 6.15828 1.117 6.08328 1.35033 6.04995L6.20033 5.62495L8.07533 1.17495C8.15866 0.974952 8.288 0.824951 8.46333 0.724951C8.63866 0.624951 8.81766 0.574951 9.00033 0.574951C9.18366 0.574951 9.36266 0.624951 9.53733 0.724951C9.712 0.824951 9.84133 0.974952 9.92533 1.17495L11.8003 5.62495L16.6503 6.04995C16.8837 6.08328 17.067 6.15828 17.2003 6.27495C17.3337 6.39162 17.4337 6.54162 17.5003 6.72495C17.567 6.90829 17.5797 7.09595 17.5383 7.28795C17.497 7.47995 17.3927 7.65062 17.2253 7.79995L13.5503 10.975L14.6503 15.7C14.7003 15.9166 14.6837 16.1126 14.6003 16.288C14.517 16.4633 14.4003 16.609 14.2503 16.725C14.1003 16.8416 13.9253 16.9083 13.7253 16.9249C13.5253 16.9416 13.3337 16.8916 13.1503 16.775L9.00033 14.275Z"
-                                      fill="#F3B146"
-                                    />
-                                  </svg>
-                                );
-                              })}
-                              <p className="text-gray">(2,145)</p>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="1.6em"
+                                      height="1.6em"
+                                      viewBox="0 0 32 32"
+                                      className="group-hover:stroke-black group-hover:fill-black stroke-white fill-white stroke-0"
+                                    >
+                                      <path d="M28 6H18V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2M4 15h6.17l-2.58 2.59L9 19l5-5l-5-5l-1.41 1.41L10.17 13H4V4h12v20H4Zm12 13v-2a2 2 0 0 0 2-2V8h10v9h-6.17l2.58-2.59L23 13l-5 5l5 5l1.41-1.41L21.83 19H28v9Z" />
+                                    </svg>
+                                  </button>
+                                )}
+                              </div>
                             </div>
                             <Link
                               href={{
                                 pathname: "/pages/software",
-                                query: { id: 8 },
+                                query: { id: item.id },
                               }}
                               className="pic flex justify-center my-5 "
                             >
@@ -490,18 +507,6 @@ export default function Overview() {
                   )}
                 </div>
               </div>
-              {/* <div className="popular bg-white rounded-2xl p-6 border-2 border-gray mt-5">
-                <div className="text mb-5">
-                  <div className="font-semibold text-2xl">Popular Product</div>
-                  <div className="text-[#4A4A4A] ">
-                    Popular Content Analytics products used by Content Marketing
-                    professionals.
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <CardItem2 addIds={addIds}></CardItem2>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

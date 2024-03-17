@@ -9,6 +9,12 @@ import Products from "./component/products";
 const Page = () => {
   const [tap, setTap] = useState(0);
 
+  const onKeyDown = (bypass = false, event) => {
+    if (bypass || event.key === "Enter") {
+      setTap(1);
+    }
+  };
+
   return (
     <div className="min-w-[500px]">
       <div className="relative content-top bg-black h-44 ">
@@ -16,23 +22,35 @@ const Page = () => {
           <div className="text-[#1DCDFE] font-semibold text-3xl mt-9 ml-7">
             Softwares
           </div>
-          <div className="bg-white flex h-9 w-96 rounded-full p-2 mt-9 ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-              placeholder="Search Mockups, Logos..."
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+          <div className="flex place-items-end">
+            <div className="text-black px-3 bg-[#D9D9D9] rounded-full flex py-2">
+              <div className="flex place-items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0"
+                  ></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search software"
+                className="outline-none bg-transparent w-full ml-2"
+                onKeyDown={(e) => {
+                  onKeyDown(false, e);
+                }}
+                onChange={(e) => {
+                  // setQuery(e.target.value);
+                }}
               />
-            </svg>
-            <input type="text" />
+            </div>
           </div>
         </div>
         <div className="absolute bottom-0">

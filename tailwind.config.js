@@ -37,6 +37,7 @@ module.exports = {
         xsm: "100px",
         xm: '420px',
         s900: '900px',
+        s1100: '1100px',
         ...defaultTheme.screens
       },
       fontSize: {
