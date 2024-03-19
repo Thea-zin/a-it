@@ -339,7 +339,7 @@ export default function Overview() {
       <div className="bg-[#F7F8FA] px-8 pt-8">
         <div className="bg-white rounded-2xl p-6 border-2 border-gray">
           <div className="flex justify-between">
-            <div className="flex">
+            <div className="flex flex-wrap">
               {icons.map((item, index) => {
                 return (
                   <button

@@ -10,6 +10,8 @@ export default function PublishSoftware() {
   const [logoMark, setLogoMark] = useState(true);
   const [logo, setLogo] = useState(null);
   const [form, setForm] = useState(null);
+  const [categoryContent, setCategoryContent] = useState("");
+  const [showCategoryList, setShowCategoryList] = useState(false);
   const didMount = useRef(true);
 
   const updateLogo = (logo) => {
@@ -47,6 +49,14 @@ export default function PublishSoftware() {
       }
     }
   }, [form]);
+
+  useEffect(() => {
+    if (categoryContent != "" && categoryContent != null) {
+      setShowCategoryList(true);
+    } else {
+      setShowCategoryList(false);
+    }
+  }, [categoryContent]);
 
   const acceptable = (item) => {
     return item != null && item != "";
@@ -121,26 +131,38 @@ export default function PublishSoftware() {
                 Category <span className="text-red">*</span>
               </label>
               <br />
-              <input
-                type="text"
-                id="category"
-                name="category"
-                className={`w-full border-[1px] py-2 px-5 rounded-full focus:outline-none ${
-                  !category && "border-red"
-                }`}
-              />
+              <div className="flex relative">
+                <input
+                  type="text"
+                  id="category"
+                  name="category"
+                  className={`w-full border-[1px] py-2 px-5 rounded-full focus:outline-none ${
+                    !category && "border-red"
+                  }`}
+                  onChange={(e) => {
+                    setCategoryContent(e.target.value);
+                  }}
+                />
+                <button className="bg-white group hover:bg-darkblue rounded-full p-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="2.2em"
+                    height="2.2em"
+                    viewBox="0 0 24 24"
+                    className=" group-hover:fill-white stroke-0 fill-darkblue"
+                  >
+                    <path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m-5 6l5 5l5-5z"></path>
+                  </svg>
+                </button>
+                {showCategoryList && (
+                  <div className="absolute -bottom-6 w-full bg-green-400">
+                    category to choose
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex-1">
-              <label htmlFor="seviceName" className="font-bold">
-                Company
-              </label>
-              <br />
-              <input
-                type="text"
-                id="company"
-                name="company"
-                className={`w-full border-[1px] py-2 px-5 rounded-full focus:outline-none`}
-              />
+            <div className="flex-1 bg-blue-700">
+              <button className="bg-red">category</button>
             </div>
           </div>
           <div className="mt-8">

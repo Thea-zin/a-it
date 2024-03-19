@@ -20,9 +20,6 @@ export async function POST(req) {
     let q = query(
       collection(firestore, "softwares"),
       orderBy("nci"),
-      startAt(request.search),
-      endAt(request.search + "~"),
-      limit(request.limit)
     );
 
     const documentSnapshots = await getDocs(q);
@@ -30,8 +27,7 @@ export async function POST(req) {
     let softwares = [];
     for (let doc of documentSnapshots.docs) {
       let temp = doc.data();
-      temp.id = doc.id;
-      softwares.push(temp);
+      softwares.push(temp.nci);
     }
 
     return NextResponse.json({ softwares: softwares }, { status: 200 });

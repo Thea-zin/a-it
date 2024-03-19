@@ -47,7 +47,7 @@ export default function ComparisonPage() {
       try {
         let ids = [];
         tids.forEach((id) => {
-          if (!isNaN(parseInt(id))) {
+          if (id != null && id != "") {
             ids.push(id);
           }
         });
@@ -68,6 +68,7 @@ export default function ComparisonPage() {
             }
           });
         });
+        console.log(tproduct);
         setProducts(tproduct);
       } catch (e) {
         router.push("/pages/mainCategories");
@@ -195,7 +196,8 @@ export default function ComparisonPage() {
             <div className="w-[70%] ml-10">
               <p className="text-3xl font-semibold mt-3">Comparing</p>
               <p className="text-[#4A4A4A]">
-                See more below to select the best AI software that suit your needs.
+                See more below to select the best AI software that suit your
+                needs.
               </p>
               {products.length == 0 ? (
                 <div className="flex place-items-center place-content-center pt-4 text-[80px]">

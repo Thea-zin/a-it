@@ -42,18 +42,19 @@ export default function SoftwarePage({ searchParams }) {
   };
 
   const gemini = async (name) => {
-    // const temp = await fetch("/api/gemini", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     prompt: `please describe in detail about midjourney ai. what is it? what is it use for? its business values? who created it? when was it created? and so on. make it as detail as possible.`,
-    //   }),
-    // });
     const temp = await fetch("/api/gemini", {
       method: "POST",
       body: JSON.stringify({
-        prompt: `please introduce ${name}. describe it as you would to normal user and business user. make it a very detailed answer.`,
+        prompt: `What is ${name}? what is it use for? what are its business values? make it as detail as possible.`,
       }),
     });
+    // const temp = await fetch("/api/gemini", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     prompt: `please introduce ${name}. describe it as you would to normal user and business user. make it a very detailed answer.`,
+    //   }),
+    // });
+
     const res = await temp.json();
     let temptext = res.result;
     var regex = /(?<=\*\*)(.*?)(?=\*\*)/g;
@@ -226,7 +227,7 @@ export default function SoftwarePage({ searchParams }) {
             </div>
           </div>
         ) : (
-          <div className="animate-pulse flex min-w-[75%] space-x-4">
+          <div className="animate-pulse flex min-w-[70%] space-x-4">
             <div className="flex-1 space-y-6 py-1">
               <div className="h-2 bg-slate-200 rounded"></div>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => {

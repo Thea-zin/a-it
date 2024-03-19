@@ -8,68 +8,100 @@ const HomePage = () => {
     const getData = async () => {
       var data = await fetch("/api/home");
       data = await data.json();
-      console.log(data)
+      console.log(data);
       let temp = [];
       data.data.forEach((software) => {
         temp.push(software);
       });
-      setItemDisplay(temp)
+      setItemDisplay(temp);
     };
-    getData()
+    getData();
   }, []);
 
   return (
     <div className="">
-      <div className='pl-7 pr-7'>
-        <div className=" scale-95 h-screen max-w-screen bg-cover bg-[url('/photo/background.png')] flex flex-col justify-center items-center rounded-lg" >
-                <div className='mb-64 text-center animate-pulse'>
-                  <h1 className='text-white font-simibold text-7xl '>Where Leading Company</h1>
-                  <h1 className='text-white font-simibold text-7xl'>fine best product</h1>
-                </div>
-                
-                <div className="search form-container w-3/5">
-                    <form >   
-                        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                </svg>
-                            </div>
-                            <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-500 " placeholder="Enter product, categories, servicec name..." required />
-                            <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-[#2F455C] hover:bg-[#2F455C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 ">Search</button>
-                        </div>
-                        <p className='text-white text-center mt-2 text-xl'>Find the right software and services based on <span className='text-cyan-500'>2,318,200+</span> real reviews.</p>
-                    </form>
-            
-                    
-                </div>
-                    
+      <div className="pl-7 pr-7">
+        <div className=" scale-95 h-screen max-w-screen bg-cover bg-[url('/photo/background.png')] flex flex-col justify-center items-center rounded-lg">
+          <div className="mb-64 text-center animate-pulse">
+            <h1 className="text-white font-simibold text-7xl ">
+              Where Leading Company
+            </h1>
+            <h1 className="text-white font-simibold text-7xl">
+              fine best product
+            </h1>
+          </div>
 
+          <div className="search form-container w-3/5">
+            <form>
+              <label
+                for="default-search"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+              >
+                Search
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="search"
+                  id="default-search"
+                  class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-500 "
+                  placeholder="Enter product, categories, servicec name..."
+                  required
+                />
+                <button
+                  type="submit"
+                  class="text-white absolute right-2.5 bottom-2.5 bg-[#2F455C] hover:bg-[#2F455C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 "
+                >
+                  Search
+                </button>
+              </div>
+              <p className="text-white text-center mt-2 text-xl">
+                Find the right software and services based on{" "}
+                <span className="text-cyan-500">2,318,200+</span> real reviews.
+              </p>
+            </form>
+          </div>
         </div>
       </div>
-     
 
       <div className="showproduct flex justify-between m-10">
-        <h1 className='text-4xl  font-simibold'>
-          Popular products
-        </h1>
-    
+        <h1 className="text-4xl  font-simibold">Popular products</h1>
       </div>
 
       <div className="p-4 m-4 border-solid border border-gray-500 rounded-lg ">
         {items_to_display.map((item, index) => {
           return (
-            <div className="border-solid border-2 border-gray-200 bg-gray-100  m-5 flex justify-between" key={index}>
+            <div
+              className="border-solid border-2 border-gray-200 bg-gray-100  m-5 flex justify-between"
+              key={index}
+            >
               <div
                 id="nameproduct"
                 className="flex gap-6 bg-gray-100 p-4 m-4 rounded-lg"
               >
                 <div id="logo">
-                  <img src={`${item.icon}`} />
+                  <img src={`${item.icon}`} className="h-20"/>
                 </div>
                 <div id="name" className="">
-                  <div className="product text-xl font-normal ">{item.name}</div>
+                  <div className="product text-xl font-normal ">
+                    {item.name}
+                  </div>
                   <div id="rated" className="flex gap-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -167,30 +199,36 @@ const HomePage = () => {
           );
         })}
       </div>
-      
 
-      <div className='popular software'>
-          <div className='m-10'>
-              <h1 className='text-4xl  font-simibold'>
-                  Most Popular Software
-              </h1>
-              <h1 className='text-4xl  font-simibold'>
-                  Categories
-          </h1>
-          </div>
-          <div className="categories flex">
-            <div className="title m-10">
-              <div className='grid'>
-                <buttton className='text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg '>Project Management</buttton>
-                <buttton className='text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg '>CRM</buttton>
-                <buttton className='text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg '>ERS System</buttton>
-                <buttton className='text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg '>Online Backup</buttton>
-                <buttton className='text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg '>Attention Tracking</buttton>
-                <buttton className='text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg '>Project Management</buttton>
-              </div>
-              
+      <div className="popular software">
+        <div className="m-10">
+          <h1 className="text-4xl  font-simibold">Most Popular Software</h1>
+          <h1 className="text-4xl  font-simibold">Categories</h1>
+        </div>
+        <div className="categories flex">
+          <div className="title m-10">
+            <div className="grid">
+              <buttton className="text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg ">
+                Project Management
+              </buttton>
+              <buttton className="text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg ">
+                CRM
+              </buttton>
+              <buttton className="text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg ">
+                ERS System
+              </buttton>
+              <buttton className="text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg ">
+                Online Backup
+              </buttton>
+              <buttton className="text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg ">
+                Attention Tracking
+              </buttton>
+              <buttton className="text-xl font-normal hover:bg-sky-500  hover:text-white p-3 rounded-lg ">
+                Project Management
+              </buttton>
             </div>
-          
+          </div>
+
           <div className=" grid grid-cols-3 gap-4 ml-80">
             <div className="Trello border borer-gray-500 p-3 rounded-lg h-48 w-56">
               <p>Trello</p>
@@ -814,49 +852,49 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          </div>
         </div>
+      </div>
 
-        <div className="border-solid border border-gray-500 m-4 p-4 rounded-lg my-20">
-          <div className="flex justify-between gap">
-            <button className="">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </button>
-            <img src="/photo/advertie.png" alt="" className="col-span-2" />
-            <button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </button>
-          </div>
+      <div className="border-solid border border-gray-500 m-4 p-4 rounded-lg my-20">
+        <div className="flex justify-between gap">
+          <button className="">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
+          <img src="/photo/advertie.png" alt="" className="col-span-2" />
+          <button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
         </div>
-        <div className="Feedback flex justify-center">
-          <img src="/photo/Feedback.png" alt="" />
-        </div>
+      </div>
+      <div className="Feedback flex justify-center">
+        <img src="/photo/Feedback.png" alt="" />
+      </div>
 
       <div className="vendor flex justify-center my-20">
         <img src="/photo/vendor.png" alt="" />

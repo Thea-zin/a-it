@@ -8,11 +8,36 @@ import Products from "./component/products";
 
 const Page = () => {
   const [tap, setTap] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
+  const [doneSearching, setDoneSearching] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchSoftware, setSearchSoftware] = useState([]);
 
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
+      if (query != "" && query != null) {
+        setDoneSearching(false);
+        getSearchSoftware();
+        setIsSearching(true);
+      } else setIsSearching(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isSearching) {
       setTap(1);
     }
+  }, [isSearching]);
+
+  const getSearchSoftware = async () => {
+    const temp = await fetch("/api/software/searchwpage", {
+      method: "POST",
+      body: JSON.stringify({ search: query.toLowerCase(), limit: 12 }),
+    });
+    const res = await temp.json();
+
+    setDoneSearching(true);
+    setSearchSoftware(res.softwares);
   };
 
   return (
@@ -47,7 +72,7 @@ const Page = () => {
                   onKeyDown(false, e);
                 }}
                 onChange={(e) => {
-                  // setQuery(e.target.value);
+                  setQuery(e.target.value);
                 }}
               />
             </div>
@@ -59,7 +84,13 @@ const Page = () => {
       </div>
 
       {tap == 0 && <Overview />}
-      {tap == 1 && <Products />}
+      {tap == 1 && (
+        <Products
+          isSearching={isSearching}
+          searchSoftware={searchSoftware}
+          doneSearching={doneSearching}
+        />
+      )}
     </div>
   );
 };
