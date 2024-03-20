@@ -29,7 +29,7 @@ export default function Products({
       tempicon.push([icon, name, id]);
     } else {
       const idindex = tempid.indexOf(id);
-      if (idindex >= 0 || nameindex >= 0) {
+      if (idindex >= 0) {
         tempid.splice(idindex, 1);
         tempnames.splice(idindex, 1);
         tempicon.splice(idindex, 1);

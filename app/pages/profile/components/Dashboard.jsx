@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function TestDashboard() {
+export default function Dashboard() {
   const [softwares, setSoftwares] = useState({});
   const [total, setTotal] = useState(0);
   const [pageInfo, setPageInfo] = useState({
@@ -12,6 +12,13 @@ export default function TestDashboard() {
     search: "",
   });
   const [query, setQuery] = useState("");
+  const [showPopUp, setShowPopup] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState({
+    name: "",
+    nci: "",
+    id: "",
+  });
+  const [deletingSoftware, setDeletingSoftware] = useState(false);
   const pageStep = 8;
 
   useEffect(() => {
@@ -27,6 +34,10 @@ export default function TestDashboard() {
         search: query,
       });
   }, [softwares]);
+
+  useEffect(() => {
+    if (!deletingSoftware) setShowPopup(false);
+  }, [deletingSoftware]);
 
   const getSoftwares = async (pageInfo) => {
     try {
@@ -53,6 +64,25 @@ export default function TestDashboard() {
     } catch (e) {}
   };
 
+  const deleteSoftware = async () => {
+    try {
+      const temp = await fetch("/api/publishSoftware/deleteSoftware", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(itemToDelete),
+      });
+
+      if (temp.status == 200) {
+        for (let i = 0; i < softwares[pageInfo.page].length; i++) {
+          if (softwares[pageInfo.page][i].id == itemToDelete.id) {
+            softwares[pageInfo.page].splice(i, 1);
+          }
+        }
+        setDeletingSoftware(false);
+      }
+    } catch (e) {}
+  };
+
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
       setSoftwares({});
@@ -60,7 +90,39 @@ export default function TestDashboard() {
   };
 
   return (
-    <div className="p-5">
+    <div className="p-5 relative">
+      {showPopUp && (
+        <div className="fixed top-0 bottom-0 left-0 right-0 flex place-content-center place-items-center bg-opacity-30 bg-black">
+          <div className="w-fit p-10 bg-white border-[1px] border-slate-500 rounded-xl">
+            <p className="text-xl font-bold">{`Deleting "${itemToDelete.name}"`}</p>
+            {deletingSoftware ? (
+              <div className="flex place-content-center">
+                <div>deleting</div>
+              </div>
+            ) : (
+              <div className="flex justify-between mt-7">
+                <button
+                  className="hover:bg-blue-700 p-3 rounded-full hover:text-white text-blue-700 font-bold border-2 border-blue-700"
+                  onClick={() => {
+                    deleteSoftware();
+                    setDeletingSoftware(true);
+                  }}
+                >
+                  Confirm
+                </button>
+                <button
+                  className="hover:bg-red p-3 rounded-full hover:text-white text-red font-bold border-2 border-red"
+                  onClick={() => {
+                    setShowPopup(false);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div className="flex">
         <div className="w-8 h-8">
           <svg
@@ -114,7 +176,6 @@ export default function TestDashboard() {
                 <tr>
                   <th className="py-3">Name</th>
                   <th>Publish Date</th>
-                  <th>Company</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -127,10 +188,7 @@ export default function TestDashboard() {
                           {item.name}
                         </td>
                         <td className="border-slate-300 border-y-[1px]">
-                          27/09/2023
-                        </td>
-                        <td className="border-slate-300 border-y-[1px]">
-                          OpenAI
+                          {item.publishDate}
                         </td>
                         <td className="border-slate-300 border-y-[1px] border-r-[1px] rounded-r-xl">
                           <div className="flex place-content-center">
@@ -153,7 +211,17 @@ export default function TestDashboard() {
                                 </svg>
                               </div>
                             </button>
-                            <button className="group ml-6 p-2 border-2 border-white hover:bg-red active:bg-white rounded-full">
+                            <button
+                              className="group ml-6 p-2 border-2 border-white hover:bg-red active:bg-white rounded-full"
+                              onClick={() => {
+                                setItemToDelete({
+                                  name: item.name,
+                                  nci: item.nci,
+                                  id: item.id,
+                                });
+                                setShowPopup(true);
+                              }}
+                            >
                               <div className="">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"

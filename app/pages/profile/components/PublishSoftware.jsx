@@ -2,16 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function PublishSoftware() {
+export default function PublishSoftware({ handleItemClick }) {
   const [softName, setSoftName] = useState(true);
-  const [description, setDescription] = useState(true);
+  // const [description, setDescription] = useState(true);
   const [category, setCategory] = useState(true);
-  // const [company, setCompany] = useState(true);
   const [logoMark, setLogoMark] = useState(true);
   const [logo, setLogo] = useState(null);
   const [form, setForm] = useState(null);
   const [categoryContent, setCategoryContent] = useState("");
   const [showCategoryList, setShowCategoryList] = useState(false);
+  const [categoryList, setCategoryList] = useState([]);
+  const [chosenCategories, setChosenCategories] = useState([]);
   const didMount = useRef(true);
 
   const updateLogo = (logo) => {
@@ -22,8 +23,8 @@ export default function PublishSoftware() {
 
   const validateForm = (form) => {
     setSoftName(acceptable(form.get("serviceName")));
-    setDescription(acceptable(form.get("description")));
-    setCategory(acceptable(form.get("category")));
+    // setDescription(acceptable(form.get("description")));
+    setCategory(chosenCategories.length != 0);
     // setCompany(acceptable(form.get("company")));
 
     if (
@@ -36,6 +37,9 @@ export default function PublishSoftware() {
     } else {
       setLogoMark(true);
     }
+
+    form.append("categories", chosenCategories);
+
     setForm(form);
   };
 
@@ -44,7 +48,7 @@ export default function PublishSoftware() {
     if (didMount.current) {
       didMount.current = false;
     } else {
-      if (softName && description && category && logoMark) {
+      if (softName && category && logoMark) {
         onPublish(form);
       }
     }
@@ -56,7 +60,12 @@ export default function PublishSoftware() {
     } else {
       setShowCategoryList(false);
     }
+    console.log("category content got changed!");
   }, [categoryContent]);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   const acceptable = (item) => {
     return item != null && item != "";
@@ -70,8 +79,37 @@ export default function PublishSoftware() {
       method: "POST",
       body: form,
     });
-    if (temp.status == 200) console.log("Successfully published!");
-    else console.error("Fail to publish");
+    if (temp.status == 200) {
+      handleItemClick(1);
+    } else if (temp.status == 405) {
+      alert(
+        "Software Already Exist in The Database! Consider Chaning The Name or Making The Name Unique."
+      );
+    } else {
+      alert("Publication fails!");
+    }
+  };
+
+  const getCategories = async () => {
+    const temp = await fetch("/api/publishSoftware/categories", {
+      method: "POST",
+      body: JSON.stringify({}),
+    });
+    const data = await temp.json();
+    setCategoryList([...data.categories.categories]);
+  };
+
+  const updateChosenCategories = (category, add = false) => {
+    let temp = chosenCategories;
+    if (add) {
+      temp.push(category);
+    } else {
+      const index = temp.indexOf(category);
+      if (index >= 0) {
+        temp.splice(index, 1);
+      }
+    }
+    setChosenCategories([...temp]);
   };
 
   return (
@@ -108,9 +146,12 @@ export default function PublishSoftware() {
               className={`w-full border-[1px] py-2 px-5 rounded-full focus:outline-none ${
                 !softName && "border-red"
               }`}
+              onFocus={() => {
+                setShowCategoryList(false);
+              }}
             />
           </div>
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <label htmlFor="seviceName" className="font-bold">
               Description <span className="text-red">*</span>
             </label>
@@ -124,7 +165,7 @@ export default function PublishSoftware() {
                 !description && "border-red"
               }`}
             />
-          </div>
+          </div> */}
           <div className="flex place-content-between mt-8 gap-20">
             <div className="flex-1">
               <label htmlFor="seviceName" className="font-bold">
@@ -141,9 +182,15 @@ export default function PublishSoftware() {
                   }`}
                   onChange={(e) => {
                     setCategoryContent(e.target.value);
+                    console.log("Category content change!");
                   }}
                 />
-                <button className="bg-white group hover:bg-darkblue rounded-full p-1">
+                <div
+                  className="bg-white group hover:bg-darkblue rounded-full p-1 cursor-pointer"
+                  onClick={(e) => {
+                    setShowCategoryList(!showCategoryList);
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="2.2em"
@@ -153,16 +200,47 @@ export default function PublishSoftware() {
                   >
                     <path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m-5 6l5 5l5-5z"></path>
                   </svg>
-                </button>
+                </div>
                 {showCategoryList && (
-                  <div className="absolute -bottom-6 w-full bg-green-400">
-                    category to choose
+                  <div className="absolute top-11 w-full bg-slate-100 p-3 rounded-lg max-h-[300px] overflow-scroll">
+                    {categoryList.map((item, index) => {
+                      if (
+                        item
+                          .toLowerCase()
+                          .includes(categoryContent.toLowerCase()) &&
+                        chosenCategories.indexOf(item) == -1
+                      ) {
+                        return (
+                          <div
+                            key={index}
+                            className="cursor-pointer p-2 rounded-lg hover:bg-darkblue hover:text-white hover:font-bold"
+                            onClick={() => {
+                              updateChosenCategories(item, true);
+                            }}
+                          >
+                            {item}
+                          </div>
+                        );
+                      }
+                    })}
                   </div>
                 )}
               </div>
             </div>
-            <div className="flex-1 bg-blue-700">
-              <button className="bg-red">category</button>
+            <div className="flex-1 flex flex-wrap">
+              {chosenCategories.map((item, index) => {
+                return (
+                  <div
+                    className="bg-darkblue py-2 px-3 h-fit rounded-full text-white font-bold m-1 cursor-pointer"
+                    key={index}
+                    onClick={() => {
+                      updateChosenCategories(item, false);
+                    }}
+                  >
+                    {item}
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="mt-8">
@@ -185,6 +263,7 @@ export default function PublishSoftware() {
                   className="invisible"
                   onChange={(e) => {
                     updateLogo(e.target.files[0]);
+                    setShowCategoryList(false);
                   }}
                 />
                 <br />
@@ -229,6 +308,9 @@ export default function PublishSoftware() {
             // onClick={() => {
             //   onPublish();
             // }}
+            onFocus={() => {
+              setShowCategoryList(false);
+            }}
           >
             Publish
           </button>

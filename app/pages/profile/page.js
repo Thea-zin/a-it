@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Favorite from "./components/Favorite";
 import ProfilePage from "./components/Profile";
 import Setting from "./components/Setting";
@@ -12,6 +12,11 @@ function Profile() {
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
+
+  useEffect(() => {
+    handleItemClick(1);
+  }, []);
+
   return (
     <div className="font-dmsan bg-base p-6 grid grid-cols-3 m-5 min-w-[946px]">
       <div className="col-span-1">
@@ -31,9 +36,11 @@ function Profile() {
             </div>
             <div className="text-body-md space-y-8  mt-[10%] ml-[-20%]">
               <button
-                onClick={() => handleItemClick(5)}
+                onClick={() => handleItemClick(1)}
                 className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 5 ? "active" : ""
+                  activeItem == 1
+                    ? "active bg-cyan rounded-[16px] font-bold"
+                    : ""
                 }`}
               >
                 <svg
@@ -50,28 +57,32 @@ function Profile() {
                 <span className="hover:bg-cyan">Dashboard</span>
               </button>
               <button
-                onClick={() => handleItemClick(6)}
+                onClick={() => handleItemClick(2)}
                 className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 6 ? "active" : ""
+                  activeItem == 2
+                    ? "active bg-cyan rounded-[16px] font-bold"
+                    : ""
                 }`}
               >
                 <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2em"
-            height="2em"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M11 20v-8.15l-2.6 2.6L7 13l5-5l5 5l-1.4 1.45l-2.6-2.6V20zM4 9V6q0-.825.588-1.412T6 4h12q.825 0 1.413.588T20 6v3h-2V6H6v3z"
-            />
-          </svg>
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2em"
+                  height="2em"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M11 20v-8.15l-2.6 2.6L7 13l5-5l5 5l-1.4 1.45l-2.6-2.6V20zM4 9V6q0-.825.588-1.412T6 4h12q.825 0 1.413.588T20 6v3h-2V6H6v3z"
+                  />
+                </svg>
                 <span className="hover:bg-cyan">Publish Software</span>
               </button>
-              <div
-                onClick={() => handleItemClick(1)}
+              <button
+                onClick={() => handleItemClick(3)}
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 1 ? "active" : ""
+                  activeItem == 3
+                    ? "active bg-cyan rounded-[16px] font-bold"
+                    : ""
                 }`}
               >
                 <svg
@@ -82,7 +93,7 @@ function Profile() {
                   xmlns="http://www.w3.org/2000/svg"
                   className="hover:text-cyan mt-[-2%]"
                 >
-                  <g clip-path="url(#clip0_130_2449)">
+                  <g clipPath="url(#clip0_130_2449)">
                     <path
                       d="M4.26667 26.6667V27.7333H6.4V26.6667H4.26667ZM14.9333 26.6667V27.7333H17.0667V26.6667H14.9333ZM6.4 26.6667V25.6H4.26667V26.6667H6.4ZM14.9333 25.6V26.6667H17.0667V25.6H14.9333ZM10.6667 21.3333C11.7983 21.3333 12.8835 21.7829 13.6837 22.583C14.4838 23.3832 14.9333 24.4684 14.9333 25.6H17.0667C17.0667 23.9026 16.3924 22.2747 15.1922 21.0745C13.9919 19.8743 12.3641 19.2 10.6667 19.2V21.3333ZM6.4 25.6C6.4 24.4684 6.84952 23.3832 7.64968 22.583C8.44983 21.7829 9.53508 21.3333 10.6667 21.3333V19.2C8.96928 19.2 7.34142 19.8743 6.14118 21.0745C4.94095 22.2747 4.26667 23.9026 4.26667 25.6H6.4ZM10.6667 8.53333C9.53508 8.53333 8.44983 8.98285 7.64968 9.78301C6.84952 10.5832 6.4 11.6684 6.4 12.8H8.53333C8.53333 12.2342 8.7581 11.6916 9.15817 11.2915C9.55825 10.8914 10.1009 10.6667 10.6667 10.6667V8.53333ZM14.9333 12.8C14.9333 11.6684 14.4838 10.5832 13.6837 9.78301C12.8835 8.98285 11.7983 8.53333 10.6667 8.53333V10.6667C11.2325 10.6667 11.7751 10.8914 12.1752 11.2915C12.5752 11.6916 12.8 12.2342 12.8 12.8H14.9333ZM10.6667 17.0667C11.7983 17.0667 12.8835 16.6171 13.6837 15.817C14.4838 15.0168 14.9333 13.9316 14.9333 12.8H12.8C12.8 13.3658 12.5752 13.9084 12.1752 14.3085C11.7751 14.7086 11.2325 14.9333 10.6667 14.9333V17.0667ZM10.6667 14.9333C10.1009 14.9333 9.55825 14.7086 9.15817 14.3085C8.7581 13.9084 8.53333 13.3658 8.53333 12.8H6.4C6.4 13.9316 6.84952 15.0168 7.64968 15.817C8.44983 16.6171 9.53508 17.0667 10.6667 17.0667V14.9333ZM3.2 6.4H28.8V4.26666H3.2V6.4ZM29.8667 7.46666V24.5333H32V7.46666H29.8667ZM28.8 25.6H3.2V27.7333H28.8V25.6ZM2.13333 24.5333V7.46666H0V24.5333H2.13333ZM3.2 25.6C2.9171 25.6 2.64579 25.4876 2.44575 25.2876C2.24571 25.0875 2.13333 24.8162 2.13333 24.5333H0C0 25.382 0.337142 26.196 0.937258 26.7961C1.53737 27.3962 2.35131 27.7333 3.2 27.7333V25.6ZM29.8667 24.5333C29.8667 24.8162 29.7543 25.0875 29.5542 25.2876C29.3542 25.4876 29.0829 25.6 28.8 25.6V27.7333C29.6487 27.7333 30.4626 27.3962 31.0627 26.7961C31.6629 26.196 32 25.382 32 24.5333H29.8667ZM28.8 6.4C29.0829 6.4 29.3542 6.51238 29.5542 6.71242C29.7543 6.91245 29.8667 7.18377 29.8667 7.46666H32C32 6.61797 31.6629 5.80404 31.0627 5.20392C30.4626 4.6038 29.6487 4.26666 28.8 4.26666V6.4ZM3.2 4.26666C2.35131 4.26666 1.53737 4.6038 0.937258 5.20392C0.337142 5.80404 0 6.61797 0 7.46666H2.13333C2.13333 7.18377 2.24571 6.91245 2.44575 6.71242C2.64579 6.51238 2.9171 6.4 3.2 6.4V4.26666ZM19.2 12.8H25.6V10.6667H19.2V12.8ZM19.2 19.2H25.6V17.0667H19.2V19.2Z"
                       fill="black"
@@ -99,11 +110,13 @@ function Profile() {
                   </defs>
                 </svg>
                 <span className="  hover:bg-cyan">Profile</span>
-              </div>
-              <div
-                onClick={() => handleItemClick(2)}
+              </button>
+              <button
+                onClick={() => handleItemClick(4)}
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 2 ? "active" : ""
+                  activeItem == 4
+                    ? "active bg-cyan rounded-[16px] font-bold"
+                    : ""
                 }`}
               >
                 <svg
@@ -119,39 +132,24 @@ function Profile() {
                   />
                 </svg>
                 <span className="  hover:bg-cyan">Favorite</span>
-              </div>
-              <div
+              </button>
+              <button
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 3 ? "active" : ""
+                  activeItem == 5
+                    ? "active bg-cyan rounded-[16px] font-bold"
+                    : ""
                 }`}
-                onClick={() => handleItemClick(3)}
+                onClick={() => handleItemClick(5)}
               >
                 <img src={"../profile/review.png"}></img>
                 <span className="  hover:bg-cyan">Review</span>
-              </div>
-              <div className="flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold">
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.121 20.1333L15.9997 17.3333L14.8783 20.1333L11.9997 20.3893L14.1863 22.3747L13.5277 25.3333L15.9997 23.7613L18.4717 25.3333L17.813 22.3747L19.9997 20.3893L17.121 20.1333ZM7.99967 2.66667H23.9997V5.33333H7.99967V2.66667ZM5.33301 8H26.6663V10.6667H5.33301V8Z"
-                    fill="black"
-                  />
-                  <path
-                    d="M26.667 16V26.6667H5.33366V16H26.667ZM26.667 13.3333H5.33366C4.62641 13.3333 3.94814 13.6143 3.44804 14.1144C2.94794 14.6145 2.66699 15.2928 2.66699 16V26.6667C2.66699 27.3739 2.94794 28.0522 3.44804 28.5523C3.94814 29.0524 4.62641 29.3333 5.33366 29.3333H26.667C27.3742 29.3333 28.0525 29.0524 28.5526 28.5523C29.0527 28.0522 29.3337 27.3739 29.3337 26.6667V16C29.3337 15.2928 29.0527 14.6145 28.5526 14.1144C28.0525 13.6143 27.3742 13.3333 26.667 13.3333Z"
-                    fill="black"
-                  />
-                </svg>
-                <span className="  hover:bg-cyan">Products</span>
-              </div>
-              <div
-                onClick={() => handleItemClick(4)}
+              </button>
+              <button
+                onClick={() => handleItemClick(6)}
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 4 ? "active" : ""
+                  activeItem == 6
+                    ? "active bg-cyan rounded-[16px] font-bold"
+                    : ""
                 }`}
               >
                 <svg
@@ -167,17 +165,18 @@ function Profile() {
                   />
                 </svg>
                 <span className="  hover:bg-cyan">Setting</span>
-              </div>
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div className="col-span-2">
-        {activeItem === 1 && <ProfilePage></ProfilePage>}
-        {activeItem === 4 && <Setting></Setting>}
-        {activeItem === 2 && <Favorite></Favorite>}
-        {activeItem === 5 && <Dashboard></Dashboard>}
-        {activeItem === 6 && <PublishSoftware></PublishSoftware>}
+        {activeItem === 1 && <Dashboard/>}
+        {activeItem === 2 && <PublishSoftware handleItemClick={handleItemClick}/>}
+        {activeItem === 3 && <ProfilePage/>}
+        {activeItem === 4 && <Favorite/>}
+        {activeItem === 5 && <Favorite/>}
+        {activeItem === 6 && <Setting/>}
       </div>
     </div>
   );
