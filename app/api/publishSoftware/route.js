@@ -29,7 +29,8 @@ export async function POST(req) {
       categories: formData.get("categories").split(","),
       reviews: 0,
       views: 0,
-      publishDate: `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`,
+      publishDate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
+      lastupdate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
     };
 
     // check whether there are other software with the same name already in the database
