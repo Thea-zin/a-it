@@ -26,7 +26,7 @@ export async function POST(req) {
     if (request.last == request.search) {
       q = query(
         collection(firestore, "softwares"),
-        orderBy("name"),
+        orderBy("nci"),
         startAt(request.last),
         endAt(request.search + "~"),
         limit(smax)
@@ -34,7 +34,7 @@ export async function POST(req) {
     } else {
       q = query(
         collection(firestore, "softwares"),
-        orderBy("name"),
+        orderBy("nci"),
         startAfter(request.last),
         endAt(request.search + "~"),
         limit(smax)
@@ -44,7 +44,7 @@ export async function POST(req) {
     const documentSnapshots = await getDocs(q);
     const q2 = (q = query(
       collection(firestore, "softwares"),
-      orderBy("name"),
+      orderBy("nci"),
       startAfter(request.search),
       endAt(request.search + "~")
     ));

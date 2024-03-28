@@ -111,7 +111,7 @@ function Profile() {
                 </svg>
                 <span className="  hover:bg-cyan">Profile</span>
               </button>
-              <button
+              {/* <button
                 onClick={() => handleItemClick(4)}
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
                   activeItem == 4
@@ -132,7 +132,7 @@ function Profile() {
                   />
                 </svg>
                 <span className="  hover:bg-cyan">Favorite</span>
-              </button>
+              </button> */}
               <button
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
                   activeItem == 5

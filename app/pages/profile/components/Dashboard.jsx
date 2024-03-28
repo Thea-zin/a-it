@@ -29,13 +29,14 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(softwares).length == 0)
-      getSoftwares({
-        page: 1,
-        last: query,
-        url: "/api/software/search",
-        search: query,
-      });
+    console.log(softwares);
+    // if (Object.keys(softwares).length == 0)
+    //   getSoftwares({
+    //     page: 1,
+    //     last: query.toLowerCase(),
+    //     url: "/api/software/search",
+    //     search: query.toLowerCase(),
+    //   });
   }, [softwares]);
 
   useEffect(() => {
@@ -55,11 +56,16 @@ export default function Dashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pageInfo),
       });
+      console.log(pageInfo);
       const res = await temp.json();
       let st = softwares;
+      if (pageInfo.url == "/api/software/search" && pageInfo.page == 1) {
+        st = {};
+      }
       if (res.softwares.length > 0) st[pageInfo.page] = res.softwares;
 
       // console.log("RES", res.softwares);
+
       // console.log("ST", st);
       setTotal(res.total);
       setSoftwares(st);
@@ -94,7 +100,21 @@ export default function Dashboard() {
 
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
-      setSoftwares({});
+      if (query == "") {
+        getSoftwares({
+          page: 1,
+          last: "",
+          url: "/api/software/pagination",
+          search: query,
+        });
+      } else {
+        getSoftwares({
+          page: 1,
+          last: "",
+          url: "/api/software/search",
+          search: query,
+        });
+      }
     }
   };
 
@@ -300,24 +320,30 @@ export default function Dashboard() {
                 <button
                   className="border-slate-300 border-[1px] rounded-lg py-2 px-4"
                   onClick={() => {
+                    // console.log(Object.keys(softwares).length);
                     // console.log(softwares);
-                    if (Object.keys(softwares).length <= pageInfo.page) {
-                      getSoftwares({
-                        page: pageInfo.page + 1,
-                        last: pageInfo.last,
-                        url: pageInfo.url,
-                        search: query,
-                      });
-                    } else {
-                      setPageInfo({
-                        page: pageInfo.page + 1,
-                        last: softwares[pageInfo.page + 1][
-                          softwares[pageInfo.page + 1].length - 1
-                        ].name,
-                        url: pageInfo.url,
-                        search: query,
-                      });
-                    }
+                    try {
+                      if (
+                        Object.keys(softwares).length <= pageInfo.page &&
+                        softwares[pageInfo.page].length >= pageStep
+                      ) {
+                        getSoftwares({
+                          page: pageInfo.page + 1,
+                          last: pageInfo.last,
+                          url: pageInfo.url,
+                          search: query,
+                        });
+                      } else {
+                        setPageInfo({
+                          page: pageInfo.page + 1,
+                          last: softwares[pageInfo.page + 1][
+                            softwares[pageInfo.page + 1].length - 1
+                          ].name,
+                          url: pageInfo.url,
+                          search: query,
+                        });
+                      }
+                    } catch (e) {}
                   }}
                 >
                   Next

@@ -39,7 +39,6 @@ export default function ModifySoftware({
         logo.size < 100 ||
         (logo.type != "image/png" && logo.type != "image/jpeg")
       ) {
-        console.log("Logo not fit");
         setLogoMark(false);
       } else {
         form.append("isWithNewLogo", true);
@@ -52,7 +51,6 @@ export default function ModifySoftware({
 
     form.append("categories", chosenCategories);
     form.append("id", id);
-    console.log(form.get("logoUpload"), form.get("isWithNewLogo"));
 
     setForm(form);
   };
@@ -74,7 +72,6 @@ export default function ModifySoftware({
     } else {
       setShowCategoryList(false);
     }
-    console.log("category content got changed!");
   }, [categoryContent]);
 
   useEffect(() => {
@@ -182,7 +179,6 @@ export default function ModifySoftware({
                   }`}
                   onChange={(e) => {
                     setCategoryContent(e.target.value);
-                    console.log("Category content change!");
                   }}
                 />
                 <div
@@ -306,18 +302,23 @@ export default function ModifySoftware({
             </div>
           </div>
         </div>
-        <div className="relative min-h-[40px] mt-16">
+        <div className="relative min-h-[40px] mt-16 flex justify-between">
+          <button
+            className="bg-red border-2 px-32 py-3 text-xl font-semibold text-white rounded-full active:bg-red active:text-white hover:bg-white hover:text-red hover:border-2 hover:border-red"
+            onClick={() => {
+              setShowModifyPanel(false);
+            }}
+          >
+            Cancel
+          </button>
           <button
             type="submit"
-            className="absolute right-0 mr-10 bg-slate-600 px-32 py-3 text-2xl font-semibold text-white rounded-full active:bg-cyan hover:bg-slate-500"
-            // onClick={() => {
-            //   onPublish();
-            // }}
+            className="bg-slate-600 px-32 py-3 text-xl font-semibold text-white rounded-full active:bg-cyan hover:bg-slate-500"
             onFocus={() => {
               setShowCategoryList(false);
             }}
           >
-            Publish
+            Save Changes
           </button>
         </div>
       </form>

@@ -93,7 +93,7 @@ export default function ReviewFormBeta() {
         <div className="mx-2 xm:mx-4 sm:mx-8 md:mx-16 mt-10 mb-5 border-2 border-baselight rounded-xl">
           <div className="w-full flex place-content-center">
             <div className="-translate-y-7 bg-white px-3 flex flex-col place-content-center">
-              <img src={`${softwareInfo.icon}`} alt="" />
+              <img src={`${softwareInfo.icon}`} alt="" className="w-28" />
               <p className="text-center">{`${softwareInfo.name}`}</p>
             </div>
           </div>
@@ -120,8 +120,9 @@ export default function ReviewFormBeta() {
                 <p
                   className={`mt-10 ${!completed.experience ? "text-red" : ""}`}
                 >
-                  <span className="text-red-600 text-red font-bold">* </span>How
-                  would you rate your overall experience with Trello?
+                  <span className="text-red-600 text-red font-bold">* </span>
+                  {`How
+                  would you rate your overall experience with ${softwareInfo.name}?`}
                 </p>
                 <div className="mt-5">
                   <div className="flex relative w-full justify-between">
@@ -160,8 +161,9 @@ export default function ReviewFormBeta() {
                 <p
                   className={`mt-10 ${!completed.recommend ? "text-red" : ""}`}
                 >
-                  <span className="text-red-600 text-red font-bold">* </span>How
-                  likely is it that you would recommend Google Analytics?
+                  <span className="text-red-600 text-red font-bold">* </span>
+                  {`How
+                  likely is it that you would recommend ${softwareInfo.name}?`}
                 </p>
                 <div className="mt-5">
                   <div className="flex relative w-full justify-between">
