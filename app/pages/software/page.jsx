@@ -12,6 +12,7 @@ export default function SoftwarePage({ searchParams }) {
   const [reviews, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState("");
+  const [softwareToCompare, setSoftwareToCompare] = useState([]);
   // let data = ;
   // let iconUrl = null;
   // let reviews = [];
@@ -38,7 +39,18 @@ export default function SoftwarePage({ searchParams }) {
     if (res.data[0].name != "" || res.data[0].name == null) {
       gemini(res.data[0].name);
     }
+    getSameCategories(res.data[0]);
     setData(res.data[0]);
+  };
+
+  const getSameCategories = async (software) => {
+    const temp = await fetch("/api/software/category", {
+      method: "POST",
+      body: JSON.stringify({ category: software.categories[0], limit: 4 }),
+    });
+    const res = await temp.json();
+    console.log(res.softwares);
+    setSoftwareToCompare(res.softwares);
   };
 
   const gemini = async (name) => {
@@ -258,16 +270,11 @@ export default function SoftwarePage({ searchParams }) {
         </div>
 
         <div className="flex-1 xl:ml-6 lg:ml-3">
-          <div className="bg-base p-5 rounded-2xl">
+          {/* <div className="bg-base p-5 rounded-2xl">
             <p className="text-[1rem] xm:text-2xl font-bold text-center">
               {`${data.name} Comparision`}
             </p>
-            {[
-              [data.name, data.icon, "BingAI", 5],
-              [data.name, data.icon, "CanvaAI", 3],
-              [data.name, data.icon, "NotionAI", 6],
-              [data.name, data.icon, "Google Doc AI", 4],
-            ].map((item, index) => {
+            {softwareToCompare.map((item, index) => {
               return (
                 <div
                   className="flex justify-between place-items-center mt-7 items-start"
@@ -297,23 +304,23 @@ export default function SoftwarePage({ searchParams }) {
                 </div>
               );
             })}
-          </div>
+          </div> */}
 
-          <div className="mt-5 bg-base rounded-2xl pt-6">
+          <div className="bg-base rounded-2xl pt-6">
             <p className="text-center text-[1rem] xm:text-2xl font-bold">
-              More From This Category
+              Similar Tools
             </p>
             <div className="lg:block flex place-content-center">
               <div className="mt-5 px-12 lg:w-auto w-96">
-                {[1, 2, 3, 4].map((item, index) => {
-                  return Item(index, "BingAI", item);
+                {softwareToCompare.map((item, index) => {
+                  return <Item id={index} software={item} />;
                 })}
               </div>
             </div>
 
             <div className="flex place-content-center py-10">
               <button className="text-bblue font-semibold">
-                See All Alternatives
+                See More
               </button>
             </div>
           </div>
