@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function TapComponent({ st }) {
-  const [tap, setTap] = useState(0);
-
+export default function TapComponent({ st, tap }) {
   return (
     <div className="text-white ml-32 md:ml-44 text-[1.15rem] font-medium">
       <div className="flex">
@@ -13,7 +11,6 @@ export default function TapComponent({ st }) {
             tap == 0 ? "bg-white text-darkgray " : "bg-darkblue text-white"
           }`}
           onClick={() => {
-            setTap(0);
             st(0);
           }}
         >
@@ -24,7 +21,6 @@ export default function TapComponent({ st }) {
             tap == 1 ? "bg-white text-darkgray " : "bg-darkblue text-white"
           }`}
           onClick={() => {
-            setTap(1);
             st(1);
           }}
         >

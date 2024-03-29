@@ -12,6 +12,11 @@ const Page = () => {
   const [doneSearching, setDoneSearching] = useState(false);
   const [query, setQuery] = useState("");
   const [searchSoftware, setSearchSoftware] = useState([]);
+  const [initialDataToCompare, setInitialDataToCompare] = useState({
+    id: "",
+    name: "",
+    icon: "",
+  });
 
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
@@ -28,6 +33,15 @@ const Page = () => {
       setTap(1);
     }
   }, [isSearching]);
+
+  useEffect(() => {
+    const temp = localStorage.getItem("ait_soft_comp").split(",");
+    if (temp.length == 3 && temp[1] != "") {
+      localStorage.setItem("ait_soft_comp", "");
+      setInitialDataToCompare({ id: temp[0], name: temp[1], icon: temp[2] });
+      setTap(1);
+    }
+  }, []);
 
   const getSearchSoftware = async () => {
     const temp = await fetch("/api/software/searchwpage", {
@@ -79,7 +93,7 @@ const Page = () => {
           </div>
         </div>
         <div className="absolute bottom-0">
-          <TapComponent st={setTap} />
+          <TapComponent st={setTap} tap={tap} />
         </div>
       </div>
 
@@ -89,6 +103,8 @@ const Page = () => {
           isSearching={isSearching}
           searchSoftware={searchSoftware}
           doneSearching={doneSearching}
+          softwareToCompare={initialDataToCompare}
+          setSoftwareToCompare={setInitialDataToCompare}
         />
       )}
     </div>

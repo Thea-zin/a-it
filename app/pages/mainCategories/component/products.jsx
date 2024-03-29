@@ -7,6 +7,8 @@ export default function Products({
   isSearching = false,
   searchSoftware = [],
   doneSearching = false,
+  softwareToCompare = { id: "", name: "", icon: "" },
+  setSoftwareToCompare = () => {},
 }) {
   const [allowComp, setAllowComp] = useState(false);
   const [tids, setTids] = useState([]);
@@ -17,6 +19,7 @@ export default function Products({
   const [startAt, setStartAt] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [total, setTotal] = useState(0);
+  const [categories, setCategories] = useState([]);
   const pageStep = 12;
 
   function addIds(id, name, add, icon = "") {
@@ -24,6 +27,8 @@ export default function Products({
     let tempnames = names;
     let tempicon = icons;
     if (add) {
+      if (tempid.length >= 3) return;
+
       tempid.push(id);
       tempnames.push(name);
       tempicon.push([icon, name, id]);
@@ -58,6 +63,18 @@ export default function Products({
   }, []);
 
   useEffect(() => {}, [softwares]);
+
+  useEffect(() => {
+    if (softwareToCompare.name != "") {
+      setSoftwareToCompare({ id: "", name: "", icon: "" });
+      addIds(
+        softwareToCompare.id,
+        softwareToCompare.name,
+        true,
+        softwareToCompare.icon
+      );
+    }
+  }, []);
 
   const getSoftwares = async () => {
     const temp = await fetch("/api/software/products", {

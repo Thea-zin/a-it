@@ -1,14 +1,13 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Item({ id, software }) {
   return (
-    <div
-      className="m-3 p-2 border-[1px] rounded-md overflow-clip"
-      key={id}
-    >
+    <div className="m-3 p-2 border-[1px] rounded-md overflow-clip" key={id}>
       <Link
         href={{
-          pathname: "/pages/software",
+          pathname: "software",
           query: { id: software.id },
         }}
       >

@@ -637,7 +637,7 @@ export default function ComparisonPage() {
               </div>
             )}
 
-            {comparingItems.review && (
+            {/* {comparingItems.review && (
               <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Reviews
@@ -699,7 +699,7 @@ export default function ComparisonPage() {
                   )}
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

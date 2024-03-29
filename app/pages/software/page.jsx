@@ -6,6 +6,7 @@ import TapSoftwareComponent from "./components/tap_component";
 import Stars from "./components/star_display";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SoftwarePage({ searchParams }) {
   const [data, setData] = useState({ name: "", icon: "" });
@@ -13,13 +14,16 @@ export default function SoftwarePage({ searchParams }) {
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState("");
   const [softwareToCompare, setSoftwareToCompare] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const router = useRouter();
   // let data = ;
   // let iconUrl = null;
   // let reviews = [];
   // populate()
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     setLoading(false);
@@ -30,6 +34,9 @@ export default function SoftwarePage({ searchParams }) {
   }, [text]);
 
   const getData = async () => {
+    setLoading(true);
+    setText("");
+
     const temp = await fetch("/api/software", {
       method: "POST",
       body: JSON.stringify({ ids: [searchParams.id] }),
@@ -37,27 +44,44 @@ export default function SoftwarePage({ searchParams }) {
     const res = await temp.json();
     // console.log(res);
     if (res.data[0].name != "" || res.data[0].name == null) {
-      gemini(res.data[0].name);
+      gemini(res.data[0]);
     }
     getSameCategories(res.data[0]);
+    getAllCategories();
     setData(res.data[0]);
   };
 
   const getSameCategories = async (software) => {
     const temp = await fetch("/api/software/category", {
       method: "POST",
-      body: JSON.stringify({ category: software.categories[0], limit: 4 }),
+      body: JSON.stringify({ category: software.categories[0], limit: 5 }),
     });
     const res = await temp.json();
-    console.log(res.softwares);
-    setSoftwareToCompare(res.softwares);
+    let softwares = [];
+    for (let soft of res.softwares) {
+      if (soft.name != software.name) {
+        softwares.push(soft);
+      }
+    }
+    console.log(softwares);
+    setSoftwareToCompare([...softwares]);
   };
 
-  const gemini = async (name) => {
+  const getAllCategories = async () => {
+    const temp = await fetch("/api/publishSoftware/categories", {
+      method: "POST",
+      body: JSON.stringify({}),
+    });
+    const res = await temp.json();
+    console.log(res);
+    setCategories([...res.categories.categories]);
+  };
+
+  const gemini = async (software) => {
     const temp = await fetch("/api/gemini", {
       method: "POST",
       body: JSON.stringify({
-        prompt: `What is ${name}? what is it use for? what are its business values? make it as detail as possible.`,
+        prompt: `What is ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.categories}`,
       }),
     });
     // const temp = await fetch("/api/gemini", {
@@ -156,7 +180,18 @@ export default function SoftwarePage({ searchParams }) {
             Hard to make a dicision?
           </p>
           <p className="font-medium">Compare with other products</p>
-          <button className="bg-darkblue mt-4 text-white text-xl font-semibold py-3 px-20 rounded-full">
+          <button
+            className={`bg-darkblue mt-4 text-white text-xl font-semibold py-3 px-20 rounded-full ${
+              data.name == "" && "invisible"
+            }`}
+            onClick={() => {
+              localStorage.setItem(
+                "ait_soft_comp",
+                `${data.id},${data.name},${data.icon}`
+              );
+              router.push("mainCategories");
+            }}
+          >
             Compare
           </button>
         </div>
@@ -318,11 +353,9 @@ export default function SoftwarePage({ searchParams }) {
               </div>
             </div>
 
-            <div className="flex place-content-center py-10">
-              <button className="text-bblue font-semibold">
-                See More
-              </button>
-            </div>
+            {/* <div className="flex place-content-center py-10">
+              <button className="text-bblue font-semibold">See More</button>
+            </div> */}
           </div>
 
           <div className="mt-5 bg-base pt-4 pb-8 rounded-2xl">
@@ -331,29 +364,27 @@ export default function SoftwarePage({ searchParams }) {
             </p>
             <div className="lg:block flex place-content-center">
               <div className="px-16 mt-6">
-                {[
-                  "CRM",
-                  "Digital Marketing",
-                  "Sale Management",
-                  "Content Analytic",
-                  "SEO Analytic",
-                  "Designer",
-                  "Business Management",
-                  "Financial",
-                ].map((item, index) => {
+                {categories.map((item, index) => {
                   return (
                     <button
                       className="my-1 flex place-content-start items-center text-bblue mt-3"
                       key={index}
                     >
                       <div className="w-5 xm:w-10">
-                        <img
-                          src="/write_review/icons/next_blue.png"
-                          alt=""
-                          className=""
-                        />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="1.7em"
+                          height="1.7em"
+                          viewBox="0 0 48 48"
+                          className=" stroke-blue-800 fill-transparent"
+                        >
+                          <g strokeLinecap="round" strokeWidth="4">
+                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                            <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
+                          </g>
+                        </svg>
                       </div>
-                      <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1">
+                      <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1 hover:text-blue-800 hover:font-bold">
                         {item}
                       </p>
                     </button>
