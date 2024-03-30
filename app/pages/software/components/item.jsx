@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Item({ id, software }) {
   return (
-    <div className="m-3 p-2 border-[1px] rounded-md overflow-clip" key={id}>
+    <div className="m-3 p-2 border-[1px] rounded-md overflow-clip">
       <Link
         href={{
           pathname: "software",

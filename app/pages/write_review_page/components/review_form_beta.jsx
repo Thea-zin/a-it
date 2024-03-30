@@ -46,6 +46,7 @@ export default function ReviewFormBeta() {
     ];
     const d = new Date();
     let date = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+    let timestamp = Date.now();
     const data = await fetch("/api/review", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -57,11 +58,12 @@ export default function ReviewFormBeta() {
         user_id: "1",
         soft_id: id,
         date: date,
+        timestamp: timestamp,
       }),
     });
 
     // setShowForm(-1);
-    router.push(`/pages/software_page?id=${id}`);
+    router.push(`/pages/software?id=${id}`);
   }
 
   function validateInput() {

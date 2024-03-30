@@ -12,13 +12,13 @@ export default function SoftwarePage({ searchParams }) {
   const [data, setData] = useState({ name: "", icon: "" });
   const [reviews, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [tap, setTap] = useState(0);
   const [text, setText] = useState("");
   const [softwareToCompare, setSoftwareToCompare] = useState([]);
   const [categories, setCategories] = useState([]);
+
   const router = useRouter();
-  // let data = ;
-  // let iconUrl = null;
-  // let reviews = [];
+
   // populate()
 
   useEffect(() => {
@@ -30,8 +30,18 @@ export default function SoftwarePage({ searchParams }) {
   }, [data]);
 
   useEffect(() => {
-    document.getElementById("softwareOverview").innerHTML = text;
+    try {
+      document.getElementById("softwareOverview").innerHTML = text;
+    } catch (e) {}
   }, [text]);
+
+  useEffect(() => {
+    try {
+      if (tap == 0) {
+        document.getElementById("softwareOverview").innerHTML = text;
+      }
+    } catch (e) {}
+  }, [tap]);
 
   const getData = async () => {
     setLoading(true);
@@ -42,13 +52,14 @@ export default function SoftwarePage({ searchParams }) {
       body: JSON.stringify({ ids: [searchParams.id] }),
     });
     const res = await temp.json();
-    // console.log(res);
-    if (res.data[0].name != "" || res.data[0].name == null) {
-      gemini(res.data[0]);
+    console.log(res.data);
+    if (res.data.name != "" || res.data.name == null) {
+      gemini(res.data);
     }
-    getSameCategories(res.data[0]);
+    getSameCategories(res.data);
     getAllCategories();
-    setData(res.data[0]);
+    setData(res.data);
+    setReview(res.reviews);
   };
 
   const getSameCategories = async (software) => {
@@ -151,9 +162,9 @@ export default function SoftwarePage({ searchParams }) {
           <div className="ml-5 mt-1">
             <p className="text-xl sm:text-3xl font-semibold">{data.name}</p>
             <div className="xm:flex mt-2 sm:mt-4 place-items-center">
-              <Stars number={5} />
+              <Stars number={data.star} />
               <p className="xm:border-l-[1px] xm:pl-2 border-divider text-sm sm:text-[1rem] font-semibold text-bblue">
-                9,872 reviews
+                {`${reviews.length} reviews`}
               </p>
             </div>
             <button className="flex place-items-center mt-2 text-darkgray">
@@ -197,7 +208,11 @@ export default function SoftwarePage({ searchParams }) {
         </div>
 
         <div className="absolute bottom-0 right-0 left-0 lg:block flex place-content-center">
-          <TapSoftwareComponent id={searchParams.id} />
+          <TapSoftwareComponent
+            id={searchParams.id}
+            tap={tap}
+            setTap={setTap}
+          />
         </div>
       </div>
 
@@ -205,74 +220,75 @@ export default function SoftwarePage({ searchParams }) {
 
       <div className="lg:flex xl:p-8 p-4 bg-white relative">
         {text != "" ? (
-          <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
-            <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl">
-              <p className="text-[1rem] xm:text-2xl font-bold">{`${data.name} Overview`}</p>
-              <hr className="border-divider my-3" />
-              <p
-                className="font-medium text-xs xm:text-nbase whitespace-break-spaces"
-                id="softwareOverview"
-              ></p>
-              <hr className="border-divider my-5" />
-            </div>
+          tap == 0 ? (
+            <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
+              <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl">
+                <p className="text-[1rem] xm:text-2xl font-bold">{`${data.name} Overview`}</p>
+                <hr className="border-divider my-3" />
+                <p
+                  className="font-medium text-xs xm:text-nbase whitespace-break-spaces"
+                  id="softwareOverview"
+                ></p>
+                <hr className="border-divider my-5" />
+              </div>
 
-            <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
-              <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
-                Software user?
-              </p>
-              <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
-                <Link href={`/pages/write_review_page?id=${searchParams.id}`}>
-                  Write a Review
-                </Link>
-              </button>
-            </div>
-
-            <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
-              <ReviewBox />
-              <ReviewBox />
-              {reviews.map((review, index) => {
-                return (
-                  <>
-                    <ReviewBox review={review} key={index} />
-                  </>
-                );
-              })}
-            </div>
-
-            <div className="grid place-items-center w-full">
-              <div className="hidden sm:flex place-items-center mt-3">
-                {[1, 2, 3, 4, 5, 6].map((item, index) => {
-                  return (
-                    <button
-                      key={index}
-                      className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-9 h-9 rounded-full"
-                    >
-                      {item}
-                    </button>
-                  );
-                })}
-                <button className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-10 h-10 rounded-full grid place-content-center">
-                  <img src="/write_review\icons\next.png" alt="" />
+              <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
+                <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
+                  Software user?
+                </p>
+                <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
+                  <Link href={`/pages/write_review_page?id=${searchParams.id}`}>
+                    Write a Review
+                  </Link>
                 </button>
               </div>
 
-              <div className="flex sm:hidden place-items-center mt-3">
-                {[1, 2, 3].map((item, index) => {
-                  return (
-                    <button
-                      key={index}
-                      className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full"
-                    >
-                      {item}
-                    </button>
-                  );
+              <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
+                <ReviewBox />
+                <ReviewBox />
+                {reviews.map((review, index) => {
+                  if (index > 1) return;
+                  return <ReviewBox review={review} key={index} />;
                 })}
-                <button className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center">
-                  <img src="/write_review\icons\next.png" alt="" />
-                </button>
+              </div>
+
+              <div className="grid place-items-center w-full">
+                <div className="hidden sm:flex place-items-center mt-3">
+                  {[1, 2, 3, 4, 5, 6].map((item, index) => {
+                    return (
+                      <button
+                        key={index}
+                        className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-9 h-9 rounded-full"
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
+                  <button className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-10 h-10 rounded-full grid place-content-center">
+                    <img src="/write_review\icons\next.png" alt="" />
+                  </button>
+                </div>
+
+                <div className="flex sm:hidden place-items-center mt-3">
+                  {[1, 2, 3].map((item, index) => {
+                    return (
+                      <button
+                        key={index}
+                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full"
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
+                  <button className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center">
+                    <img src="/write_review\icons\next.png" alt="" />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl"></div>
+          )
         ) : (
           <div className="animate-pulse flex min-w-[70%] space-x-4">
             <div className="flex-1 space-y-6 py-1">
@@ -348,7 +364,7 @@ export default function SoftwarePage({ searchParams }) {
             <div className="lg:block flex place-content-center">
               <div className="mt-5 px-12 lg:w-auto w-96">
                 {softwareToCompare.map((item, index) => {
-                  return <Item id={index} software={item} />;
+                  return <Item key={index} id={index} software={item} />;
                 })}
               </div>
             </div>

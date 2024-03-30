@@ -3,14 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function TapSoftwareComponent({ id }) {
-  const [tap, setTap] = useState(0);
+export default function TapSoftwareComponent({ id, tap, setTap }) {
   const router = useRouter();
-
-  useEffect(() => {
-    // if (isNaN(parseInt(id))) router.push("/pages/mainCategories");
-  });
-
   return (
     <div className="text-white xl:ml-44 lg:ml-32 text-[1.15rem] font-medium">
       <div className="flex">

@@ -10,20 +10,23 @@ import {
   updateDoc,
   query,
   getDocs,
-  where
+  where,
 } from "firebase/firestore";
 
 export async function GET(req, res) {
   try {
     const firestore = getFirestore(firebase_app);
     const id = req.url.split("=").pop();
-    const q = query(collection(firestore, "reviews"), where("soft_id", "==", id));
+    const q = query(
+      collection(firestore, "reviews"),
+      where("soft_id", "==", id)
+    );
     const querySnapshot = await getDocs(q);
     let data = [];
     querySnapshot.forEach((doc) => {
-      data.push(doc.data())
+      data.push(doc.data());
     });
-    return NextResponse.json({data: data}, { status: 200 });
+    return NextResponse.json({ data: data }, { status: 200 });
   } catch (e) {
     console.log(e);
     return NextResponse.json(
@@ -37,19 +40,27 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const review = await req.json();
-    // var software = await getDoc(doc(firestore, "softwares", review.soft_id));
-    // software = software.data();
     var result = await addDoc(collection(firestore, "reviews"), review);
-    // let user_reviews = null;
-    // try {
-    //   user_reviews = [...software.user_reviews];
-    // } catch (e) {
-    //   user_reviews = [];
-    // }
-    // user_reviews.push(result.id);
-    // await updateDoc(doc(firestore, "softwares", review.soft_id), {
-    //   user_reviews: user_reviews,
-    // });
+    const q = query(
+      collection(firestore, "reviews"),
+      where("soft_id", "==", review.soft_id)
+    );
+    const querySnapshot = await getDocs(q);
+    let data = [];
+    querySnapshot.forEach((doc) => {
+      const temp = doc.data();
+      data.push(parseInt(temp.experience) + parseInt(temp.recommend));
+    });
+    console.log(data);
+    console.log(data.reduce((partialSum, a) => partialSum + a, 0));
+    console.log(data.length * 4);
+    const star =
+      data.reduce((partialSum, a) => partialSum + a, 0) / (data.length * 4);
+    const soft_res = await updateDoc(
+      doc(firestore, "softwares", `${review.soft_id}`),
+      { star: parseFloat(star.toFixed(2)) }
+    );
+
     return NextResponse.json({ id: result.id }, { status: 200 });
   } catch (e) {
     console.log(e);

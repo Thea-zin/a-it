@@ -76,7 +76,7 @@ export default function Products({
   }, []);
 
   useEffect(() => {
-    console.log(softwares);
+    // console.log(softwares);
   }, [softwares]);
 
   useEffect(() => {
