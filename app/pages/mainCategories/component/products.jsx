@@ -10,6 +10,7 @@ export default function Products({
   doneSearching = false,
   softwareToCompare = { id: "", name: "", icon: "" },
   setSoftwareToCompare = () => {},
+  initialFilter = "",
 }) {
   const [allowComp, setAllowComp] = useState(false);
   const [tids, setTids] = useState([]);
@@ -68,17 +69,15 @@ export default function Products({
     localStorage.setItem("ait_soft_ids", "");
     localStorage.setItem("ait_soft_names", "");
 
-    getSoftwares();
+    if (initialFilter == "" && softwareToCompare.name == "") {
+      getSoftwares();
+    }
     getAllCategories();
   }, []);
 
   useEffect(() => {
     console.log(softwares);
   }, [softwares]);
-
-  useEffect(() => {
-    console.log(mainFilter, tempFilter);
-  });
 
   useEffect(() => {
     if (softwareToCompare.name != "") {
@@ -90,7 +89,15 @@ export default function Products({
         softwareToCompare.icon
       );
     }
-  }, []);
+  }, [softwareToCompare]);
+
+  useEffect(() => {
+    if (initialFilter != "" && initialFilter != null && categories.length > 0) {
+      console.log(initialFilter);
+      document.getElementById(`${initialFilter}`).checked = true;
+      getFilteredSoftwares(initialFilter);
+    }
+  }, [categories]);
 
   const getSoftwares = async () => {
     const temp = await fetch("/api/software/products", {
@@ -145,15 +152,26 @@ export default function Products({
     } catch (e) {}
   };
 
-  const getFilteredSoftwares = async () => {
+  const getFilteredSoftwares = async (initFilter = "") => {
+    setShowNextFiltered(true);
     setMainFilter([...tempFilter]);
     setStopNextFilter(false);
-    
 
-    let body = {
-      categories: tempFilter,
-      last: "",
-    };
+    let body = {};
+    if (initFilter != "") {
+      setTempFilter([initialFilter]);
+      setMainFilter([initialFilter]);
+      body = {
+        categories: [initFilter],
+        last: "",
+      };
+    } else {
+      body = {
+        categories: tempFilter,
+        last: "",
+      };
+    }
+
     let ftl = [];
     let last = "";
     let stop = false;
@@ -374,7 +392,6 @@ export default function Products({
                 onClick={() => {
                   console.log("tempfilter length", tempFilter.length);
                   if (tempFilter.length > 0) {
-                    setShowNextFiltered(true);
                     getFilteredSoftwares();
                   }
                 }}

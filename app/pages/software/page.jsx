@@ -366,9 +366,13 @@ export default function SoftwarePage({ searchParams }) {
               <div className="px-16 mt-6">
                 {categories.map((item, index) => {
                   return (
-                    <button
+                    <Link
                       className="my-1 flex place-content-start items-center text-bblue mt-3"
                       key={index}
+                      href="mainCategories"
+                      onClick={() => {
+                        localStorage.setItem("ait_soft_cat", `${item}`);
+                      }}
                     >
                       <div className="w-5 xm:w-10">
                         <svg
@@ -387,7 +391,7 @@ export default function SoftwarePage({ searchParams }) {
                       <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1 hover:text-blue-800 hover:font-bold">
                         {item}
                       </p>
-                    </button>
+                    </Link>
                   );
                 })}
               </div>

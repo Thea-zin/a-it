@@ -17,6 +17,7 @@ const Page = () => {
     name: "",
     icon: "",
   });
+  const [initialFilter, setInitialFilter] = useState("");
 
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
@@ -41,6 +42,15 @@ const Page = () => {
     if (temp.length == 3 && temp[1] != "") {
       localStorage.setItem("ait_soft_comp", "");
       setInitialDataToCompare({ id: temp[0], name: temp[1], icon: temp[2] });
+      setTap(1);
+    }
+  }, []);
+
+  useEffect(() => {
+    const temp = localStorage.getItem("ait_soft_cat");
+    if (temp != "" && temp != null) {
+      localStorage.setItem("ait_soft_cat", "");
+      setInitialFilter(temp);
       setTap(1);
     }
   }, []);
@@ -108,6 +118,7 @@ const Page = () => {
           doneSearching={doneSearching}
           softwareToCompare={initialDataToCompare}
           setSoftwareToCompare={setInitialDataToCompare}
+          initialFilter={initialFilter}
         />
       )}
     </div>
