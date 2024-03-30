@@ -25,6 +25,8 @@ const Page = () => {
         getSearchSoftware();
         setIsSearching(true);
       } else setIsSearching(false);
+
+      document.getElementById("search").value = "";
     }
   };
 
@@ -79,7 +81,7 @@ const Page = () => {
               <input
                 type="text"
                 name=""
-                id=""
+                id="search"
                 placeholder="Search software"
                 className="outline-none bg-transparent w-full ml-2"
                 onKeyDown={(e) => {
@@ -102,6 +104,7 @@ const Page = () => {
         <Products
           isSearching={isSearching}
           searchSoftware={searchSoftware}
+          setIsSearching={setIsSearching}
           doneSearching={doneSearching}
           softwareToCompare={initialDataToCompare}
           setSoftwareToCompare={setInitialDataToCompare}

@@ -28,13 +28,15 @@ export async function POST(req) {
     const d = new Date();
     let software;
     const id = formData.get("id");
+    let categories = formData.get("categories").split(",");
+    categories.sort();
 
     if (formData.get("isWithNewLogo") == "true") {
       software = {
         icon: "",
         name: formData.get("serviceName"),
         nci: formData.get("serviceName").toLowerCase(),
-        categories: formData.get("categories").split(","),
+        categories: categories,
         lastupdate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
       };
 
@@ -48,7 +50,7 @@ export async function POST(req) {
       software = {
         name: formData.get("serviceName"),
         nci: formData.get("serviceName").toLowerCase(),
-        categories: formData.get("categories").split(","),
+        categories: categories,
         lastupdate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
       };
     }

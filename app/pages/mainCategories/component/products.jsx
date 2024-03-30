@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function Products({
   isSearching = false,
   searchSoftware = [],
+  setIsSearching = () => {},
   doneSearching = false,
   softwareToCompare = { id: "", name: "", icon: "" },
   setSoftwareToCompare = () => {},
@@ -18,9 +19,17 @@ export default function Products({
   const [startAfter, setStartAfter] = useState("");
   const [startAt, setStartAt] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [filterPageNumber, setFilterPageNumber] = useState(1);
   const [total, setTotal] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [mainFilter, setMainFilter] = useState([""]);
+  const [tempFilter, setTempFilter] = useState([]);
+  const [showNextFiltered, setShowNextFiltered] = useState(false);
+  const [lastFiltered, setLastFiltered] = useState("");
+  const [listLastFiltered, setListLastFiltered] = useState([]);
+  const [stopNextFilter, setStopNextFilter] = useState(false);
   const pageStep = 12;
+  const filterStep = 2;
 
   function addIds(id, name, add, icon = "") {
     let tempid = tids;
@@ -60,9 +69,16 @@ export default function Products({
     localStorage.setItem("ait_soft_names", "");
 
     getSoftwares();
+    getAllCategories();
   }, []);
 
-  useEffect(() => {}, [softwares]);
+  useEffect(() => {
+    console.log(softwares);
+  }, [softwares]);
+
+  useEffect(() => {
+    console.log(mainFilter, tempFilter);
+  });
 
   useEffect(() => {
     if (softwareToCompare.name != "") {
@@ -86,6 +102,16 @@ export default function Products({
     setStartAfter(res.softwares[res.softwares.length - 1].nci);
     setSoftwares(res.softwares);
     setTotal(res.total);
+  };
+
+  const getAllCategories = async () => {
+    const temp = await fetch("/api/publishSoftware/categories", {
+      method: "POST",
+      body: JSON.stringify({}),
+    });
+    const res = await temp.json();
+
+    setCategories([...res.categories.categories]);
   };
 
   const goToPageNumber = async (pgn) => {
@@ -119,15 +145,147 @@ export default function Products({
     } catch (e) {}
   };
 
+  const getFilteredSoftwares = async () => {
+    setMainFilter([...tempFilter]);
+    setStopNextFilter(false);
+    
+
+    let body = {
+      categories: tempFilter,
+      last: "",
+    };
+    let ftl = [];
+    let last = "";
+    let stop = false;
+    let isMore = true;
+    while (!stop) {
+      const temp = await fetch("/api/software/filtered", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      const res = await temp.json();
+      // console.log(res.softwares, res.isMore);
+      if (!res.isMore) {
+        isMore = res.isMore;
+        break;
+      }
+      last = res.last;
+      for (let soft of res.softwares) {
+        ftl.push(soft);
+        if (ftl.length % filterStep == 0) {
+          last = soft.nci;
+          stop = true;
+          break;
+        }
+      }
+      if (res.softwares.length > 0) {
+        setSoftwares([...ftl]);
+      }
+
+      body.last = last;
+    }
+
+    if (ftl.length % filterStep != 0 || !isMore) {
+      setStopNextFilter(true);
+    }
+
+    setListLastFiltered([""]);
+
+    setLastFiltered(last);
+    setFilterPageNumber(1);
+    setSoftwares([...ftl]);
+    setIsSearching(false);
+  };
+
+  const getNextFilteredSoftwares = async (isNext = false, page = 0) => {
+    // console.log(page - 1, listLastFiltered[page - 1], listLastFiltered);
+    let body = {};
+    const beforeLast = lastFiltered;
+    console.log("List Last filter", listLastFiltered);
+    if (isNext) {
+      body = {
+        categories: mainFilter,
+        last: lastFiltered,
+      };
+    } else {
+      body = {
+        categories: mainFilter,
+        last: listLastFiltered[page - 1],
+      };
+    }
+    let ftl = [];
+    let last = "";
+    let stop = false;
+    let isMore = true;
+    while (!stop) {
+      const temp = await fetch("/api/software/filtered", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      const res = await temp.json();
+      // console.log(res.softwares, res.isMore);
+      if (!res.isMore) {
+        isMore = res.isMore;
+        break;
+      }
+      last = res.last;
+      for (let soft of res.softwares) {
+        ftl.push(soft);
+        if (ftl.length % filterStep == 0) {
+          last = soft.nci;
+          stop = true;
+          break;
+        }
+      }
+      if (res.softwares.length > 0) {
+        setSoftwares([...ftl]);
+      }
+
+      body.last = last;
+    }
+    if (ftl.length % filterStep != 0 || !isMore) {
+      setStopNextFilter(true);
+    }
+
+    // console.log("Before Last", beforeLast);
+    if (page > listLastFiltered.length) {
+      let temp = listLastFiltered;
+      temp.push(beforeLast);
+      setListLastFiltered([...temp]);
+      // console.log("Before Last if", beforeLast);
+    }
+
+    setLastFiltered(last);
+    setSoftwares([...ftl]);
+  };
+
+  const onViewAll = () => {
+    getSoftwares();
+    setShowNextFiltered(false);
+    setIsSearching(false);
+    let filters = document.getElementById("filter");
+    let items = filters.getElementsByTagName("input");
+    for (let item of items) {
+      item.checked = false;
+    }
+    setTempFilter([]);
+  };
+
   return (
     <div className="itemes bg-[#F7F8FA]">
       <div className="md:flex p-8 ml-5">
         <div className="min-w-[260px]">
-          <div className="filter  bg-white rounded-xl p-8 ">
+          <div className="filter  bg-white rounded-xl p-8 " id="filter">
             <div className="flex justify-between ">
               <div className="font-bold">Filters </div>
               <div className="font-medium text-xs items-center text-[#4A4A4A] border-b-2- ">
-                <button>Reset Filter</button>
+                <button
+                  onClick={() => {
+                    onViewAll();
+                  }}
+                >
+                  View All
+                </button>
               </div>
             </div>
 
@@ -178,41 +336,51 @@ export default function Products({
             <div className="busineses">
               <div className="title mt-5 font-semibold">Categories</div>
               <div className="checkbox mt-5">
-                {[
-                  ["Writing", "writing"],
-                  ["Speech to Text", "speechtotext"],
-                  ["Social Media", "socialmedia"],
-                  ["Music", "music"],
-                  ["Prompt AI", "promtai"],
-                  ["Education", "education"],
-                  ["Code Assistant", "codeassistant"],
-                  ["Architecture", "architecture"],
-                  ["Graphic Design", "graphicdesign"],
-                  ["Project Management", "projectmanagement"],
-                  ["Finance", "finance"],
-                  ["Logistic", "logistic"],
-                  ["CRM", "crm"],
-                  ["Marketing", "marketing"],
-                  ["E-Commerce", "e-commerce"],
-                ].map((item, index) => {
+                {categories.map((item, index) => {
                   return (
                     <div className="flex items-center mb-2" key={index}>
                       <input
-                        id={item[1]}
+                        id={item}
                         type="checkbox"
                         value=""
                         className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                        onChange={(e) => {
+                          let temp = tempFilter;
+                          if (e.target.checked) {
+                            temp.push(item);
+                          } else {
+                            const index = temp.indexOf(item);
+
+                            if (index > -1) {
+                              temp.splice(index, 1);
+                            }
+                          }
+                          setTempFilter([...temp]);
+                        }}
                       />
                       <label
-                        htmlFor={item[1]}
+                        htmlFor={item}
                         className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
                       >
-                        <div className="text-black ">{item[0]}</div>
+                        <div className="text-black ">{item}</div>
                       </label>
                     </div>
                   );
                 })}
               </div>
+            </div>
+            <div className="flex place-content-center">
+              <button
+                onClick={() => {
+                  console.log("tempfilter length", tempFilter.length);
+                  if (tempFilter.length > 0) {
+                    setShowNextFiltered(true);
+                    getFilteredSoftwares();
+                  }
+                }}
+              >
+                Filter
+              </button>
             </div>
           </div>
           {/* <div className="filter  bg-[#2F455C] rounded-t-xl p-8 mt-5 text-white">
@@ -471,148 +639,224 @@ export default function Products({
                 )
               ) : (
                 <div className="ml-4 min-h-[735px] relative">
-                  <div className="grid grid-cols-2 s900:grid-cols-3 lg:grid-cols-4 gap-5 ">
-                    {softwares.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
-                        >
-                          <div className="flex justify-between flex-wrap">
-                            <div>
-                              <p className="text-ellipsis">{item.name}</p>
-                              <div className="star flex flex-wrap">
-                                <div className="flex">
-                                  {[1, 2, 3, 4, 5].map((it, ind) => {
-                                    return (
-                                      <svg
-                                        width="18"
-                                        height="17"
-                                        viewBox="0 0 18 17"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        key={ind}
-                                      >
-                                        <path
-                                          d="M9.00033 14.275L4.85033 16.775C4.667 16.8916 4.47533 16.9416 4.27533 16.9249C4.07533 16.9083 3.90033 16.8416 3.75033 16.725C3.60033 16.6083 3.48366 16.4623 3.40033 16.287C3.317 16.1116 3.30033 15.916 3.35033 15.7L4.45033 10.975L0.775329 7.79995C0.608662 7.64995 0.504662 7.47895 0.463329 7.28695C0.421996 7.09495 0.434329 6.90762 0.500329 6.72495C0.566996 6.54162 0.666995 6.39162 0.800329 6.27495C0.933662 6.15828 1.117 6.08328 1.35033 6.04995L6.20033 5.62495L8.07533 1.17495C8.15866 0.974952 8.288 0.824951 8.46333 0.724951C8.63866 0.624951 8.81766 0.574951 9.00033 0.574951C9.18366 0.574951 9.36266 0.624951 9.53733 0.724951C9.712 0.824951 9.84133 0.974952 9.92533 1.17495L11.8003 5.62495L16.6503 6.04995C16.8837 6.08328 17.067 6.15828 17.2003 6.27495C17.3337 6.39162 17.4337 6.54162 17.5003 6.72495C17.567 6.90829 17.5797 7.09595 17.5383 7.28795C17.497 7.47995 17.3927 7.65062 17.2253 7.79995L13.5503 10.975L14.6503 15.7C14.7003 15.9166 14.6837 16.1126 14.6003 16.288C14.517 16.4633 14.4003 16.609 14.2503 16.725C14.1003 16.8416 13.9253 16.9083 13.7253 16.9249C13.5253 16.9416 13.3337 16.8916 13.1503 16.775L9.00033 14.275Z"
-                                          fill="#F3B146"
-                                        />
-                                      </svg>
-                                    );
-                                  })}
+                  {softwares.length > 0 ? (
+                    <div className="grid grid-cols-2 s900:grid-cols-3 lg:grid-cols-4 gap-5 ">
+                      {softwares.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
+                          >
+                            <div className="flex justify-between flex-wrap">
+                              <div>
+                                <p className="text-ellipsis">{item.name}</p>
+                                <div className="star flex flex-wrap">
+                                  <div className="flex">
+                                    {[1, 2, 3, 4, 5].map((it, ind) => {
+                                      return (
+                                        <svg
+                                          width="18"
+                                          height="17"
+                                          viewBox="0 0 18 17"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          key={ind}
+                                        >
+                                          <path
+                                            d="M9.00033 14.275L4.85033 16.775C4.667 16.8916 4.47533 16.9416 4.27533 16.9249C4.07533 16.9083 3.90033 16.8416 3.75033 16.725C3.60033 16.6083 3.48366 16.4623 3.40033 16.287C3.317 16.1116 3.30033 15.916 3.35033 15.7L4.45033 10.975L0.775329 7.79995C0.608662 7.64995 0.504662 7.47895 0.463329 7.28695C0.421996 7.09495 0.434329 6.90762 0.500329 6.72495C0.566996 6.54162 0.666995 6.39162 0.800329 6.27495C0.933662 6.15828 1.117 6.08328 1.35033 6.04995L6.20033 5.62495L8.07533 1.17495C8.15866 0.974952 8.288 0.824951 8.46333 0.724951C8.63866 0.624951 8.81766 0.574951 9.00033 0.574951C9.18366 0.574951 9.36266 0.624951 9.53733 0.724951C9.712 0.824951 9.84133 0.974952 9.92533 1.17495L11.8003 5.62495L16.6503 6.04995C16.8837 6.08328 17.067 6.15828 17.2003 6.27495C17.3337 6.39162 17.4337 6.54162 17.5003 6.72495C17.567 6.90829 17.5797 7.09595 17.5383 7.28795C17.497 7.47995 17.3927 7.65062 17.2253 7.79995L13.5503 10.975L14.6503 15.7C14.7003 15.9166 14.6837 16.1126 14.6003 16.288C14.517 16.4633 14.4003 16.609 14.2503 16.725C14.1003 16.8416 13.9253 16.9083 13.7253 16.9249C13.5253 16.9416 13.3337 16.8916 13.1503 16.775L9.00033 14.275Z"
+                                            fill="#F3B146"
+                                          />
+                                        </svg>
+                                      );
+                                    })}
+                                  </div>
+                                  <p className="text-gray text-ellipsis">
+                                    (2,145)
+                                  </p>
                                 </div>
-                                <p className="text-gray text-ellipsis">
-                                  (2,145)
-                                </p>
+                              </div>
+
+                              <div className="flex items-center mb-4">
+                                {!tids.includes(item.id) && (
+                                  <button
+                                    className="p-1 group-hover:bg-white bg-[#1e293b] border-white rounded dark:ring-offset-gray-800"
+                                    onClick={() => {
+                                      addIds(
+                                        item.id,
+                                        item.name,
+                                        true,
+                                        item.icon
+                                      );
+                                    }}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="1.6em"
+                                      height="1.6em"
+                                      viewBox="0 0 32 32"
+                                      className="group-hover:stroke-black group-hover:fill-black stroke-white fill-white stroke-0"
+                                    >
+                                      <path d="M28 6H18V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2M4 15h6.17l-2.58 2.59L9 19l5-5l-5-5l-1.41 1.41L10.17 13H4V4h12v20H4Zm12 13v-2a2 2 0 0 0 2-2V8h10v9h-6.17l2.58-2.59L23 13l-5 5l5 5l1.41-1.41L21.83 19H28v9Z" />
+                                    </svg>
+                                  </button>
+                                )}
                               </div>
                             </div>
-
-                            <div className="flex items-center mb-4">
-                              {!tids.includes(item.id) && (
-                                <button
-                                  className="p-1 group-hover:bg-white bg-[#1e293b] border-white rounded dark:ring-offset-gray-800"
-                                  onClick={() => {
-                                    addIds(item.id, item.name, true, item.icon);
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="1.6em"
-                                    height="1.6em"
-                                    viewBox="0 0 32 32"
-                                    className="group-hover:stroke-black group-hover:fill-black stroke-white fill-white stroke-0"
-                                  >
-                                    <path d="M28 6H18V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2M4 15h6.17l-2.58 2.59L9 19l5-5l-5-5l-1.41 1.41L10.17 13H4V4h12v20H4Zm12 13v-2a2 2 0 0 0 2-2V8h10v9h-6.17l2.58-2.59L23 13l-5 5l5 5l1.41-1.41L21.83 19H28v9Z" />
-                                  </svg>
-                                </button>
-                              )}
-                            </div>
+                            <Link
+                              href={{
+                                pathname: "/pages/software",
+                                query: { id: item.id },
+                              }}
+                              className="pic flex justify-center my-5 "
+                            >
+                              <img src={item.icon} alt="" className="h-20" />
+                            </Link>
                           </div>
-                          <Link
-                            href={{
-                              pathname: "/pages/software",
-                              query: { id: item.id },
-                            }}
-                            className="pic flex justify-center my-5 "
-                          >
-                            <img src={item.icon} alt="" className="h-20" />
-                          </Link>
-                        </div>
-                      );
-                    })}
-                  </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="h-96 text-2xl flex place-content-center place-items-center">
+                      No More Software/Tool Found!
+                    </div>
+                  )}
                   <div className="h-[100px]"></div>
-                  <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
-                    {pageNumber > 1 && (
-                      <button
-                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
-                        onClick={() => {
-                          getPreviousPage();
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="1.7em"
-                          height="1.7em"
-                          viewBox="0 0 48 48"
-                          className="fill-transparent"
-                        >
-                          <g
-                            stroke="currentColor"
-                            strokeLinejoin="round"
-                            strokeWidth="4"
-                          >
-                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                            <path strokeLinecap="round" d="m27 33l-9-9l9-9" />
-                          </g>
-                        </svg>
-                      </button>
-                    )}
-                    {Array.from(
-                      new Array(Math.ceil(total / pageStep)),
-                      (x, i) => i + 1
-                    ).map((item, index) => {
-                      return (
+                  {showNextFiltered ? (
+                    <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
+                      {filterPageNumber > 1 && (
                         <button
-                          key={index}
-                          className={`bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full ${
-                            pageNumber == index + 1 &&
-                            "bg-darkblue font-bold text-white"
-                          }`}
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
                           onClick={() => {
-                            goToPageNumber(index + 1);
+                            setStopNextFilter(false);
+                            getNextFilteredSoftwares(
+                              false,
+                              filterPageNumber - 1
+                            );
+                            setFilterPageNumber(filterPageNumber - 1);
                           }}
                         >
-                          {item}
-                        </button>
-                      );
-                    })}
-                    {pageNumber != Math.min(Math.ceil(total / pageStep), 5) && (
-                      <button
-                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
-                        onClick={() => {
-                          goToPageNumber(pageNumber + 1);
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="1.7em"
-                          height="1.7em"
-                          viewBox="0 0 48 48"
-                          className="fill-transparent"
-                        >
-                          <g
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeWidth="4"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1.7em"
+                            height="1.7em"
+                            viewBox="0 0 48 48"
+                            className="fill-transparent"
                           >
-                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                            <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
-                          </g>
-                        </svg>
-                      </button>
-                    )}
-                  </div>
+                            <g
+                              stroke="currentColor"
+                              strokeLinejoin="round"
+                              strokeWidth="4"
+                            >
+                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                              <path strokeLinecap="round" d="m27 33l-9-9l9-9" />
+                            </g>
+                          </svg>
+                        </button>
+                      )}
+                      {!stopNextFilter && (
+                        <button
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
+                          onClick={() => {
+                            getNextFilteredSoftwares(
+                              true,
+                              filterPageNumber + 1
+                            );
+                            setFilterPageNumber(filterPageNumber + 1);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1.7em"
+                            height="1.7em"
+                            viewBox="0 0 48 48"
+                            className="fill-transparent"
+                          >
+                            <g
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeWidth="4"
+                            >
+                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                              <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
+                            </g>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
+                      {pageNumber > 1 && (
+                        <button
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
+                          onClick={() => {
+                            getPreviousPage();
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1.7em"
+                            height="1.7em"
+                            viewBox="0 0 48 48"
+                            className="fill-transparent"
+                          >
+                            <g
+                              stroke="currentColor"
+                              strokeLinejoin="round"
+                              strokeWidth="4"
+                            >
+                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                              <path strokeLinecap="round" d="m27 33l-9-9l9-9" />
+                            </g>
+                          </svg>
+                        </button>
+                      )}
+                      {Array.from(
+                        new Array(Math.ceil(total / pageStep)),
+                        (x, i) => i + 1
+                      ).map((item, index) => {
+                        return (
+                          <button
+                            key={index}
+                            className={`bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full ${
+                              pageNumber == index + 1 &&
+                              "bg-darkblue font-bold text-white"
+                            }`}
+                            onClick={() => {
+                              goToPageNumber(index + 1);
+                            }}
+                          >
+                            {item}
+                          </button>
+                        );
+                      })}
+                      {pageNumber !=
+                        Math.min(Math.ceil(total / pageStep), 5) && (
+                        <button
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
+                          onClick={() => {
+                            goToPageNumber(pageNumber + 1);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1.7em"
+                            height="1.7em"
+                            viewBox="0 0 48 48"
+                            className="fill-transparent"
+                          >
+                            <g
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeWidth="4"
+                            >
+                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                              <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
+                            </g>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

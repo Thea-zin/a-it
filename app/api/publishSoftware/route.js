@@ -26,7 +26,7 @@ export async function POST(req) {
       id: "",
       name: formData.get("serviceName"),
       nci: formData.get("serviceName").toLowerCase(),
-      categories: formData.get("categories").split(","),
+      categories: formData.get("categories").split(",").sort(),
       reviews: 0,
       views: 0,
       publishDate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
