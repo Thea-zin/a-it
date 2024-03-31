@@ -53,7 +53,7 @@ export default function ComparisonPage() {
         });
         if (ids.length == 0) throw new Error();
 
-        const data = await fetch("/api/software", {
+        const data = await fetch("/api/software/compare", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ids: ids }),
