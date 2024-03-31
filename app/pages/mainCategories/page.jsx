@@ -6,7 +6,7 @@ import Overview from "./component/overview";
 import TapComponent from "./component/tapcomponent";
 import Products from "./component/products";
 
-const Page = () => {
+const MainCategories = () => {
   const [tap, setTap] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
   const [doneSearching, setDoneSearching] = useState(false);
@@ -125,4 +125,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default MainCategories;
