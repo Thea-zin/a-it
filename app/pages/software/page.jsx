@@ -6,9 +6,9 @@ import TapSoftwareComponent from "./components/tap_component";
 import Stars from "./components/star_display";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function SoftwarePage({ searchParams }) {
+export default function SoftwarePage() {
   const [data, setData] = useState({ name: "", icon: "" });
   const [reviews, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +16,7 @@ export default function SoftwarePage({ searchParams }) {
   const [text, setText] = useState("");
   const [softwareToCompare, setSoftwareToCompare] = useState([]);
   const [categories, setCategories] = useState([]);
+  const searchParams = useSearchParams();
 
   const router = useRouter();
 
@@ -23,6 +24,7 @@ export default function SoftwarePage({ searchParams }) {
 
   useEffect(() => {
     getData();
+    console.log(searchParams.get("id"));
   }, [searchParams]);
 
   useEffect(() => {
@@ -44,22 +46,26 @@ export default function SoftwarePage({ searchParams }) {
   }, [tap]);
 
   const getData = async () => {
-    setLoading(true);
-    setText("");
+    try {
+      setLoading(true);
+      setText("");
 
-    const temp = await fetch("/api/software", {
-      method: "POST",
-      body: JSON.stringify({ ids: [searchParams.id] }),
-    });
-    const res = await temp.json();
-    console.log(res.data);
-    if (res.data.name != "" || res.data.name == null) {
-      gemini(res.data);
+      const temp = await fetch("/api/software", {
+        method: "POST",
+        body: JSON.stringify({ ids: [searchParams.get("id")] }),
+      });
+      const res = await temp.json();
+      console.log(res.data);
+      if (res.data.name != null && res.data.name != "") {
+        gemini(res.data);
+      }
+      getSameCategories(res.data);
+      getAllCategories();
+      setData(res.data);
+      setReview(res.reviews);
+    } catch (e) {
+      console.log("Problem Occurs! Possible cause: id, network");
     }
-    getSameCategories(res.data);
-    getAllCategories();
-    setData(res.data);
-    setReview(res.reviews);
   };
 
   const getSameCategories = async (software) => {
@@ -209,7 +215,7 @@ export default function SoftwarePage({ searchParams }) {
 
         <div className="absolute bottom-0 right-0 left-0 lg:block flex place-content-center">
           <TapSoftwareComponent
-            id={searchParams.id}
+            id={searchParams.get("id")}
             tap={tap}
             setTap={setTap}
           />
@@ -237,7 +243,11 @@ export default function SoftwarePage({ searchParams }) {
                   Software user?
                 </p>
                 <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
-                  <Link href={`/pages/write_review_page?id=${searchParams.id}`}>
+                  <Link
+                    href={`/pages/write_review_page?id=${searchParams.get(
+                      "id"
+                    )}`}
+                  >
                     Write a Review
                   </Link>
                 </button>

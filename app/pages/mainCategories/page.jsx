@@ -38,12 +38,14 @@ const MainCategories = () => {
   }, [isSearching]);
 
   useEffect(() => {
-    const temp = localStorage.getItem("ait_soft_comp").split(",");
-    if (temp.length == 3 && temp[1] != "") {
-      localStorage.setItem("ait_soft_comp", "");
-      setInitialDataToCompare({ id: temp[0], name: temp[1], icon: temp[2] });
-      setTap(1);
-    }
+    try {
+      const temp = localStorage.getItem("ait_soft_comp").split(",");
+      if (temp.length == 3 && temp[1] != "") {
+        localStorage.setItem("ait_soft_comp", "");
+        setInitialDataToCompare({ id: temp[0], name: temp[1], icon: temp[2] });
+        setTap(1);
+      }
+    } catch (e) {}
   }, []);
 
   useEffect(() => {

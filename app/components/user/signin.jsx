@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import firebase_app from "@/app/firebase";
+import { getAuth } from "firebase/auth";
 
 export default function SignIn({ setSignStatus }) {
   const [isOpen, setIsOpen] = useState(false);
   const showPassword = () => {
     setIsOpen(!isOpen);
   };
+  const auth = getAuth(firebase_app);
 
   return (
     <div className="p-4 absoute fixed inset-0 flex item-center justify-center z-50 bg-transparent/50">
