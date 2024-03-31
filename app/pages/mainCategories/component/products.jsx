@@ -69,7 +69,7 @@ export default function Products({
     localStorage.setItem("ait_soft_ids", "");
     localStorage.setItem("ait_soft_names", "");
 
-    if (initialFilter == "" && softwareToCompare.name == "") {
+    if (initialFilter == "") {
       getSoftwares();
     }
     getAllCategories();
