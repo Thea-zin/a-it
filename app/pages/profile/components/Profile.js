@@ -22,15 +22,15 @@ function ProfilePage(){
         {id:4,name:"Education"}
     ];
     const [countries,setCountries] = useState([]);
-    useEffect(()=>{
-        axios.get("https://restcountries.com/v3.1/all").then((response)=>{
-            const sortedContries = response.data.sort((a,b)=>
-            a.name.common.localeCompare(b.name.common));
-            setCountries( sortedContries);
-        }).catch((error)=>{
-            console.log(error)
-        })
-    })
+    // useEffect(()=>{
+    //     axios.get("https://restcountries.com/v3.1/all").then((response)=>{
+    //         const sortedContries = response.data.sort((a,b)=>
+    //         a.name.common.localeCompare(b.name.common));
+    //         setCountries( sortedContries);
+    //     }).catch((error)=>{
+    //         console.log(error)
+    //     })
+    // })
    
     return(
         <div className="bg-white p-8 py-[4rem] rounded-[16px]">

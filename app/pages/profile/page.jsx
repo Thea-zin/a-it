@@ -6,77 +6,135 @@ import ProfilePage from "./components/Profile";
 import Setting from "./components/Setting";
 import Dashboard from "./components/Dashboard";
 import PublishSoftware from "./components/PublishSoftware";
+import IsAuth from "@/app/components/isauth";
 
 function Profile() {
   const [activeItem, setActiveItem] = useState(null);
+  const [userinfo, setUserInfo] = useState({});
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    handleItemClick(1);
+    handleItemClick(3);
+    try {
+      let temp = {};
+      temp["displayName"] = localStorage.getItem("displayName");
+      temp["email"] = localStorage.getItem("email");
+      temp["joined"] = localStorage.getItem("joined");
+      temp["photoURL"] = localStorage.getItem("photoURL").split("!បំបែក!")[1];
+
+      console.log(temp);
+      setUserInfo(temp);
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
+
+  useEffect(() => {
+    determineAdmin();
+  }, []);
+
+  const determineAdmin = async () => {
+    const token = localStorage.getItem("token");
+    const temp = await fetch("/api/user/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token }),
+    });
+    const res = await temp.json();
+    if (temp.status == 200) {
+      setIsAdmin(true);
+    } else if (temp.status == 405) {
+      localStorage.setItem("token", "");
+    }
+  };
 
   return (
     <div className="font-dmsan bg-base p-6 grid grid-cols-3 m-5 min-w-[946px]">
       <div className="col-span-1">
-        <div className="bg-white flex rounded-[16px] p-4 w-[300px]">
+        <div className="bg-white flex flex-col rounded-[16px] p-4 w-[300px]">
           <div className=" ml-[35%] ">
             <div className="absolute mt-[3%] ">
-              <img src={"../profile/profile-pic.png"}></img>
+              {userinfo["photoURL"] == "0" ? (
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="6em"
+                    height="6em"
+                    viewBox="0 0 48 48"
+                  >
+                    <g fill="#434280">
+                      <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
+                      <path
+                        fillRule="evenodd"
+                        d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20a21.253 21.253 0 0 1-.274 0c-.181 0-.362-.006-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.942 17.942 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621"
+                        clipRule="evenodd"
+                      />
+                    </g>
+                  </svg>
+                </div>
+              ) : (
+                <img src={userinfo.photoURL}></img>
+              )}
               <div className="relative mt-[-20%] ml-[50%] ">
                 <img src={"../profile/profile-edit.png"}></img>
               </div>
             </div>
           </div>
-          <div className="mt-[52%] text-display-sm ml-[-10%]">
-            <div>Mao Timong</div>
-            <div className="ml-[-15%] text-basedark text-label-lg">
-              Joined on 19-10-2023
+          <div className="mt-[52%] text-display-sm">
+            <div className="text-center">{userinfo.displayName}</div>
+            <div className=" text-basedark text-label-lg text-center">
+              Joined on {userinfo.joined}
             </div>
-            <div className="text-body-md space-y-8  mt-[10%] ml-[-20%]">
-              <button
-                onClick={() => handleItemClick(1)}
-                className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 1
-                    ? "active bg-cyan rounded-[16px] font-bold"
-                    : ""
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="2em"
-                  height="2em"
-                  viewBox="0 0 24 24"
+            <div className="text-body-md space-y-8  mt-[10%]">
+              {isAdmin && (
+                <button
+                  onClick={() => handleItemClick(1)}
+                  className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
+                    activeItem == 1
+                      ? "active bg-cyan rounded-[16px] font-bold"
+                      : ""
+                  }`}
                 >
-                  <path
-                    fill="currentColor"
-                    d="M13 9V3h8v6zM3 13V3h8v10zm10 8V11h8v10zM3 21v-6h8v6zm2-10h4V5H5zm10 8h4v-6h-4zm0-12h4V5h-4zM5 19h4v-2H5zm4-2"
-                  />
-                </svg>
-                <span className="hover:bg-cyan">Dashboard</span>
-              </button>
-              <button
-                onClick={() => handleItemClick(2)}
-                className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 2
-                    ? "active bg-cyan rounded-[16px] font-bold"
-                    : ""
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="2em"
-                  height="2em"
-                  viewBox="0 0 24 24"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="2em"
+                    height="2em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M13 9V3h8v6zM3 13V3h8v10zm10 8V11h8v10zM3 21v-6h8v6zm2-10h4V5H5zm10 8h4v-6h-4zm0-12h4V5h-4zM5 19h4v-2H5zm4-2"
+                    />
+                  </svg>
+                  <span className="hover:bg-cyan">Dashboard</span>
+                </button>
+              )}
+              {isAdmin && (
+                <button
+                  onClick={() => handleItemClick(2)}
+                  className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
+                    activeItem == 2
+                      ? "active bg-cyan rounded-[16px] font-bold"
+                      : ""
+                  }`}
                 >
-                  <path
-                    fill="currentColor"
-                    d="M11 20v-8.15l-2.6 2.6L7 13l5-5l5 5l-1.4 1.45l-2.6-2.6V20zM4 9V6q0-.825.588-1.412T6 4h12q.825 0 1.413.588T20 6v3h-2V6H6v3z"
-                  />
-                </svg>
-                <span className="hover:bg-cyan">Publish Software</span>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="2em"
+                    height="2em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M11 20v-8.15l-2.6 2.6L7 13l5-5l5 5l-1.4 1.45l-2.6-2.6V20zM4 9V6q0-.825.588-1.412T6 4h12q.825 0 1.413.588T20 6v3h-2V6H6v3z"
+                    />
+                  </svg>
+                  <span className="hover:bg-cyan">Publish Software</span>
+                </button>
+              )}
               <button
                 onClick={() => handleItemClick(3)}
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
@@ -171,14 +229,16 @@ function Profile() {
         </div>
       </div>
       <div className="col-span-2">
-        {activeItem === 1 && <Dashboard/>}
-        {activeItem === 2 && <PublishSoftware handleItemClick={handleItemClick}/>}
-        {activeItem === 3 && <ProfilePage/>}
-        {activeItem === 4 && <Favorite/>}
-        {activeItem === 5 && <Favorite/>}
-        {activeItem === 6 && <Setting/>}
+        {activeItem === 1 && isAdmin && <Dashboard />}
+        {activeItem === 2 && isAdmin && (
+          <PublishSoftware handleItemClick={handleItemClick} />
+        )}
+        {activeItem === 3 && <ProfilePage />}
+        {activeItem === 4 && <Favorite />}
+        {activeItem === 5 && <Favorite />}
+        {activeItem === 6 && <Setting />}
       </div>
     </div>
   );
 }
-export default Profile;
+export default IsAuth(Profile);
