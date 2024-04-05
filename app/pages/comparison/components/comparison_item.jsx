@@ -155,7 +155,7 @@ export default function ComparisonItems({ comparingItems, setCompItems }) {
           </label>
         </div>
 
-        <div className="">
+        {/* <div className="">
           <input
             type="checkbox"
             id="review"
@@ -168,7 +168,7 @@ export default function ComparisonItems({ comparingItems, setCompItems }) {
           <label htmlFor="review" className="cursor-pointer">
             Review
           </label>
-        </div>
+        </div> */}
       </div>
     </div>
   );

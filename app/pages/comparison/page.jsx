@@ -47,13 +47,13 @@ export default function ComparisonPage() {
       try {
         let ids = [];
         tids.forEach((id) => {
-          if (!isNaN(parseInt(id))) {
+          if (id != null && id != "") {
             ids.push(id);
           }
         });
         if (ids.length == 0) throw new Error();
 
-        const data = await fetch("/api/software", {
+        const data = await fetch("/api/software/compare", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ids: ids }),
@@ -68,6 +68,7 @@ export default function ComparisonPage() {
             }
           });
         });
+        // console.log(tproduct);
         setProducts(tproduct);
       } catch (e) {
         router.push("/pages/mainCategories");
@@ -98,7 +99,7 @@ export default function ComparisonPage() {
       arrData = [];
       text = "";
       try {
-        const temp = await fetch("/api/compare", {
+        const temp = await fetch("/api/gemini", {
           method: "POST",
           body: JSON.stringify({
             prompt: `compare ${tnames.toString()}. please give answer in sections including overview, feature, customization, integration, scalability, maturity, support, price (is it cheap, moderate or expensive?), and free trial. seperate answer for each ai. mark the end of each ai with @ and mark the end of answer with @`,
@@ -195,7 +196,8 @@ export default function ComparisonPage() {
             <div className="w-[70%] ml-10">
               <p className="text-3xl font-semibold mt-3">Comparing</p>
               <p className="text-[#4A4A4A]">
-                See more below to select the best content marketing software.
+                See more below to select the best AI software that suit your
+                needs.
               </p>
               {products.length == 0 ? (
                 <div className="flex place-items-center place-content-center pt-4 text-[80px]">
@@ -635,7 +637,7 @@ export default function ComparisonPage() {
               </div>
             )}
 
-            {comparingItems.review && (
+            {/* {comparingItems.review && (
               <div className="bg-white min-h-[100px] text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
                 <p className="text-2xl font-semibold relative text-black">
                   Reviews
@@ -697,230 +699,8 @@ export default function ComparisonPage() {
                   )}
                 </div>
               </div>
-            )}
+            )} */}
           </div>
-
-          {/* <div className="bg-white text-basedark rounded-t-2xl py-6 px-10 mt-8 h-[27rem] flex flex-col border-b-[1px] border-divider">
-            <p className="text-2xl font-semibold relative text-black">
-              Functions
-            </p>
-            <div className="flex flex-1">
-              <div className="flex-1 flex flex-col justify-around">
-                <p className="flex-1 flex place-items-center">File Sharing</p>
-                <p className="flex-1 flex place-items-center">
-                  Document Collaboration
-                </p>
-                <p className="flex-1 flex place-items-center">Search</p>
-                <p className="flex-1 flex place-items-center">Messaging</p>
-                <p className="flex-1 flex place-items-center">
-                  Task Management
-                </p>
-              </div>
-              {products.length == 0 ? (
-                <div className="flex flex-1 place-items-center pt-4 text-[80px]">
-                  <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
-                </div>
-              ) : (
-                products.map((item, index) => {
-                  if (index < start || index > start + range) return;
-                  const features = Object.keys(item.features.function);
-                  return (
-                    <div
-                      key={index}
-                      className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
-                    >
-                      {features.map((feature, findex) => {
-                        if (item.features.function[feature].rating) {
-                          return <CircularProgress key={findex} />;
-                        } else {
-                          return (
-                            <div
-                              key={findex}
-                              className="w-16 h-16 flex place-content-center place-items-center"
-                            >
-                              N/A
-                            </div>
-                          );
-                        }
-                      })}
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>  
-
-          <div className="bg-white text-basedark py-6 px-10 h-[27rem] flex flex-col border-b-[1px] border-divider">
-            <p className="text-2xl font-semibold relative text-black">
-              Ratings
-            </p>
-            <div className="flex flex-1">
-              <div className="flex-1 flex flex-col justify-around">
-                <p className="flex-1 flex place-items-center">Satifaction</p>
-                <p className="flex-1 flex place-items-center">Ease of use</p>
-                <p className="flex-1 flex place-items-center">
-                  Support quality
-                </p>
-                <p className="flex-1 flex place-items-center">Price</p>
-                <p className="flex-1 flex place-items-center">
-                  Ease of implementation
-                </p>
-              </div>
-              {products.length == 0 ? (
-                <div className="flex flex-1 place-items-center pt-4 text-[80px]">
-                  <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
-                </div>
-              ) : (
-                products.map((item, index) => {
-                  if (index < start || index > start + range) return;
-                  const features = Object.keys(item.features.rating);
-                  return (
-                    <div
-                      key={index}
-                      className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
-                    >
-                      {features.map((feature, findex) => {
-                        if (item.features.rating[feature].rating) {
-                          return <CircularProgress key={findex} />;
-                        } else {
-                          return (
-                            <div
-                              key={findex}
-                              className="w-16 h-16 flex place-content-center place-items-center"
-                            >
-                              N/A
-                            </div>
-                          );
-                        }
-                      })}
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white text-basedark py-6 px-10 h-[20rem] flex flex-col border-b-[1px] border-divider">
-            <p className="text-2xl font-semibold relative text-black">
-              Pricing
-            </p>
-            <div className="flex flex-1">
-              <div className="flex-1 flex flex-col justify-around">
-                <p className="flex-1 flex place-items-center">Free</p>
-                <p className="flex-1 flex place-items-center">Free trial</p>
-                <p className="flex-1 flex place-items-center">Paid/premium</p>
-              </div>
-              {products.length == 0 ? (
-                <div className="flex flex-1 place-items-center pt-4 text-[80px]">
-                  <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
-                </div>
-              ) : (
-                products.map((item, index) => {
-                  if (index < start || index > start + range) return;
-                  const features = Object.keys(item.features.pricing);
-                  return (
-                    <div
-                      key={index}
-                      className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
-                    >
-                      {features.map((feature, findex) => {
-                        if (item.features.pricing[feature].value == true) {
-                          return (
-                            <div
-                              key={findex}
-                              className="w-16 h-16 flex place-content-center place-items-center text-4xl text-cyan"
-                            >
-                              <iconify-icon icon="dashicons:yes"></iconify-icon>
-                            </div>
-                          );
-                        } else if (
-                          item.features.pricing[feature].value == false
-                        ) {
-                          return (
-                            <div
-                              key={findex}
-                              className="w-16 h-16 flex place-content-center place-items-center text-4xl text-red"
-                            >
-                              <iconify-icon icon="dashicons:no"></iconify-icon>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div
-                              key={findex}
-                              className="w-16 h-16 flex place-content-center place-items-center"
-                            >
-                              N/A
-                            </div>
-                          );
-                        }
-                      })}
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white text-basedark py-6 px-10 flex flex-col border-b-[1px] border-divider">
-            <p className="text-2xl font-semibold relative text-black">
-              Reviews
-            </p>
-            <div className="flex flex-1 mt-5">
-              <div className="flex-1 flex flex-col">
-                <p className="">Likelihood to recommend</p>
-              </div>
-              {products.length == 0 ? (
-                <div className="flex flex-1 place-items-center pt-4 text-[80px]">
-                  <iconify-icon icon="svg-spinners:3-dots-fade"></iconify-icon>
-                </div>
-              ) : (
-                products.map((item, index) => {
-                  if (index < start || index > start + range) return;
-                  const features = Object.keys(item.features.reviews);
-                  return (
-                    <div
-                      key={index}
-                      className="flex-1 border-r-[1px] flex flex-col justify-around place-content-center place-items-center border-divider"
-                    >
-                      {features.map((feature, findex) => {
-                        if (item.features.reviews[feature].review == "1") {
-                          return (
-                            <ReviewBox
-                              key={findex}
-                              imgs="/write_review/profile_1.png"
-                              name="Kamio Fuju"
-                              title="Digital Researcher"
-                            />
-                          );
-                        } else if (
-                          item.features.reviews[feature].review == "2"
-                        ) {
-                          return (
-                            <ReviewBox
-                              key={findex}
-                              imgs="/write_review/profile_2.png"
-                              name="岩瀬洋志"
-                              title="Digital Researcher"
-                            />
-                          );
-                        } else {
-                          return (
-                            <div
-                              key={findex}
-                              className="flex place-content-center place-items-center"
-                            >
-                              No Answer
-                            </div>
-                          );
-                        }
-                      })}
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

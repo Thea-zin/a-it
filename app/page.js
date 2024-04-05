@@ -1,10 +1,10 @@
 import Link from "next/link";
-import HomePage from "./pages/home/page";
+import MainCategories from "./pages/mainCategories/page";
 export default function Home() {
   return (
     <main>
       {/* <a href='/pages/vendors'>Vendor</a> */}
-      <HomePage />
+      <MainCategories />
     </main>
   );
 }

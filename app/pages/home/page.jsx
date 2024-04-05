@@ -11,7 +11,7 @@ const HomePage = () => {
         body: JSON.stringify({}),
       });
       data = await data.json();
-      console.log(data);
+      // console.log(data);
       let temp = [];
       data.data.forEach((software) => {
         temp.push(software);
@@ -99,7 +99,7 @@ const HomePage = () => {
                 className="flex gap-6 bg-gray-100 p-4 m-4 rounded-lg"
               >
                 <div id="logo">
-                  <img src={`${item.icon}`} />
+                  <img src={`${item.icon}`} className="h-20"/>
                 </div>
                 <div id="name" className="">
                   <div className="product text-xl font-normal ">

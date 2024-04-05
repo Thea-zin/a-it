@@ -8,10 +8,9 @@ import {
   collection,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { json } from "express";
-
 
 export async function GET(req, res) {
   try {
@@ -38,25 +37,28 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
-    var data = [];
-    const q = query(
+    var data = null;
+    const q_soft = query(
       collection(firestore, "softwares"),
       where("id", "in", request.ids)
     );
-    const querySnapshot = await getDocs(q);
-    // for (let id of request.ids) {
-    //   const data_raw = await getDoc(doc(firestore, "softwares", `${id}`));
-    //   let temp = data_raw.data();
-    //   temp.icon = await getIconURL(temp.icon);
-    //   data.push(temp);
-    // }
-    for (let doc of querySnapshot.docs) {
-      let temp = doc.data();
-      // temp.icon = await getIconURL(temp.icon);
-      temp.id = doc.id;
-      data.push(temp);
+    const q_rev = query(
+      collection(firestore, "reviews"),
+      where("soft_id", "in", request.ids),
+      orderBy("timestamp", "desc")
+    );
+    const soft_snapshot = await getDocs(q_soft);
+    const rev_snapshot = await getDocs(q_rev);
+
+    for (let doc of soft_snapshot.docs) {
+      data = doc.data();
     }
-    return NextResponse.json({ data: data }, { status: 200 });
+    let reviews = [];
+    for (let doc of rev_snapshot.docs) {
+      reviews.push(doc.data());
+    }
+
+    return NextResponse.json({ data: data, reviews: reviews }, { status: 200 });
   } catch (e) {
     console.log(e);
     return NextResponse.json(
@@ -64,11 +66,4 @@ export async function POST(req) {
       { status: 500 }
     );
   }
-}
-
-async function getIconURL(name) {
-  const storage = getStorage(firebase_app);
-  const imgref = ref(storage, `icons/${name}.png`);
-  const url = await getDownloadURL(imgref);
-  return url;
 }
