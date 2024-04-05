@@ -156,7 +156,6 @@ export async function POST(req) {
 
   try {
     // const categoriesLink = await getCategoriesLink();
-    // categoriesLink.forEach((link) => {});
     // const subcat = await getSubCategoriesLink(
     //   "https://www.futurepedia.io/ai-tools/productivity"
     // );
