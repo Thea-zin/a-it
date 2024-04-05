@@ -25,7 +25,7 @@ function Profile() {
       temp["joined"] = localStorage.getItem("joined");
       temp["photoURL"] = localStorage.getItem("photoURL").split("!បំបែក!")[1];
 
-      console.log(temp);
+      // console.log(temp);
       setUserInfo(temp);
     } catch (e) {
       console.log(e);

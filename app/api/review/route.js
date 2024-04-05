@@ -56,9 +56,10 @@ export async function POST(req) {
     console.log(data.length * 4);
     const star =
       data.reduce((partialSum, a) => partialSum + a, 0) / (data.length * 4);
+    const start_text = Math.floor(star).toString();
     const soft_res = await updateDoc(
       doc(firestore, "softwares", `${review.soft_id}`),
-      { star: parseFloat(star.toFixed(2)) }
+      { star: parseFloat(star.toFixed(2)), star_text: start_text, reviews: data.length}
     );
 
     return NextResponse.json({ id: result.id }, { status: 200 });

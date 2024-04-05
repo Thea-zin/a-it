@@ -22,7 +22,6 @@ export async function POST(req) {
     const q = query(
       collection(firestore, "softwares"),
       orderBy("reviews", "desc"),
-      orderBy("views", "desc"),
       limit(8)
     );
 

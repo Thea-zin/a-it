@@ -21,7 +21,7 @@ export async function POST(req) {
     const firestore = getFirestore(firebase_app);
     const q = query(
       collection(firestore, "softwares"),
-      orderBy("views", "desc"),
+      orderBy("reviews", "desc"),
       limit(4)
     );
 

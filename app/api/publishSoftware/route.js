@@ -29,6 +29,8 @@ export async function POST(req) {
       categories: formData.get("categories").split(",").sort(),
       reviews: 0,
       views: 0,
+      star: 0,
+      star_text: "0",
       publishDate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
       lastupdate: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
     };

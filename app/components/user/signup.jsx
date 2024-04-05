@@ -29,13 +29,13 @@ export default function SignUp({ setSignStatus }) {
     const email_form = formData.get("email");
     const password_form = formData.get("password");
     const verify_form = formData.get("verify");
-    console.log(
-      name_form,
-      occupation_form,
-      email_form,
-      password_form,
-      verify_form
-    );
+    // console.log(
+    //   name_form,
+    //   occupation_form,
+    //   email_form,
+    //   password_form,
+    //   verify_form
+    // );
 
     setName(name_form != "" && name_form != null);
     setOccupation(occupation_form != "" && occupation_form != null);
@@ -66,7 +66,7 @@ export default function SignUp({ setSignStatus }) {
       body: form,
     });
     const res = await temp.json();
-    console.log(res);
+    // console.log(res);
     setLoading(false);
     if (temp.status == 200) setSignStatus(3);
     else alert(`Sign up Failed!\n${res.reason}`);

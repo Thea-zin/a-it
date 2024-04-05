@@ -24,7 +24,7 @@ export default function SoftwarePage() {
 
   useEffect(() => {
     getData();
-    console.log(searchParams.get("id"));
+    // console.log(searchParams.get("id"));
   }, [searchParams]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function SoftwarePage() {
         body: JSON.stringify({ ids: [searchParams.get("id")] }),
       });
       const res = await temp.json();
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.name != null && res.data.name != "") {
         gemini(res.data);
       }
@@ -80,7 +80,7 @@ export default function SoftwarePage() {
         softwares.push(soft);
       }
     }
-    console.log(softwares);
+    // console.log(softwares);
     setSoftwareToCompare([...softwares]);
   };
 
@@ -90,7 +90,7 @@ export default function SoftwarePage() {
       body: JSON.stringify({}),
     });
     const res = await temp.json();
-    console.log(res);
+    // console.log(res);
     setCategories([...res.categories.categories]);
   };
 
@@ -112,7 +112,7 @@ export default function SoftwarePage() {
     let temptext = res.result;
     var regex = /(?<=\*\*)(.*?)(?=\*\*)/g;
     const textarr = [...temptext.matchAll(regex)];
-    console.log(textarr);
+    // console.log(textarr);
     textarr.forEach((title) => {
       temptext = temptext.replace(`**${title[0]}**`, "<b>" + title[0] + "</b>");
     });
@@ -254,26 +254,17 @@ export default function SoftwarePage() {
               </div>
 
               <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
-                <ReviewBox />
-                <ReviewBox />
+                {/* <ReviewBox />
+                <ReviewBox /> */}
                 {reviews.map((review, index) => {
                   if (index > 1) return;
                   return <ReviewBox review={review} key={index} />;
                 })}
               </div>
 
-              <div className="grid place-items-center w-full">
+              {/* <div className="grid place-items-center w-full">
                 <div className="hidden sm:flex place-items-center mt-3">
-                  {[1, 2, 3, 4, 5, 6].map((item, index) => {
-                    return (
-                      <button
-                        key={index}
-                        className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-9 h-9 rounded-full"
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
+                  
                   <button className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-10 h-10 rounded-full grid place-content-center">
                     <img src="/write_review\icons\next.png" alt="" />
                   </button>
@@ -294,7 +285,7 @@ export default function SoftwarePage() {
                     <img src="/write_review\icons\next.png" alt="" />
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl"></div>

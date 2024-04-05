@@ -68,7 +68,7 @@ export default function ComparisonPage() {
             }
           });
         });
-        console.log(tproduct);
+        // console.log(tproduct);
         setProducts(tproduct);
       } catch (e) {
         router.push("/pages/mainCategories");

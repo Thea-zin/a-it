@@ -44,7 +44,7 @@ export default function PublishSoftware({ handleItemClick }) {
   };
 
   useEffect(() => {
-    console.log(didMount.current);
+    // console.log(didMount.current);
     if (didMount.current) {
       didMount.current = false;
     } else {
@@ -60,7 +60,7 @@ export default function PublishSoftware({ handleItemClick }) {
     } else {
       setShowCategoryList(false);
     }
-    console.log("category content got changed!");
+    // console.log("category content got changed!");
   }, [categoryContent]);
 
   useEffect(() => {
@@ -182,7 +182,7 @@ export default function PublishSoftware({ handleItemClick }) {
                   }`}
                   onChange={(e) => {
                     setCategoryContent(e.target.value);
-                    console.log("Category content change!");
+                    // console.log("Category content change!");
                   }}
                 />
                 <div

@@ -21,16 +21,31 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
+    let stars = request.star;
+    let categories = "";
 
-    console.log(request.categories);
+    if (request.star == null || request.star.length == 0) {
+      stars = ["0", "1", "2", "3", "4", "5"];
+    }
 
     let q = query(
       collection(firestore, "softwares"),
-      where("categories", "array-contains", request.categories[0]),
+      where("star_text", "in", stars),
       orderBy("nci"),
       startAfter(request.last),
       limit(12)
     );
+
+    if (request.categories != null && request.categories.length > 0) {
+      q = query(
+        collection(firestore, "softwares"),
+        where("categories", "array-contains", request.categories[0]),
+        where("star_text", "in", stars),
+        orderBy("nci"),
+        startAfter(request.last),
+        limit(12)
+      );
+    }
 
     const documentSnapshots = await getDocs(q);
 

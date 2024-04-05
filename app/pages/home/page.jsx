@@ -8,7 +8,7 @@ const HomePage = () => {
     const getData = async () => {
       var data = await fetch("/api/home");
       data = await data.json();
-      console.log(data);
+      // console.log(data);
       let temp = [];
       data.data.forEach((software) => {
         temp.push(software);

@@ -29,7 +29,7 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    console.log(softwares);
+    // console.log(softwares);
     // if (Object.keys(softwares).length == 0)
     //   getSoftwares({
     //     page: 1,
@@ -56,7 +56,7 @@ export default function Dashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pageInfo),
       });
-      console.log(pageInfo);
+      // console.log(pageInfo);
       const res = await temp.json();
       let st = softwares;
       if (pageInfo.url == "/api/software/search" && pageInfo.page == 1) {

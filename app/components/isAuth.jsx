@@ -14,7 +14,7 @@ export default function IsAuth(Component) {
         setAuth(true);
         tauth = true;
       }
-      console.log(tauth);
+    //   console.log(tauth);
       if (!tauth) {
         redirect("/");
       }

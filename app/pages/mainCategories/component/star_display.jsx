@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function Stars({ number }) {
-  // console.log("number", number);
   if (number >= 4.5) {
     return generateStar([2, 2, 2, 2, 1], number);
   } else if (number >= 4) {
@@ -18,12 +17,10 @@ export default function Stars({ number }) {
     return generateStar([2, 1, 0, 0, 0], number);
   } else if (number >= 1) {
     return generateStar([2, 0, 0, 0, 0], number);
-  } else if (number >= 0.5) {
+  } else if (number >= 0.48) {
     return generateStar([1, 0, 0, 0, 0], number);
   } else {
-    return (
-      <p className="text-[#F3B146] text-lg font-bold">Not enough rating yet!</p>
-    )
+    return <p className="text-[#F3B146] font-bold">Not enough rating</p>;
   }
 }
 
@@ -87,7 +84,7 @@ function generateStar(rate, number) {
           );
         }
       })}
-      <p className="text-bgray text-sm sm:text-[1.05rem] ml-2">{`(${number})`}</p>
+      <p className=" text-slate-400 text-sm sm:text-[1.05rem] ml-2">{`(${number})`}</p>
     </div>
   );
 }

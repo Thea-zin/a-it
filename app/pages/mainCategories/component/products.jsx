@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Stars from "./star_display";
 
 export default function Products({
   isSearching = false,
@@ -25,12 +26,14 @@ export default function Products({
   const [categories, setCategories] = useState([]);
   const [mainFilter, setMainFilter] = useState([""]);
   const [tempFilter, setTempFilter] = useState([]);
+  const [rateFilter, setRateFilter] = useState([]);
+  const [tempRate, setTempRate] = useState([]);
   const [showNextFiltered, setShowNextFiltered] = useState(false);
   const [lastFiltered, setLastFiltered] = useState("");
   const [listLastFiltered, setListLastFiltered] = useState([]);
   const [stopNextFilter, setStopNextFilter] = useState(false);
   const pageStep = 12;
-  const filterStep = 2;
+  const filterStep = 12;
 
   function addIds(id, name, add, icon = "") {
     let tempid = tids;
@@ -66,6 +69,10 @@ export default function Products({
   }
 
   useEffect(() => {
+    console.log(tempRate);
+  }, [tempRate]);
+
+  useEffect(() => {
     localStorage.setItem("ait_soft_ids", "");
     localStorage.setItem("ait_soft_names", "");
 
@@ -93,7 +100,7 @@ export default function Products({
 
   useEffect(() => {
     if (initialFilter != "" && initialFilter != null && categories.length > 0) {
-      console.log(initialFilter);
+      // console.log(initialFilter);
       document.getElementById(`${initialFilter}`).checked = true;
       getFilteredSoftwares(initialFilter);
     }
@@ -155,22 +162,29 @@ export default function Products({
   const getFilteredSoftwares = async (initFilter = "") => {
     setShowNextFiltered(true);
     setMainFilter([...tempFilter]);
+    setRateFilter([...tempRate]);
     setStopNextFilter(false);
 
     let body = {};
     if (initFilter != "") {
       setTempFilter([initialFilter]);
       setMainFilter([initialFilter]);
+      setTempRate([]);
+      setRateFilter([]);
       body = {
         categories: [initFilter],
+        star: [],
         last: "",
       };
     } else {
       body = {
         categories: tempFilter,
+        star: tempRate,
         last: "",
       };
     }
+
+    console.log(body);
 
     let ftl = [];
     let last = "";
@@ -219,15 +233,17 @@ export default function Products({
     // console.log(page - 1, listLastFiltered[page - 1], listLastFiltered);
     let body = {};
     const beforeLast = lastFiltered;
-    console.log("List Last filter", listLastFiltered);
+    // console.log("List Last filter", listLastFiltered);
     if (isNext) {
       body = {
         categories: mainFilter,
+        star: rateFilter,
         last: lastFiltered,
       };
     } else {
       body = {
         categories: mainFilter,
+        star: rateFilter,
         last: listLastFiltered[page - 1],
       };
     }
@@ -287,6 +303,7 @@ export default function Products({
       item.checked = false;
     }
     setTempFilter([]);
+    setTempRate([]);
   };
 
   return (
@@ -325,6 +342,19 @@ export default function Products({
                         type="checkbox"
                         value=""
                         className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                        onChange={(e) => {
+                          let temp = tempRate;
+                          if (e.target.checked) {
+                            temp.push(item[1].at(-1));
+                          } else {
+                            const index = temp.indexOf(item[1].at(-1));
+
+                            if (index > -1) {
+                              temp.splice(index, 1);
+                            }
+                          }
+                          setTempRate([...temp]);
+                        }}
                       />
                       <label
                         htmlFor={item[1]}
@@ -390,8 +420,8 @@ export default function Products({
             <div className="flex place-content-center">
               <button
                 onClick={() => {
-                  console.log("tempfilter length", tempFilter.length);
-                  if (tempFilter.length > 0) {
+                  // console.log("tempfilter length", tempFilter.length);
+                  if (tempFilter.length > 0 || tempRate.length > 0) {
                     getFilteredSoftwares();
                   }
                 }}
@@ -668,28 +698,7 @@ export default function Products({
                               <div>
                                 <p className="text-ellipsis">{item.name}</p>
                                 <div className="star flex flex-wrap">
-                                  <div className="flex">
-                                    {[1, 2, 3, 4, 5].map((it, ind) => {
-                                      return (
-                                        <svg
-                                          width="18"
-                                          height="17"
-                                          viewBox="0 0 18 17"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          key={ind}
-                                        >
-                                          <path
-                                            d="M9.00033 14.275L4.85033 16.775C4.667 16.8916 4.47533 16.9416 4.27533 16.9249C4.07533 16.9083 3.90033 16.8416 3.75033 16.725C3.60033 16.6083 3.48366 16.4623 3.40033 16.287C3.317 16.1116 3.30033 15.916 3.35033 15.7L4.45033 10.975L0.775329 7.79995C0.608662 7.64995 0.504662 7.47895 0.463329 7.28695C0.421996 7.09495 0.434329 6.90762 0.500329 6.72495C0.566996 6.54162 0.666995 6.39162 0.800329 6.27495C0.933662 6.15828 1.117 6.08328 1.35033 6.04995L6.20033 5.62495L8.07533 1.17495C8.15866 0.974952 8.288 0.824951 8.46333 0.724951C8.63866 0.624951 8.81766 0.574951 9.00033 0.574951C9.18366 0.574951 9.36266 0.624951 9.53733 0.724951C9.712 0.824951 9.84133 0.974952 9.92533 1.17495L11.8003 5.62495L16.6503 6.04995C16.8837 6.08328 17.067 6.15828 17.2003 6.27495C17.3337 6.39162 17.4337 6.54162 17.5003 6.72495C17.567 6.90829 17.5797 7.09595 17.5383 7.28795C17.497 7.47995 17.3927 7.65062 17.2253 7.79995L13.5503 10.975L14.6503 15.7C14.7003 15.9166 14.6837 16.1126 14.6003 16.288C14.517 16.4633 14.4003 16.609 14.2503 16.725C14.1003 16.8416 13.9253 16.9083 13.7253 16.9249C13.5253 16.9416 13.3337 16.8916 13.1503 16.775L9.00033 14.275Z"
-                                            fill="#F3B146"
-                                          />
-                                        </svg>
-                                      );
-                                    })}
-                                  </div>
-                                  <p className="text-gray text-ellipsis">
-                                    (2,145)
-                                  </p>
+                                  <Stars number={item.star} />
                                 </div>
                               </div>
 
