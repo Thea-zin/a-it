@@ -144,7 +144,9 @@ export async function POST(req) {
         break;
       }
       page += 1;
-      console.log(`##################### page ${page} ###########################`)
+      console.log(
+        `##################### page ${page} ###########################`
+      );
       console.log(softwares);
     }
 

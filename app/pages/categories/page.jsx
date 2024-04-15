@@ -1,56 +1,130 @@
-import React from 'react'
-import Categorise from './components/listing'
-const pages = () => {
+"use client";
+
+import React, { useState, useEffect } from "react";
+import CardItem2 from "./component/box2";
+import Overview from "./component/overview";
+import TapComponent from "./component/tapcomponent";
+import Products from "./component/products";
+
+const Categories = () => {
+  const [tap, setTap] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
+  const [doneSearching, setDoneSearching] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchSoftware, setSearchSoftware] = useState([]);
+  const [initialDataToCompare, setInitialDataToCompare] = useState({
+    id: "",
+    name: "",
+    icon: "",
+  });
+  const [initialFilter, setInitialFilter] = useState("");
+
+  const onKeyDown = (bypass = false, event) => {
+    if (bypass || event.key === "Enter") {
+      if (query != "" && query != null) {
+        setDoneSearching(false);
+        getSearchSoftware();
+        setIsSearching(true);
+      } else setIsSearching(false);
+
+      document.getElementById("search").value = "";
+    }
+  };
+
+  useEffect(() => {
+    if (isSearching) {
+      setTap(1);
+    }
+  }, [isSearching]);
+
+  useEffect(() => {
+    try {
+      const temp = localStorage.getItem("ait_soft_comp").split(",");
+      if (temp.length == 3 && temp[1] != "") {
+        localStorage.setItem("ait_soft_comp", "");
+        setInitialDataToCompare({ id: temp[0], name: temp[1], icon: temp[2] });
+        setTap(1);
+      }
+    } catch (e) {}
+  }, []);
+
+  useEffect(() => {
+    const temp = localStorage.getItem("ait_soft_cat");
+    if (temp != "" && temp != null) {
+      localStorage.setItem("ait_soft_cat", "");
+      setInitialFilter(temp);
+      setTap(1);
+    }
+  }, []);
+
+  const getSearchSoftware = async () => {
+    const temp = await fetch("/api/software/searchwpage", {
+      method: "POST",
+      body: JSON.stringify({ search: query.toLowerCase(), limit: 12 }),
+    });
+    const res = await temp.json();
+
+    setDoneSearching(true);
+    setSearchSoftware(res.softwares);
+  };
+
   return (
-    <div className='p-7'>
-        <div class="bg-[url('/photo/RectangleBG.png')] bg-cover  ">
-          <div className="content p-9 items-center">
-              <div className="text_title text-white text-4xl">
-                Explore 900+ Software Categorise
-              </div>
-              <form className='pt-5'>   
-                  <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                  <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                              <path stroke="currentColor"  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                          </svg>
-                      </div>
-                      <input type="search" id="default-search" className="block w-full  p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
-                      <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-                  </div>
-              </form>
-              <div className="text-title pt-5">
-                 <p className='text-white'>Find the right software and services based on</p> 
-                 <p className='text-white'> <span className='text-blue-500'>2,318,200+</span> real reviews.</p>
-              </div>
-              <div className="function flex justify-end mt-48 items-center">
-                  <div className="sort">
-                    sort :
-                  </div>
-                  <div className='m-2'>
-                    <button id="Categorise" data-dropdown-toggle="dropdown" class=" bg-gray focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-full text-sm  px-5 py-2 text-center inline-flex items-center dark:bg-gray-300 " type="button">Categorise <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
-                    </button>
-                  </div>
-              </div>
-          </div> 
+    <div className="min-w-[500px]">
+      <div className="relative content-top bg-black h-44 ">
+        <div className="text flex justify-between p-4">
+          <div className="text-[#1DCDFE] font-semibold text-3xl mt-9 ml-7">
+            Softwares
           </div>
-          <Categorise></Categorise>
-          <Categorise></Categorise>
-          <Categorise></Categorise>
-          <Categorise></Categorise>
+          <div className="flex place-items-end">
+            <div className="text-black px-3 bg-[#D9D9D9] rounded-full flex py-2">
+              <div className="flex place-items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0"
+                  ></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                name=""
+                id="search"
+                placeholder="Search software"
+                className="outline-none bg-transparent w-full ml-2"
+                onKeyDown={(e) => {
+                  onKeyDown(false, e);
+                }}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0">
+          <TapComponent st={setTap} tap={tap} />
+        </div>
+      </div>
 
-
-
-          
-           
-       
-        
+      {tap == 0 && <Overview />}
+      {tap == 1 && (
+        <Products
+          isSearching={isSearching}
+          searchSoftware={searchSoftware}
+          setIsSearching={setIsSearching}
+          doneSearching={doneSearching}
+          softwareToCompare={initialDataToCompare}
+          setSoftwareToCompare={setInitialDataToCompare}
+          initialFilter={initialFilter}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default pages
- 
+export default Categories;

@@ -11,7 +11,6 @@ import {
   addDoc,
   updateDoc,
 } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 const jsdom = require("jsdom");
 
 export async function POST(req) {
@@ -20,15 +19,23 @@ export async function POST(req) {
 
     const docRef = doc(firestore, "categories", "categories");
     const docSnap = await getDoc(docRef);
-    let categories = null;
+    let categories = [];
+    let subcategories = [];
     try {
       categories = docSnap.data()["categories"];
     } catch (e) {
       try {
         categories = await getCategoriesLink();
+        // for (let i = 0; i < categories.length; i++) {
+        //   const temp = await getSubCategoriesLink(
+        //     "https://www.futurepedia.io/ai-tools/" + categories[i]
+        //   );
+        //   subcategories.push(temp);
+        // }
       } catch (e) {
         console.log(e);
         categories = [];
+        subcategories = [];
       }
     }
 
@@ -76,11 +83,10 @@ const getSubCategoriesLink = async (lnk) => {
     headers: { "Content-Type": "application/json" },
   });
   const temp = await data.text();
-  console.log(temp);
   const dom = new jsdom.JSDOM(temp);
   const page = dom.window.document;
 
-  const quoteList = document.querySelectorAll("h2.capitalize");
+  const quoteList = page.querySelectorAll("h2.capitalize");
 
   const quotes = Array.from(quoteList).map((a) => {
     const href = a.querySelector("a").href;

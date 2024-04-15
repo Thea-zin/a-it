@@ -18,21 +18,18 @@ export default function Products({
   const [names, setNames] = useState([]);
   const [icons, setIcons] = useState([]);
   const [softwares, setSoftwares] = useState([]);
-  const [startAfter, setStartAfter] = useState("");
-  const [startAt, setStartAt] = useState("");
+  const [softLoading, setSoftLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [filterPageNumber, setFilterPageNumber] = useState(1);
-  const [total, setTotal] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [mainFilter, setMainFilter] = useState([""]);
-  const [tempFilter, setTempFilter] = useState([]);
+  const [mainFilter, setMainFilter] = useState("");
+  const [tempFilter, setTempFilter] = useState("");
   const [rateFilter, setRateFilter] = useState([]);
   const [tempRate, setTempRate] = useState([]);
   const [showNextFiltered, setShowNextFiltered] = useState(false);
   const [lastFiltered, setLastFiltered] = useState("");
   const [listLastFiltered, setListLastFiltered] = useState([]);
   const [stopNextFilter, setStopNextFilter] = useState(false);
-  const pageStep = 12;
   const filterStep = 12;
 
   function addIds(id, name, add, icon = "") {
@@ -72,13 +69,15 @@ export default function Products({
     console.log(tempRate);
   }, [tempRate]);
 
+  // useEffect(() => {
+  //   console.log(tempFilter);
+  // }, [tempFilter]);
+
   useEffect(() => {
     localStorage.setItem("ait_soft_ids", "");
     localStorage.setItem("ait_soft_names", "");
 
-    if (initialFilter == "") {
-      getSoftwares();
-    }
+    setSoftLoading(true);
     getAllCategories();
   }, []);
 
@@ -106,73 +105,79 @@ export default function Products({
     }
   }, [categories]);
 
-  const getSoftwares = async () => {
-    try {
-      const temp = await fetch("/api/automation/products", {
-        method: "POST",
-        body: JSON.stringify({ isLoadMore: false }),
-      });
-      const res = await temp.json();
-
-      setStartAfter(res.softwares[res.softwares.length - 1].nci);
-      setSoftwares(res.softwares);
-      setTotal(res.total);
-    } catch (e) {}
-  };
-
   const getAllCategories = async () => {
     try {
-      const temp = await fetch("/api/publishSoftware/categories", {
+      let temp = await fetch("/api/automation/categories", {
         method: "POST",
         body: JSON.stringify({}),
       });
       const res = await temp.json();
-
       setCategories([...res.categories]);
+
+      temp = await fetch("/api/automation/products", {
+        method: "POST",
+        body: JSON.stringify({ category: res.categories[0] }),
+      });
+      const tsoft = await temp.json();
+
+      setSoftwares(tsoft.softwares);
+      setSoftLoading(false);
+      setTempFilter(res.categories[0]);
     } catch (e) {}
   };
 
-  const goToPageNumber = async (pgn) => {
+  const getNextPage = async () => {
+    setSoftLoading(true);
     try {
-      const temp = await fetch("/api/software/products", {
+      const temp = await fetch("/api/automation/filter", {
         method: "POST",
-        body: JSON.stringify({ isLoadMore: false, pageNumber: pgn }),
+        body: JSON.stringify({
+          category: "productivity",
+          pageNumber: pageNumber + 1,
+        }),
       });
       const res = await temp.json();
 
       if (res.softwares.length != 0) {
-        setPageNumber(pgn);
+        setPageNumber(pageNumber + 1);
         setSoftwares(res.softwares);
       }
     } catch (e) {}
+    setSoftLoading(false);
   };
 
   const getPreviousPage = async () => {
+    setSoftLoading(true);
     try {
       if (pageNumber <= 1) {
         return;
       }
-      const temp = await fetch("/api/software/products", {
+
+      const temp = await fetch("/api/automation/filter", {
         method: "POST",
-        body: JSON.stringify({ isLoadMore: false, pageNumber: pageNumber - 1 }),
+        body: JSON.stringify({
+          category: "productivity",
+          pageNumber: pageNumber - 1,
+        }),
       });
       const res = await temp.json();
 
       setPageNumber(pageNumber - 1);
       setSoftwares(res.softwares);
     } catch (e) {}
+    setSoftLoading(false);
   };
 
   const getFilteredSoftwares = async (initFilter = "") => {
     setShowNextFiltered(true);
-    setMainFilter([...tempFilter]);
+    setMainFilter(tempFilter);
     setRateFilter([...tempRate]);
     setStopNextFilter(false);
 
     let body = {};
     if (initFilter != "") {
-      setTempFilter([initialFilter]);
-      setMainFilter([initialFilter]);
+      setTempFilter(initialFilter);
+      setMainFilter(initialFilter);
       setTempRate([]);
       setRateFilter([]);
       body = {
@@ -297,19 +302,6 @@ export default function Products({
     setSoftwares([...ftl]);
   };
 
-  const onViewAll = () => {
-    getSoftwares();
-    setShowNextFiltered(false);
-    setIsSearching(false);
-    let filters = document.getElementById("filter");
-    let items = filters.getElementsByTagName("input");
-    for (let item of items) {
-      item.checked = false;
-    }
-    setTempFilter([]);
-    setTempRate([]);
-  };
-
   return (
     <div className="itemes bg-[#F7F8FA]">
       <div className="md:flex p-8 ml-5">
@@ -317,15 +309,6 @@ export default function Products({
           <div className="filter  bg-white rounded-xl p-8 " id="filter">
             <div className="flex justify-between ">
               <div className="font-bold">Filters </div>
-              <div className="font-medium text-xs items-center text-[#4A4A4A] border-b-2- ">
-                <button
-                  onClick={() => {
-                    onViewAll();
-                  }}
-                >
-                  View All
-                </button>
-              </div>
             </div>
 
             <div className="software mt-5">
@@ -387,37 +370,53 @@ export default function Products({
             </div>
             <div className="busineses">
               <div className="title mt-5 font-semibold">Categories</div>
-              <div className="checkbox mt-5">
+              <div className="mt-5">
                 {categories.map((item, index) => {
-                  return (
-                    <div className="flex items-center mb-2" key={index}>
-                      <input
-                        id={item}
-                        type="checkbox"
-                        value=""
-                        className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
-                        onChange={(e) => {
-                          let temp = tempFilter;
-                          if (e.target.checked) {
-                            temp.push(item);
-                          } else {
-                            const index = temp.indexOf(item);
-
-                            if (index > -1) {
-                              temp.splice(index, 1);
-                            }
-                          }
-                          setTempFilter([...temp]);
-                        }}
-                      />
-                      <label
-                        htmlFor={item}
-                        className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                      >
-                        <div className="text-black ">{item}</div>
-                      </label>
-                    </div>
-                  );
+                  if (index == 0) {
+                    return (
+                      <div className="flex items-center mb-2" key={index}>
+                        <input
+                          id={item}
+                          type="radio"
+                          value={item}
+                          name="categories"
+                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                          onChange={(e) => {
+                            setTempFilter(e.target.value);
+                          }}
+                          checked={tempFilter === item}
+                        />
+                        <label
+                          htmlFor={item}
+                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                        >
+                          <div className="text-black ">{item}</div>
+                        </label>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className="flex items-center mb-2" key={index}>
+                        <input
+                          id={item}
+                          type="radio"
+                          value={item}
+                          name="categories"
+                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                          onChange={(e) => {
+                            setTempFilter(e.target.value);
+                          }}
+                          checked={tempFilter === item}
+                        />
+                        <label
+                          htmlFor={item}
+                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                        >
+                          <div className="text-black ">{item}</div>
+                        </label>
+                      </div>
+                    );
+                  }
                 })}
               </div>
             </div>
@@ -434,54 +433,6 @@ export default function Products({
               </button>
             </div>
           </div>
-          {/* <div className="filter  bg-[#2F455C] rounded-t-xl p-8 mt-5 text-white">
-              <div className="text text-xl font-bold text-center text-white ">
-                <p>Have Questions?</p>
-                <p>{"Let's us help!"}</p>
-              </div>
-              <div className="text-center mt-3 text-sm">
-                <p>Get personalized recommedations</p>
-                <p>from our expert on cells!</p>
-              </div>
-            </div>
-            <div className="filter  bg-white rounded-b-xl p-8">
-              <div className="grid grid-cols-1 gap-4 mt-5">
-                <input
-                  type="text"
-                  className="w-full h-9 rounded-full border-solid border-2 border-[#4b5563] placeholder-[#6b7280] p-5"
-                  placeholder="Name*"
-                />
-                <input
-                  type="text"
-                  className="w-full h-9 rounded-full border-solid border-2 border-[#4b5563] placeholder-[#6b7280] p-5"
-                  placeholder="Email*"
-                />
-                <div className="flex rounded-full border-solid border-2 border-[#4b5563] p-2">
-                  <img
-                    src="../photo/icon/cambodia.png"
-                    alt=""
-                    className="border-r-2 border-solid border-[#4b5563] mr-5 p-1 "
-                  />
-                  <input
-                    type="text"
-                    className="w-full  placeholder-[#6b7280] "
-                    placeholder="Mobile Phone *"
-                  />
-                </div>
-              </div>
-              <div className="btn mt-5">
-                <button className="bg-[#2F455C] p-3 rounded-full w-full text-white font-semibold">
-                  Get Offer
-                </button>
-              </div>
-              <div className="text text-sm mt-3 text-center">
-                <p>
-                  By submitting, you agree to our{" "}
-                  <span className="text-[#005FC1]">Terms and Condition</span>{" "}
-                  and <span className="text-[#005FC1]"> Privacy Policy</span>{" "}
-                </p>
-              </div>
-            </div> */}
         </div>
 
         <div className="w-full flex-1">
@@ -634,58 +585,6 @@ export default function Products({
                       })}
                     </div>
                     <div className="h-[100px]"></div>
-                    {/* <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
-                    {pageNumber > 1 && (
-                      <button
-                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
-                        onClick={() => {
-                          getPreviousPage();
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="1.7em"
-                          height="1.7em"
-                          viewBox="0 0 48 48"
-                          className="fill-transparent"
-                        >
-                          <g
-                            stroke="currentColor"
-                            strokeLinejoin="round"
-                            strokeWidth="4"
-                          >
-                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                            <path strokeLinecap="round" d="m27 33l-9-9l9-9" />
-                          </g>
-                        </svg>
-                      </button>
-                    )}
-                    {pageNumber != Math.min(Math.ceil(total / pageStep), 5) && (
-                      <button
-                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
-                        onClick={() => {
-                          goToPageNumber(pageNumber + 1);
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="1.7em"
-                          height="1.7em"
-                          viewBox="0 0 48 48"
-                          className="fill-transparent"
-                        >
-                          <g
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeWidth="4"
-                          >
-                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                            <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
-                          </g>
-                        </svg>
-                      </button>
-                    )}
-                  </div> */}
                   </div>
                 )
               ) : (
@@ -814,33 +713,38 @@ export default function Products({
                       )}
                     </div>
                   ) : (
-                    <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
-                      {pageNumber > 1 && (
-                        <button
-                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
-                          onClick={() => {
-                            getPreviousPage();
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1.7em"
-                            height="1.7em"
-                            viewBox="0 0 48 48"
-                            className="fill-transparent"
+                    !softLoading && (
+                      <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
+                        {pageNumber > 1 && (
+                          <button
+                            className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex place-content-center"
+                            onClick={() => {
+                              getPreviousPage();
+                            }}
                           >
-                            <g
-                              stroke="currentColor"
-                              strokeLinejoin="round"
-                              strokeWidth="4"
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1.7em"
+                              height="1.7em"
+                              viewBox="0 0 48 48"
+                              className="fill-transparent"
                             >
-                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                              <path strokeLinecap="round" d="m27 33l-9-9l9-9" />
-                            </g>
-                          </svg>
-                        </button>
-                      )}
-                      {Array.from(
+                              <g
+                                stroke="currentColor"
+                                strokeLinejoin="round"
+                                strokeWidth="4"
+                              >
+                                <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                                <path
+                                  strokeLinecap="round"
+                                  d="m27 33l-9-9l9-9"
+                                />
+                              </g>
+                            </svg>
+                            <p>Previous Page</p>
+                          </button>
+                        )}
+                        {/* {Array.from(
                         new Array(Math.ceil(total / pageStep)),
                         (x, i) => i + 1
                       ).map((item, index) => {
@@ -858,15 +762,15 @@ export default function Products({
                             {item}
                           </button>
                         );
-                      })}
-                      {pageNumber !=
-                        Math.min(Math.ceil(total / pageStep), 5) && (
+                      })} */}
+
                         <button
-                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex"
                           onClick={() => {
-                            goToPageNumber(pageNumber + 1);
+                            getNextPage();
                           }}
                         >
+                          <p>Next Page</p>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="1.7em"
@@ -884,8 +788,8 @@ export default function Products({
                             </g>
                           </svg>
                         </button>
-                      )}
-                    </div>
+                      </div>
+                    )
                   )}
                 </div>
               )}
