@@ -50,9 +50,9 @@ export default function SoftwarePage() {
       setLoading(true);
       setText("");
 
-      const temp = await fetch("/api/software", {
+      const temp = await fetch("/api/automation/software", {
         method: "POST",
-        body: JSON.stringify({ ids: [searchParams.get("id")] }),
+        body: JSON.stringify({ id: searchParams.get("id") }),
       });
       const res = await temp.json();
       // console.log(res.data);
@@ -60,38 +60,23 @@ export default function SoftwarePage() {
         gemini(res.data);
       }
       getSameCategories(res.data);
-      getAllCategories();
+      // getAllCategories();
       setData(res.data);
       setReview(res.reviews);
+      setCategories(res.data.othercategories)
     } catch (e) {
       console.log("Problem Occurs! Possible cause: id, network");
     }
   };
 
   const getSameCategories = async (software) => {
-    const temp = await fetch("/api/software/category", {
+    const temp = await fetch("/api/automation/samecategory", {
       method: "POST",
-      body: JSON.stringify({ category: software.categories[0], limit: 5 }),
+      body: JSON.stringify(software),
     });
     const res = await temp.json();
-    let softwares = [];
-    for (let soft of res.softwares) {
-      if (soft.name != software.name) {
-        softwares.push(soft);
-      }
-    }
-    // console.log(softwares);
-    setSoftwareToCompare([...softwares]);
-  };
 
-  const getAllCategories = async () => {
-    const temp = await fetch("/api/publishSoftware/categories", {
-      method: "POST",
-      body: JSON.stringify({}),
-    });
-    const res = await temp.json();
-    // console.log(res);
-    setCategories([...res.categories.categories]);
+    setSoftwareToCompare([...res.softwares]);
   };
 
   const gemini = async (software) => {
@@ -386,7 +371,7 @@ export default function SoftwarePage() {
                     <Link
                       className="my-1 flex place-content-start items-center text-bblue mt-3"
                       key={index}
-                      href="mainCategories"
+                      href="categories"
                       onClick={() => {
                         localStorage.setItem("ait_soft_cat", `${item}`);
                       }}

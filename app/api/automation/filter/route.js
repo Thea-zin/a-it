@@ -22,14 +22,11 @@ export async function POST(req) {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
 
-    const subcat = await getSubCategoriesLink(
-      "https://www.futurepedia.io/ai-tools/" + request.category
-    );
-    console.log(subcat);
+    console.log(request);
     let softwares = await getSoftwareInfoPerPage(
       "https://www.futurepedia.io/ai-tools/",
-      subcat[0],
-      `page=${request.pageNumber}`
+      request.subcat,
+      request.pageNumber
     );
 
     return NextResponse.json(
@@ -48,12 +45,21 @@ export async function POST(req) {
 const getSoftwareInfoPerPage = async (
   lnk,
   subcat = "personal-assistant",
-  query = ""
+  pageNumber = 1
 ) => {
-  const data = await fetch(lnk + subcat + "?" + query, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+  let data = null;
+  if (pageNumber == 1) {
+    data = await fetch(lnk + subcat, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+  } else {
+    data = await fetch(lnk + subcat + "?page=" + pageNumber, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   const temp = await data.text();
   const dom = new jsdom.JSDOM(temp);
   const page = dom.window.document;
@@ -68,35 +74,18 @@ const getSoftwareInfoPerPage = async (
     const name = cell.querySelector(
       "a p.m-0.line-clamp-2.overflow-hidden"
     ).textContent;
-    const nci = name.toLocaleLowerCase();
+    let temp = cell.querySelector("div div a").href;
+    temp = temp.split("/");
+    const nci = temp[temp.length - 1];
     const site = cell.querySelector("div.px-6.mt-auto.flex a").href;
     const categories = [subcat];
     const id = nci;
-    const star_text = 0;
+    const star = 0;
     const views = 0;
     const reviews = 0;
 
-    return { id, name, nci, icon, site, categories, star_text, views, reviews };
+    return { id, name, nci, icon, site, categories, star, views, reviews };
   });
 
   return softwares;
-};
-
-const getSubCategoriesLink = async (lnk) => {
-  const data = await fetch(lnk, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const temp = await data.text();
-  const dom = new jsdom.JSDOM(temp);
-  const page = dom.window.document;
-
-  const quoteList = page.querySelectorAll("h2.capitalize");
-
-  const quotes = Array.from(quoteList).map((a) => {
-    const href = a.querySelector("a").href;
-    return href;
-  });
-
-  return quotes;
 };

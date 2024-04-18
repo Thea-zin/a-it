@@ -15,26 +15,54 @@ import {
   startAt,
   getCountFromServer,
 } from "firebase/firestore";
+import { ControlPointSharp } from "@mui/icons-material";
 const jsdom = require("jsdom");
 
 export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
-    const smax = 12;
+    const smax = 4;
 
-    const subcat = await getSubCategoriesLink(
-      "https://www.futurepedia.io/ai-tools/" + request.category
-    );
-    console.log(subcat);
-    let initcategory = request.category;
-    if (request.isParent) {
-      initcategory = subcat[0];
+    let q = null;
+    try {
+      q = query(
+        collection(firestore, "softwares"),
+        orderBy("reviews", "desc"),
+        limit(smax)
+      );
+    } catch (e) {
+      console.log(e);
+      return NextResponse.json({ softwares: [], total: 0 }, { status: 202 });
     }
-    let softwares = await getSoftwareInfoPerPage(
-      "https://www.futurepedia.io/ai-tools/",
-      initcategory
-    );
+
+    const documentSnapshots = await getDocs(q);
+    let softwares = [];
+    for (let doc of documentSnapshots.docs) {
+      let temp = doc.data();
+      temp.id = doc.id;
+      softwares.push(temp);
+    }
+
+    console.log(softwares);
+
+    if (softwares.length < smax) {
+      let temp = await getSoftwareInfoPerPage(
+        "https://www.futurepedia.io/?sort=popular"
+      );
+      let i = 0;
+
+      while (softwares.length < smax) {
+        if (
+          softwares.every((item) => {
+            return item.nci != temp[i].nci;
+          })
+        ) {
+          softwares.push(temp[i]);
+        }
+        i++;
+      }
+    }
 
     return NextResponse.json(
       { softwares: softwares, total: softwares.length },
@@ -59,7 +87,7 @@ const getSoftwareInfoPerPage = async (lnk, subcat = "personal-assistant") => {
   const page = dom.window.document;
 
   const grid = page.querySelectorAll(
-    "div.grid.w-full.grid-cols-1.grid-rows-3.gap-3 div.flex.flex-col.bg-card.text-card-foreground"
+    "div.grid.mx-auto.gap-4 div.flex.flex-col.bg-card.text-card-foreground"
   );
   console.log(grid.length);
   let softwares = Array.from(grid).map((cell) => {

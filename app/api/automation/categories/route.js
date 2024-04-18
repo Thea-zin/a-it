@@ -76,22 +76,3 @@ const getCategoriesLink = async () => {
 
   return scat;
 };
-
-const getSubCategoriesLink = async (lnk) => {
-  const data = await fetch(lnk, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const temp = await data.text();
-  const dom = new jsdom.JSDOM(temp);
-  const page = dom.window.document;
-
-  const quoteList = page.querySelectorAll("h2.capitalize");
-
-  const quotes = Array.from(quoteList).map((a) => {
-    const href = a.querySelector("a").href;
-    return href;
-  });
-
-  return quotes;
-};

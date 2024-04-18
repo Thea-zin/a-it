@@ -97,33 +97,77 @@ export default function Products({
     }
   }, [softwareToCompare]);
 
-  useEffect(() => {
-    if (initialFilter != "" && initialFilter != null && categories.length > 0) {
-      // console.log(initialFilter);
-      document.getElementById(`${initialFilter}`).checked = true;
-      getFilteredSoftwares(initialFilter);
-    }
-  }, [categories]);
+  useEffect(() => {}, [categories]);
 
   const getAllCategories = async () => {
     try {
+      let initcategory = initialFilter;
+      let isParent = false;
       let temp = await fetch("/api/automation/categories", {
         method: "POST",
         body: JSON.stringify({}),
       });
       const res = await temp.json();
-      setCategories([...res.categories]);
+
+      if (initcategory == null || initcategory == "") {
+        initcategory = res.categories[0];
+        isParent = true;
+      }
 
       temp = await fetch("/api/automation/products", {
         method: "POST",
-        body: JSON.stringify({ category: res.categories[0] }),
+        body: JSON.stringify({ category: initcategory, isParent }),
       });
       const tsoft = await temp.json();
 
-      setSoftwares(tsoft.softwares);
-      setSoftLoading(false);
-      setTempFilter(res.categories[0]);
-    } catch (e) {}
+      setCategories([[...res.categories]]);
+
+      let subcategories = [];
+      for (let i = 0; i < res.categories.length; i++) {
+        console.log(i);
+        temp = await fetch("/api/automation/subcategories", {
+          method: "POST",
+          body: JSON.stringify({ category: res.categories[i] }),
+        });
+        const catres = await temp.json();
+        if (catres.subcategories.length > 0) {
+          subcategories.push([res.categories[i], ...catres.subcategories]);
+        }
+        setCategories([...subcategories]);
+
+        if (i == 0) {
+          setSoftwares(tsoft.softwares);
+          setSoftLoading(false);
+          if (isParent) {
+            setTempFilter(subcategories[0][1]);
+            setMainFilter(subcategories[0][1]);
+          } else {
+            setTempFilter(initcategory);
+            setMainFilter(initcategory);
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getFilteredSoftwares = async () => {
+    setMainFilter(tempFilter);
+
+    const temp = await fetch("/api/automation/filter", {
+      method: "POST",
+      body: JSON.stringify({
+        subcat: tempFilter,
+        rate: tempRate,
+        pageNumber: 1,
+      }),
+    });
+    const tsoft = await temp.json();
+
+    setSoftwares(tsoft.softwares);
+    setSoftLoading(false);
+    setPageNumber(1);
   };
 
   const getNextPage = async () => {
@@ -132,7 +176,7 @@ export default function Products({
       const temp = await fetch("/api/automation/filter", {
         method: "POST",
         body: JSON.stringify({
-          category: "productivity",
+          subcat: mainFilter,
           pageNumber: pageNumber + 1,
         }),
       });
@@ -156,7 +200,7 @@ export default function Products({
       const temp = await fetch("/api/automation/filter", {
         method: "POST",
         body: JSON.stringify({
-          category: "productivity",
+          subcat: mainFilter,
           pageNumber: pageNumber - 1,
         }),
       });
@@ -166,140 +210,6 @@ export default function Products({
       setSoftwares(res.softwares);
     } catch (e) {}
     setSoftLoading(false);
-  };
-
-  const getFilteredSoftwares = async (initFilter = "") => {
-    setShowNextFiltered(true);
-    setMainFilter(tempFilter);
-    setRateFilter([...tempRate]);
-    setStopNextFilter(false);
-
-    let body = {};
-    if (initFilter != "") {
-      setTempFilter(initialFilter);
-      setMainFilter(initialFilter);
-      setTempRate([]);
-      setRateFilter([]);
-      body = {
-        categories: [initFilter],
-        star: [],
-        last: "",
-      };
-    } else {
-      body = {
-        categories: tempFilter,
-        star: tempRate,
-        last: "",
-      };
-    }
-
-    console.log(body);
-
-    let ftl = [];
-    let last = "";
-    let stop = false;
-    let isMore = true;
-    while (!stop) {
-      const temp = await fetch("/api/software/filtered", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
-      const res = await temp.json();
-      // console.log(res.softwares, res.isMore);
-      if (!res.isMore) {
-        isMore = res.isMore;
-        break;
-      }
-      last = res.last;
-      for (let soft of res.softwares) {
-        ftl.push(soft);
-        if (ftl.length % filterStep == 0) {
-          last = soft.nci;
-          stop = true;
-          break;
-        }
-      }
-      if (res.softwares.length > 0) {
-        setSoftwares([...ftl]);
-      }
-
-      body.last = last;
-    }
-
-    if (ftl.length % filterStep != 0 || !isMore) {
-      setStopNextFilter(true);
-    }
-
-    setListLastFiltered([""]);
-
-    setLastFiltered(last);
-    setFilterPageNumber(1);
-    setSoftwares([...ftl]);
-    setIsSearching(false);
-  };
-
-  const getNextFilteredSoftwares = async (isNext = false, page = 0) => {
-    // console.log(page - 1, listLastFiltered[page - 1], listLastFiltered);
-    let body = {};
-    const beforeLast = lastFiltered;
-    // console.log("List Last filter", listLastFiltered);
-    if (isNext) {
-      body = {
-        categories: mainFilter,
-        star: rateFilter,
-        last: lastFiltered,
-      };
-    } else {
-      body = {
-        categories: mainFilter,
-        star: rateFilter,
-        last: listLastFiltered[page - 1],
-      };
-    }
-    let ftl = [];
-    let last = "";
-    let stop = false;
-    let isMore = true;
-    while (!stop) {
-      const temp = await fetch("/api/software/filtered", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
-      const res = await temp.json();
-      // console.log(res.softwares, res.isMore);
-      if (!res.isMore) {
-        isMore = res.isMore;
-        break;
-      }
-      last = res.last;
-      for (let soft of res.softwares) {
-        ftl.push(soft);
-        if (ftl.length % filterStep == 0) {
-          last = soft.nci;
-          stop = true;
-          break;
-        }
-      }
-      if (res.softwares.length > 0) {
-        setSoftwares([...ftl]);
-      }
-
-      body.last = last;
-    }
-    if (ftl.length % filterStep != 0 || !isMore) {
-      setStopNextFilter(true);
-    }
-
-    // console.log("Before Last", beforeLast);
-    if (page > listLastFiltered.length) {
-      let temp = listLastFiltered;
-      temp.push(beforeLast);
-      setListLastFiltered([...temp]);
-      // console.log("Before Last if", beforeLast);
-    }
-
-    setLastFiltered(last);
-    setSoftwares([...ftl]);
   };
 
   return (
@@ -372,51 +282,37 @@ export default function Products({
               <div className="title mt-5 font-semibold">Categories</div>
               <div className="mt-5">
                 {categories.map((item, index) => {
-                  if (index == 0) {
-                    return (
-                      <div className="flex items-center mb-2" key={index}>
-                        <input
-                          id={item}
-                          type="radio"
-                          value={item}
-                          name="categories"
-                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
-                          onChange={(e) => {
-                            setTempFilter(e.target.value);
-                          }}
-                          checked={tempFilter === item}
-                        />
-                        <label
-                          htmlFor={item}
-                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                        >
-                          <div className="text-black ">{item}</div>
-                        </label>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div className="flex items-center mb-2" key={index}>
-                        <input
-                          id={item}
-                          type="radio"
-                          value={item}
-                          name="categories"
-                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
-                          onChange={(e) => {
-                            setTempFilter(e.target.value);
-                          }}
-                          checked={tempFilter === item}
-                        />
-                        <label
-                          htmlFor={item}
-                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                        >
-                          <div className="text-black ">{item}</div>
-                        </label>
-                      </div>
-                    );
-                  }
+                  return (
+                    <div key={index}>
+                      <p>{item[0]}</p>
+                      {item.map((subcat, ind) => {
+                        if (ind == 0) {
+                          return <div key={ind}></div>;
+                        }
+                        return (
+                          <div className="flex items-center mb-2" key={ind}>
+                            <input
+                              id={subcat}
+                              type="radio"
+                              value={subcat}
+                              name="categories"
+                              className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                              onChange={(e) => {
+                                setTempFilter(e.target.value);
+                              }}
+                              checked={tempFilter === subcat}
+                            />
+                            <label
+                              htmlFor={subcat}
+                              className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                            >
+                              <div className="text-black ">{subcat}</div>
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
                 })}
               </div>
             </div>
@@ -650,18 +546,13 @@ export default function Products({
                     </div>
                   )}
                   <div className="h-[100px]"></div>
-                  {showNextFiltered ? (
+                  {!softLoading && (
                     <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
-                      {filterPageNumber > 1 && (
+                      {pageNumber > 1 && (
                         <button
-                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex place-content-center"
                           onClick={() => {
-                            setStopNextFilter(false);
-                            getNextFilteredSoftwares(
-                              false,
-                              filterPageNumber - 1
-                            );
-                            setFilterPageNumber(filterPageNumber - 1);
+                            getPreviousPage();
                           }}
                         >
                           <svg
@@ -680,71 +571,10 @@ export default function Products({
                               <path strokeLinecap="round" d="m27 33l-9-9l9-9" />
                             </g>
                           </svg>
+                          <p>Previous Page</p>
                         </button>
                       )}
-                      {!stopNextFilter && (
-                        <button
-                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center"
-                          onClick={() => {
-                            getNextFilteredSoftwares(
-                              true,
-                              filterPageNumber + 1
-                            );
-                            setFilterPageNumber(filterPageNumber + 1);
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1.7em"
-                            height="1.7em"
-                            viewBox="0 0 48 48"
-                            className="fill-transparent"
-                          >
-                            <g
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeWidth="4"
-                            >
-                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                              <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
-                            </g>
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                  ) : (
-                    !softLoading && (
-                      <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
-                        {pageNumber > 1 && (
-                          <button
-                            className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex place-content-center"
-                            onClick={() => {
-                              getPreviousPage();
-                            }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="1.7em"
-                              height="1.7em"
-                              viewBox="0 0 48 48"
-                              className="fill-transparent"
-                            >
-                              <g
-                                stroke="currentColor"
-                                strokeLinejoin="round"
-                                strokeWidth="4"
-                              >
-                                <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                                <path
-                                  strokeLinecap="round"
-                                  d="m27 33l-9-9l9-9"
-                                />
-                              </g>
-                            </svg>
-                            <p>Previous Page</p>
-                          </button>
-                        )}
-                        {/* {Array.from(
+                      {/* {Array.from(
                         new Array(Math.ceil(total / pageStep)),
                         (x, i) => i + 1
                       ).map((item, index) => {
@@ -764,32 +594,31 @@ export default function Products({
                         );
                       })} */}
 
-                        <button
-                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex"
-                          onClick={() => {
-                            getNextPage();
-                          }}
+                      <button
+                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex"
+                        onClick={() => {
+                          getNextPage();
+                        }}
+                      >
+                        <p>Next Page</p>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="1.7em"
+                          height="1.7em"
+                          viewBox="0 0 48 48"
+                          className="fill-transparent"
                         >
-                          <p>Next Page</p>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1.7em"
-                            height="1.7em"
-                            viewBox="0 0 48 48"
-                            className="fill-transparent"
+                          <g
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeWidth="4"
                           >
-                            <g
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeWidth="4"
-                            >
-                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                              <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
-                            </g>
-                          </svg>
-                        </button>
-                      </div>
-                    )
+                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                            <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
+                          </g>
+                        </svg>
+                      </button>
+                    </div>
                   )}
                 </div>
               )}

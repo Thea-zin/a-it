@@ -51,7 +51,7 @@ export default function Overview() {
   }, []);
 
   const getTrendingSoftwares = async () => {
-    const temp = await fetch("/api/software/trending", {
+    const temp = await fetch("/api/automation/trending", {
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -61,7 +61,7 @@ export default function Overview() {
   };
 
   const getPopularSoftwares = async () => {
-    const temp = await fetch("/api/software/popular", {
+    const temp = await fetch("/api/automation/popular", {
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -153,7 +153,7 @@ export default function Overview() {
                             clipRule="evenodd"
                           />
                         </svg>
-                        {item.star ? (
+                        {item.star > 0.1 ? (
                           <div className="text-white bg-[#2F455C]">
                             {item.star}
                           </div>

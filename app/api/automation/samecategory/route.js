@@ -21,23 +21,29 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
-    const smax = 12;
-
-    const subcat = await getSubCategoriesLink(
+    const smax = 4;
+    console.log(request);
+    let softwares = await getSoftwareInfoPerPage(
       "https://www.futurepedia.io/ai-tools/" + request.category
     );
-    console.log(subcat);
-    let initcategory = request.category;
-    if (request.isParent) {
-      initcategory = subcat[0];
+
+    let data = [];
+    let i = 0;
+    while (data.length < smax && i < softwares.length) {
+      if (
+        data.every((item) => {
+          return item.nci != softwares[i].nci;
+        }) &&
+        softwares[i].nci != request.nci
+      ) {
+        softwares[i]["category"] = request.category;
+        data.push(softwares[i]);
+      }
+      i++;
     }
-    let softwares = await getSoftwareInfoPerPage(
-      "https://www.futurepedia.io/ai-tools/",
-      initcategory
-    );
 
     return NextResponse.json(
-      { softwares: softwares, total: softwares.length },
+      { softwares: data, total: softwares.length },
       { status: 200 }
     );
   } catch (e) {
@@ -49,8 +55,8 @@ export async function POST(req) {
   }
 }
 
-const getSoftwareInfoPerPage = async (lnk, subcat = "personal-assistant") => {
-  const data = await fetch(lnk + subcat, {
+const getSoftwareInfoPerPage = async (lnk) => {
+  const data = await fetch(lnk, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -72,33 +78,13 @@ const getSoftwareInfoPerPage = async (lnk, subcat = "personal-assistant") => {
     temp = temp.split("/");
     const nci = temp[temp.length - 1];
     const site = cell.querySelector("div.px-6.mt-auto.flex a").href;
-    const categories = [subcat];
     const id = nci;
     const star = 0;
     const views = 0;
     const reviews = 0;
 
-    return { id, name, nci, icon, site, categories, star, views, reviews };
+    return { id, name, nci, icon, site, star, views, reviews };
   });
 
   return softwares;
-};
-
-const getSubCategoriesLink = async (lnk) => {
-  const data = await fetch(lnk, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const temp = await data.text();
-  const dom = new jsdom.JSDOM(temp);
-  const page = dom.window.document;
-
-  const quoteList = page.querySelectorAll("h2.capitalize");
-
-  const quotes = Array.from(quoteList).map((a) => {
-    const href = a.querySelector("a").href;
-    return href;
-  });
-
-  return quotes;
 };
