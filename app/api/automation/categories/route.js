@@ -17,26 +17,21 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
 
-    const docRef = doc(firestore, "categories", "categories");
-    const docSnap = await getDoc(docRef);
     let categories = [];
     let subcategories = [];
+
     try {
-      categories = docSnap.data()["categories"];
+      categories = await getCategoriesLink();
+      // for (let i = 0; i < categories.length; i++) {
+      //   const temp = await getSubCategoriesLink(
+      //     "https://www.futurepedia.io/ai-tools/" + categories[i]
+      //   );
+      //   subcategories.push(temp);
+      // }
     } catch (e) {
-      try {
-        categories = await getCategoriesLink();
-        // for (let i = 0; i < categories.length; i++) {
-        //   const temp = await getSubCategoriesLink(
-        //     "https://www.futurepedia.io/ai-tools/" + categories[i]
-        //   );
-        //   subcategories.push(temp);
-        // }
-      } catch (e) {
-        console.log(e);
-        categories = [];
-        subcategories = [];
-      }
+      console.log(e);
+      categories = [];
+      subcategories = [];
     }
 
     return NextResponse.json({ categories: categories }, { status: 200 });
