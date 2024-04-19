@@ -59,7 +59,7 @@ export default function ComparisonPage() {
         const temp = await data.json();
         setProducts(temp.data);
       } catch (e) {
-        router.push("/pages/mainCategories");
+        router.push("/pages/categories");
       }
     }
     getDataRef();

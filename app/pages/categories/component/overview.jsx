@@ -31,6 +31,14 @@ export default function Overview() {
 
     localStorage.setItem("ait_soft_ids", tempid.join());
     localStorage.setItem("ait_soft_names", tempnames.join());
+    localStorage.setItem(
+      "ait_soft_icons",
+      tempicon
+        .map((item) => {
+          return item[0];
+        })
+        .join()
+    );
 
     if (tempid.length == 0 || tempnames.length == 0) {
       setAllowComp(false);
@@ -46,6 +54,7 @@ export default function Overview() {
   useEffect(() => {
     localStorage.setItem("ait_soft_ids", "");
     localStorage.setItem("ait_soft_names", "");
+    localStorage.setItem("ait_soft_icons", "");
     getTrendingSoftwares();
     getPopularSoftwares();
   }, []);

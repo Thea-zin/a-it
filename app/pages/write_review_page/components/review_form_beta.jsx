@@ -281,6 +281,6 @@ export default function ReviewFormBeta() {
       </div>
     );
   } catch (e) {
-    router.push("/pages/mainCategories");
+    router.push("/pages/categories");
   }
 }

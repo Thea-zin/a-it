@@ -28,7 +28,6 @@ export default function ComparisonPage() {
     top: "overview",
     bottom: "review",
   });
-  const [geminiText, setGeminiText] = useState("");
   const [comparArr, setComparArr] = useState("");
   const router = useRouter();
 
@@ -42,36 +41,29 @@ export default function ComparisonPage() {
   });
 
   useEffect(() => {
-    const tids = localStorage.getItem("ait_soft_ids").split(",");
+    const ticons = localStorage.getItem("ait_soft_icons").split(",");
+    const tnames = localStorage.getItem("ait_soft_names").split(",");
     async function getDataRef() {
       try {
-        let ids = [];
-        tids.forEach((id) => {
-          if (id != null && id != "") {
-            ids.push(id);
+        let icons = [];
+        let names = [];
+        for (let i = 0; i < ticons.length; i++) {
+          if (ticons[i] != null && ticons[i] != "") {
+            icons.push(ticons[i]);
+            names.push(tnames[i]);
           }
-        });
-        if (ids.length == 0) throw new Error();
+        }
+        if (icons.length == 0 || names.length == 0) throw new Error();
 
-        const data = await fetch("/api/software/compare", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ids: ids }),
-        });
-        const temp = await data.json();
-        const tdata = temp.data;
         let tproduct = [];
-        ids.forEach((id) => {
-          tdata.forEach((prod) => {
-            if (prod.id == id) {
-              tproduct.push(prod);
-            }
-          });
-        });
-        // console.log(tproduct);
+        for (let i = 0; i < icons.length; i++) {
+          tproduct.push({ name: names[i], icon: icons[i] });
+        }
+        console.log(icons, names);
+        console.log(tproduct);
         setProducts(tproduct);
       } catch (e) {
-        router.push("/pages/mainCategories");
+        router.push("/pages/categories");
       }
     }
     getDataRef();
@@ -81,19 +73,48 @@ export default function ComparisonPage() {
   const testGemini = async () => {
     let names = "";
     let tnames = [];
+    let tids = [];
     try {
       names = localStorage.getItem("ait_soft_names");
       tnames = names.split(",");
+      tids = localStorage.getItem("ait_soft_ids").split(",");
       // console.log(tnames);
-      if (tnames.length == 0 || tnames[0] == "") throw new Error();
+      if (
+        tnames.length == 0 ||
+        tnames[0] == "" ||
+        tids.length == 0 ||
+        tids[0] == "" ||
+        tids.length != tnames.length
+      )
+        throw new Error();
     } catch (e) {
-      router.push("/pages/mainCategories");
+      router.push("/pages/categories");
     }
 
     let cont = true;
     let text = "";
     let arrText = [];
     let arrData = [];
+
+    try {
+      const temp = await fetch("/api/automation/checkcompare", {
+        method: "POST",
+        body: JSON.stringify({
+          ischeck: true,
+          nci: tids,
+        }),
+      });
+      const res = await temp.json();
+      if (res.softwares.length == tids.length) {
+        cont = false;
+
+        for (let i = 0; i < res.softwares.length; i++) {
+          // order of softwares in array already sorted to the order of ids in the api.
+          arrData.push(res.softwares[i].compareData);
+        }
+      }
+    } catch (e) {}
+
     while (cont) {
       arrText = [];
       arrData = [];
@@ -102,7 +123,8 @@ export default function ComparisonPage() {
         const temp = await fetch("/api/gemini", {
           method: "POST",
           body: JSON.stringify({
-            prompt: `compare ${tnames.toString()}. please give answer in sections including overview, feature, customization, integration, scalability, maturity, support, price (is it cheap, moderate or expensive?), and free trial. seperate answer for each ai. mark the end of each ai with @ and mark the end of answer with @`,
+            job: "compare",
+            prompt: `briefly describe these ai tools, ${tnames.toString()}. please give short answer in sections including overview, feature, customization, integration, scalability, maturity, support, price (is it cheap, moderate or expensive?), and free trial. seperate answer for each ai tool. mark the end of each ai tool with @ and mark the end of answer with @`,
           }),
         });
         const res = await temp.json();
@@ -147,11 +169,26 @@ export default function ComparisonPage() {
             count += 1;
           }
         });
-        if (count == tnames.length) cont = false;
-      } catch (e) {}
+        if (count == tnames.length) {
+          cont = false;
+
+          let data = [];
+          for (let i = 0; i < tids.length; i++) {
+            data.push([tids[i], arrData[i]]);
+          }
+
+          fetch("/api/automation/checkcompare", {
+            method: "POST",
+            body: JSON.stringify({
+              compareData: data,
+            }),
+          });
+        }
+      } catch (e) {
+        cont = false;
+      }
     }
 
-    setGeminiText(text);
     setComparArr(arrData);
   };
 

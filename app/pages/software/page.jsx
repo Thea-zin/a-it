@@ -63,7 +63,7 @@ export default function SoftwarePage() {
       // getAllCategories();
       setData(res.data);
       setReview(res.reviews);
-      setCategories(res.data.othercategories)
+      setCategories(res.data.othercategories);
     } catch (e) {
       console.log("Problem Occurs! Possible cause: id, network");
     }
@@ -84,6 +84,7 @@ export default function SoftwarePage() {
       method: "POST",
       body: JSON.stringify({
         prompt: `What is ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.categories}`,
+        nci: software.nci,
       }),
     });
     // const temp = await fetch("/api/gemini", {
@@ -191,7 +192,7 @@ export default function SoftwarePage() {
                 "ait_soft_comp",
                 `${data.id},${data.name},${data.icon}`
               );
-              router.push("mainCategories");
+              router.push("categories");
             }}
           >
             Compare

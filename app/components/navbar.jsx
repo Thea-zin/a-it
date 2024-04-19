@@ -166,7 +166,7 @@ const Navbar = () => {
           </Link>
 
           <div className="categories flex items-center">
-            <Link href="/pages/mainCategories">Software Categories</Link>
+            <Link href="/pages/categories">Software Categories</Link>
           </div>
         </div>
 

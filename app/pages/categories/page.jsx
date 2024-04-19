@@ -58,7 +58,7 @@ const Categories = () => {
   }, []);
 
   const getSearchSoftware = async () => {
-    const temp = await fetch("/api/software/searchwpage", {
+    const temp = await fetch("/api/automation/search", {
       method: "POST",
       body: JSON.stringify({ search: query.toLowerCase(), limit: 12 }),
     });
