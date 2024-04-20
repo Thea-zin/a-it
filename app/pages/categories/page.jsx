@@ -18,6 +18,7 @@ const Categories = () => {
     icon: "",
   });
   const [initialFilter, setInitialFilter] = useState("");
+  const [searchPageNumber, setSearchPageNumber] = useState(1);
 
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
@@ -57,12 +58,24 @@ const Categories = () => {
     }
   }, []);
 
-  const getSearchSoftware = async () => {
+  const getSearchSoftware = async (pageNumber = 1) => {
+    setIsSearching(true);
+    setDoneSearching(false);
     const temp = await fetch("/api/automation/search", {
       method: "POST",
-      body: JSON.stringify({ search: query.toLowerCase(), limit: 12 }),
+      body: JSON.stringify({
+        search: query.toLowerCase(),
+        pageNumber: pageNumber,
+      }),
     });
     const res = await temp.json();
+
+    if (
+      (res.softwares.length > 0 && pageNumber >= 1) ||
+      (res.softwares.length == 0 && pageNumber == 2)
+    ) {
+      setSearchPageNumber(pageNumber);
+    }
 
     setDoneSearching(true);
     setSearchSoftware(res.softwares);
@@ -117,6 +130,10 @@ const Categories = () => {
           isSearching={isSearching}
           searchSoftware={searchSoftware}
           setIsSearching={setIsSearching}
+          setDoneSearching={setDoneSearching}
+          setSearchSoftware={setSearchSoftware}
+          searchPageNumber={searchPageNumber}
+          getSearchSoftware={getSearchSoftware}
           doneSearching={doneSearching}
           softwareToCompare={initialDataToCompare}
           setSoftwareToCompare={setInitialDataToCompare}

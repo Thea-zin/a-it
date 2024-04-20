@@ -8,6 +8,10 @@ export default function Products({
   isSearching = false,
   searchSoftware = [],
   setIsSearching = () => {},
+  setDoneSearching = () => {},
+  setSearchSoftware = () => {},
+  getSearchSoftware = () => {},
+  searchPageNumber = 1,
   doneSearching = false,
   softwareToCompare = { id: "", name: "", icon: "" },
   setSoftwareToCompare = () => {},
@@ -113,7 +117,7 @@ export default function Products({
       });
       const res = await temp.json();
 
-      console.log(res.categories[0])
+      console.log(res.categories[0]);
 
       if (initcategory == null || initcategory == "") {
         initcategory = res.categories[0][1];
@@ -151,6 +155,7 @@ export default function Products({
     setSoftwares(tsoft.softwares);
     setSoftLoading(false);
     setPageNumber(1);
+    setIsSearching(false);
   };
 
   const getNextPage = async () => {
@@ -318,7 +323,12 @@ export default function Products({
                           addIds(item[2], item[1], false, item[0]);
                         }}
                       >
-                        <img src={item[0]} alt="" className="h-16" referrerPolicy="no-referrer"/>
+                        <img
+                          src={item[0]}
+                          alt=""
+                          className="h-16"
+                          referrerPolicy="no-referrer"
+                        />
                       </button>
                     );
                   })}
@@ -447,13 +457,80 @@ export default function Products({
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
+                              <img
+                                src={item.icon}
+                                alt=""
+                                className="h-20"
+                                referrerPolicy="no-referrer"
+                              />
                             </Link>
                           </div>
                         );
                       })}
                     </div>
                     <div className="h-[100px]"></div>
+                    {doneSearching && (
+                      <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
+                        {searchPageNumber > 1 && (
+                          <button
+                            className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex place-content-center"
+                            onClick={() => {
+                              getSearchSoftware(searchPageNumber - 1);
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1.7em"
+                              height="1.7em"
+                              viewBox="0 0 48 48"
+                              className="fill-transparent"
+                            >
+                              <g
+                                stroke="currentColor"
+                                strokeLinejoin="round"
+                                strokeWidth="4"
+                              >
+                                <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                                <path
+                                  strokeLinecap="round"
+                                  d="m27 33l-9-9l9-9"
+                                />
+                              </g>
+                            </svg>
+                            <p>Previous Page</p>
+                          </button>
+                        )}
+                        {searchSoftware.length > 0 && (
+                          <button
+                            className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex"
+                            onClick={() => {
+                              getSearchSoftware(searchPageNumber + 1);
+                            }}
+                          >
+                            <p>Next Page</p>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1.7em"
+                              height="1.7em"
+                              viewBox="0 0 48 48"
+                              className="fill-transparent"
+                            >
+                              <g
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeWidth="4"
+                              >
+                                <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                                <path
+                                  strokeLinecap="round"
+                                  d="m21 33l9-9l-9-9"
+                                />
+                              </g>
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )
               ) : (
@@ -507,7 +584,12 @@ export default function Products({
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
+                              <img
+                                src={item.icon}
+                                alt=""
+                                className="h-20"
+                                referrerPolicy="no-referrer"
+                              />
                             </Link>
                           </div>
                         );

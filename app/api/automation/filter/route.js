@@ -21,6 +21,7 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
+    console.log(request);
 
     console.log(request);
     let softwares = await getSoftwareInfoPerPage(
