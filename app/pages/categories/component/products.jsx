@@ -318,7 +318,7 @@ export default function Products({
                           addIds(item[2], item[1], false, item[0]);
                         }}
                       >
-                        <img src={item[0]} alt="" className="h-16"/>
+                        <img src={item[0]} alt="" className="h-16" referrerPolicy="no-referrer"/>
                       </button>
                     );
                   })}
@@ -447,7 +447,7 @@ export default function Products({
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20"/>
+                              <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
                             </Link>
                           </div>
                         );
@@ -507,7 +507,7 @@ export default function Products({
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20"/>
+                              <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
                             </Link>
                           </div>
                         );

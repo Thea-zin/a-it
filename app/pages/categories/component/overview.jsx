@@ -145,7 +145,7 @@ export default function Overview() {
                       </div>
                     </div>
                     <div className="image flex justify-center mt-5">
-                      <img src={item.icon} alt="" className="h-20" />
+                      <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
                     </div>
                     <div className="flex justify-center mt-5">{item.name}</div>
                     <div className="flex justify-center star">
@@ -196,7 +196,7 @@ export default function Overview() {
                       addIds(item[2], item[1], false, item[0]);
                     }}
                   >
-                    <img src={item[0]} alt="" className="h-16" />
+                    <img src={item[0]} alt="" className="h-16" referrerPolicy="no-referrer"/>
                   </button>
                 );
               })}
@@ -324,7 +324,7 @@ export default function Overview() {
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20" />
+                              <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
                             </Link>
                           </div>
                         );
