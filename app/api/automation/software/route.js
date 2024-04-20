@@ -19,10 +19,19 @@ export async function POST(req) {
     console.log(request);
 
     var data = await getSoftwareInfo(
-      "https://www.futurepedia.io/tool/" + request.id
+      "https://www.aixploria.com/en/" + request.id
     );
     data.nci = request.id;
     data.id = request.id;
+
+    let othercategories = await getCategoriesLink();
+    const indexes = Array.from({ length: 10 }, () =>
+      Math.floor(Math.random() * othercategories.length)
+    );
+    othercategories = othercategories.filter((item, index) => {
+      return item[1] != request.id && indexes.includes(index);
+    });
+    data.othercategories = othercategories;
 
     return NextResponse.json({ data: data, reviews: [] }, { status: 200 });
   } catch (e) {
@@ -35,8 +44,40 @@ export async function POST(req) {
 }
 
 const getSoftwareInfo = async (lnk) => {
-  console.log(lnk);
   const data = await fetch(lnk, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  let temp = await data.text();
+  const dom = new jsdom.JSDOM(temp);
+  const page = dom.window.document;
+
+  const cell = page.querySelector("div.post-summary");
+
+  const icon = cell.querySelector("div.longo-title img").src;
+  const name = cell.querySelector("div.longo-title span").textContent;
+  const site = cell.querySelector("div.visit-divy a").href;
+  temp = page.querySelector("div.entry-categories a").href;
+  temp = temp.split("/");
+  const category = temp[temp.length - 2];
+  const star = 0;
+  const views = 0;
+  const reviews = 0;
+
+  return {
+    name,
+    icon,
+    site,
+    category,
+    star,
+    views,
+    reviews,
+    othercategories: [],
+  };
+};
+
+const getCategoriesLink = async () => {
+  const data = await fetch("https://www.aixploria.com/en/categories-ai/", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -44,36 +85,16 @@ const getSoftwareInfo = async (lnk) => {
   const dom = new jsdom.JSDOM(temp);
   const page = dom.window.document;
 
-  const icon =
-    "https://www.futurepedia.io" +
-    page.querySelector("div.flex.gap-4 div img").src;
-  const name = page.querySelector(
-    "h1.mb-0.font-semibold.text-darkBlue"
-  ).textContent;
-  const site = page.querySelector("div.mt-4.flex.flex-wrap.gap-4 a").href;
-  const star = 0;
-  const views = 0;
-  const reviews = 0;
-  let tcat = page.querySelector("p.mt-2.text-ice-700 a").href;
-  tcat = tcat.split("/");
-  const category = tcat[tcat.length - 1].toLowerCase();
+  const grid = page.querySelectorAll("div.categories-grid div.category-item");
+  console.log(grid.length);
 
-  const tempCategories = page.querySelectorAll(
-    "div.flex.flex-wrap.gap-x-2.gap-y-1 a"
-  );
-  let othercategories = [];
-  Array.from(tempCategories).map((item) => {
-    item = item.href;
-    let tempitem = item.split("/");
-    item = tempitem[tempitem.length - 1];
-    if (
-      othercategories.every((cat) => {
-        return cat != item;
-      })
-    ) {
-      othercategories.push(item);
-    }
+  const quotes = Array.from(grid).map((cell) => {
+    const text = cell.querySelector("a p").textContent;
+    let temp = cell.querySelector("a").href;
+    temp = temp.split("/");
+    const nci = temp[temp.length - 2];
+    return [text, nci];
   });
 
-  return { name, icon, site, star, views, reviews, category, othercategories };
+  return quotes;
 };

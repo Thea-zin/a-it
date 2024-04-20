@@ -83,7 +83,7 @@ export default function SoftwarePage() {
     const temp = await fetch("/api/gemini", {
       method: "POST",
       body: JSON.stringify({
-        prompt: `What is ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.categories}`,
+        prompt: `What is an ai tool called ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.categories}`,
         nci: software.nci,
       }),
     });
@@ -374,7 +374,7 @@ export default function SoftwarePage() {
                       key={index}
                       href="categories"
                       onClick={() => {
-                        localStorage.setItem("ait_soft_cat", `${item}`);
+                        localStorage.setItem("ait_soft_cat", `${item[1]}`);
                       }}
                     >
                       <div className="w-5 xm:w-10">
@@ -392,7 +392,7 @@ export default function SoftwarePage() {
                         </svg>
                       </div>
                       <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1 hover:text-blue-800 hover:font-bold">
-                        {item}
+                        {item[0]}
                       </p>
                     </Link>
                   );

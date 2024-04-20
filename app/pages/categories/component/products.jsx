@@ -26,11 +26,6 @@ export default function Products({
   const [tempFilter, setTempFilter] = useState("");
   const [rateFilter, setRateFilter] = useState([]);
   const [tempRate, setTempRate] = useState([]);
-  const [showNextFiltered, setShowNextFiltered] = useState(false);
-  const [lastFiltered, setLastFiltered] = useState("");
-  const [listLastFiltered, setListLastFiltered] = useState([]);
-  const [stopNextFilter, setStopNextFilter] = useState(false);
-  const filterStep = 12;
 
   function addIds(id, name, add, icon = "") {
     let tempid = tids;
@@ -118,44 +113,23 @@ export default function Products({
       });
       const res = await temp.json();
 
+      console.log(res.categories[0])
+
       if (initcategory == null || initcategory == "") {
-        initcategory = res.categories[0];
-        isParent = true;
+        initcategory = res.categories[0][1];
       }
 
       temp = await fetch("/api/automation/products", {
         method: "POST",
-        body: JSON.stringify({ category: initcategory, isParent }),
+        body: JSON.stringify({ category: initcategory }),
       });
       const tsoft = await temp.json();
 
-      setCategories([[...res.categories]]);
-
-      let subcategories = [];
-      for (let i = 0; i < res.categories.length; i++) {
-        console.log(i);
-        temp = await fetch("/api/automation/subcategories", {
-          method: "POST",
-          body: JSON.stringify({ category: res.categories[i] }),
-        });
-        const catres = await temp.json();
-        if (catres.subcategories.length > 0) {
-          subcategories.push([res.categories[i], ...catres.subcategories]);
-        }
-        setCategories([...subcategories]);
-
-        if (i == 0) {
-          setSoftwares(tsoft.softwares);
-          setSoftLoading(false);
-          if (isParent) {
-            setTempFilter(subcategories[0][1]);
-            setMainFilter(subcategories[0][1]);
-          } else {
-            setTempFilter(initcategory);
-            setMainFilter(initcategory);
-          }
-        }
-      }
+      setCategories(res.categories);
+      setSoftwares(tsoft.softwares);
+      setSoftLoading(false);
+      setTempFilter(initcategory);
+      setMainFilter(initcategory);
     } catch (e) {
       console.log(e);
     }
@@ -167,7 +141,7 @@ export default function Products({
     const temp = await fetch("/api/automation/filter", {
       method: "POST",
       body: JSON.stringify({
-        subcat: tempFilter,
+        category: tempFilter,
         rate: tempRate,
         pageNumber: 1,
       }),
@@ -185,7 +159,7 @@ export default function Products({
       const temp = await fetch("/api/automation/filter", {
         method: "POST",
         body: JSON.stringify({
-          subcat: mainFilter,
+          category: mainFilter,
           pageNumber: pageNumber + 1,
         }),
       });
@@ -209,7 +183,7 @@ export default function Products({
       const temp = await fetch("/api/automation/filter", {
         method: "POST",
         body: JSON.stringify({
-          subcat: mainFilter,
+          category: mainFilter,
           pageNumber: pageNumber - 1,
         }),
       });
@@ -292,34 +266,24 @@ export default function Products({
               <div className="mt-5">
                 {categories.map((item, index) => {
                   return (
-                    <div key={index}>
-                      <p>{item[0]}</p>
-                      {item.map((subcat, ind) => {
-                        if (ind == 0) {
-                          return <div key={ind}></div>;
-                        }
-                        return (
-                          <div className="flex items-center mb-2" key={ind}>
-                            <input
-                              id={subcat}
-                              type="radio"
-                              value={subcat}
-                              name="categories"
-                              className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
-                              onChange={(e) => {
-                                setTempFilter(e.target.value);
-                              }}
-                              checked={tempFilter === subcat}
-                            />
-                            <label
-                              htmlFor={subcat}
-                              className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                            >
-                              <div className="text-black ">{subcat}</div>
-                            </label>
-                          </div>
-                        );
-                      })}
+                    <div className="flex items-center mb-2" key={index}>
+                      <input
+                        id={item[0]}
+                        type="radio"
+                        value={item[1]}
+                        name="categories"
+                        className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                        onChange={(e) => {
+                          setTempFilter(e.target.value);
+                        }}
+                        checked={tempFilter === item[1]}
+                      />
+                      <label
+                        htmlFor={item[0]}
+                        className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                      >
+                        <div className="text-black ">{item[0]}</div>
+                      </label>
                     </div>
                   );
                 })}
@@ -354,7 +318,7 @@ export default function Products({
                           addIds(item[2], item[1], false, item[0]);
                         }}
                       >
-                        <img src={item[0]} alt="" className="h-16" />
+                        <img src={item[0]} alt="" className="h-16"/>
                       </button>
                     );
                   })}
@@ -483,7 +447,7 @@ export default function Products({
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20" />
+                              <img src={item.icon} alt="" className="h-20"/>
                             </Link>
                           </div>
                         );
@@ -543,7 +507,7 @@ export default function Products({
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20" />
+                              <img src={item.icon} alt="" className="h-20"/>
                             </Link>
                           </div>
                         );

@@ -45,7 +45,7 @@ export async function POST(req) {
 }
 
 const getCategoriesLink = async () => {
-  const data = await fetch("https://www.futurepedia.io/ai-tools", {
+  const data = await fetch("https://www.aixploria.com/en/categories-ai/", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -53,21 +53,22 @@ const getCategoriesLink = async () => {
   const dom = new jsdom.JSDOM(temp);
   const page = dom.window.document;
 
-  const quoteList = page.querySelectorAll("a");
+  const grid = page.querySelectorAll("div.categories-grid div.category-item");
+  console.log(grid.length);
 
-  const quotes = Array.from(quoteList).map((link) => {
-    const text = link.text;
-    const href = link.href;
-    if (text.includes("Show all")) {
-      return href;
-    }
+  const quotes = Array.from(grid).map((cell) => {
+    const text = cell.querySelector("a p").textContent;
+    let temp = cell.querySelector("a").href;
+    temp = temp.split("/");
+    const nci = temp[temp.length - 2];
+    return [text, nci];
   });
-  const categories = quotes.filter((text) => {
-    return text;
-  });
-  const scat = categories.map((cat) => {
-    return cat.split("/")[1];
-  });
+  // const categories = quotes.filter((text) => {
+  //   return text;
+  // });
+  // const scat = categories.map((cat) => {
+  //   return cat.split("/")[1];
+  // });
 
-  return scat;
+  return quotes;
 };

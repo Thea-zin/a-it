@@ -60,9 +60,9 @@ export default function Overview() {
   }, []);
 
   const getTrendingSoftwares = async () => {
-    const temp = await fetch("/api/automation/trending", {
+    const temp = await fetch("/api/automation/popular", {
       method: "POST",
-      body: JSON.stringify({}),
+      body: JSON.stringify({ smax: 4 }),
     });
     const res = await temp.json();
 
@@ -72,7 +72,7 @@ export default function Overview() {
   const getPopularSoftwares = async () => {
     const temp = await fetch("/api/automation/popular", {
       method: "POST",
-      body: JSON.stringify({}),
+      body: JSON.stringify({ smax: 8 }),
     });
     const res = await temp.json();
 
