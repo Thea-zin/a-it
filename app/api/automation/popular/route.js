@@ -43,7 +43,7 @@ export async function POST(req) {
       softwares.push(temp);
     }
 
-    console.log(softwares);
+    // console.log(softwares);
 
     if (softwares.length < smax) {
       let temp = await getSoftwareInfoPerPage(

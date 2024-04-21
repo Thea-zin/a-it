@@ -28,7 +28,7 @@ const Categories = () => {
         setIsSearching(true);
       } else setIsSearching(false);
 
-      document.getElementById("search").value = "";
+      // document.getElementById("search").value = "";
     }
   };
 

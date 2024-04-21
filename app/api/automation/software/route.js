@@ -16,7 +16,7 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
-    console.log(request);
+    // console.log(request);
 
     var data = await getSoftwareInfo(
       "https://www.aixploria.com/en/" + request.id
@@ -86,7 +86,7 @@ const getCategoriesLink = async () => {
   const page = dom.window.document;
 
   const grid = page.querySelectorAll("div.categories-grid div.category-item");
-  console.log(grid.length);
+  // console.log(grid.length);
 
   const quotes = Array.from(grid).map((cell) => {
     const text = cell.querySelector("a p").textContent;

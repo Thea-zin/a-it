@@ -54,7 +54,7 @@ const getCategoriesLink = async () => {
   const page = dom.window.document;
 
   const grid = page.querySelectorAll("div.categories-grid div.category-item");
-  console.log(grid.length);
+  // console.log(grid.length);
 
   const quotes = Array.from(grid).map((cell) => {
     const text = cell.querySelector("a p").textContent;

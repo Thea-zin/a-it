@@ -23,7 +23,7 @@ export async function POST(req) {
     const request = await req.json();
     const smax = 12;
 
-    console.log(request);
+    // console.log(request);
 
     let category = request.category;
 

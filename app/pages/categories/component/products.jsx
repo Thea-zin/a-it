@@ -22,7 +22,6 @@ export default function Products({
   const [names, setNames] = useState([]);
   const [icons, setIcons] = useState([]);
   const [softwares, setSoftwares] = useState([]);
-  const [softLoading, setSoftLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [filterPageNumber, setFilterPageNumber] = useState(1);
   const [categories, setCategories] = useState([]);
@@ -30,6 +29,7 @@ export default function Products({
   const [tempFilter, setTempFilter] = useState("");
   const [rateFilter, setRateFilter] = useState([]);
   const [tempRate, setTempRate] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   function addIds(id, name, add, icon = "") {
     let tempid = tids;
@@ -73,19 +73,29 @@ export default function Products({
   }
 
   useEffect(() => {
-    console.log(tempRate);
+    // console.log(tempRate);
   }, [tempRate]);
 
-  // useEffect(() => {
-  //   console.log(tempFilter);
-  // }, [tempFilter]);
+  useEffect(() => {
+    if (isSearching) {
+      let checkboxes = document.querySelectorAll("input[type='checkbox'");
+      for (let i of checkboxes) {
+        i.checked = false;
+      }
+      setTempRate([]);
+      setRateFilter([]);
+
+      setTempFilter("");
+      setMainFilter("");
+    }
+  }, [isSearching]);
 
   useEffect(() => {
     localStorage.setItem("ait_soft_ids", "");
     localStorage.setItem("ait_soft_names", "");
     localStorage.setItem("ait_soft_icons", "");
 
-    setSoftLoading(true);
+    setLoading(true);
     getAllCategories();
   }, []);
 
@@ -117,7 +127,7 @@ export default function Products({
       });
       const res = await temp.json();
 
-      console.log(res.categories[0]);
+      // console.log(res.categories[0]);
 
       if (initcategory == null || initcategory == "") {
         initcategory = res.categories[0][1];
@@ -131,7 +141,7 @@ export default function Products({
 
       setCategories(res.categories);
       setSoftwares(tsoft.softwares);
-      setSoftLoading(false);
+      setLoading(false);
       setTempFilter(initcategory);
       setMainFilter(initcategory);
     } catch (e) {
@@ -140,7 +150,10 @@ export default function Products({
   };
 
   const getFilteredSoftwares = async () => {
+    setLoading(true);
     setMainFilter(tempFilter);
+    setRateFilter(tempRate);
+    document.querySelector("input[type='text']").value = "";
 
     const temp = await fetch("/api/automation/filter", {
       method: "POST",
@@ -153,51 +166,65 @@ export default function Products({
     const tsoft = await temp.json();
 
     setSoftwares(tsoft.softwares);
-    setSoftLoading(false);
+    setLoading(false);
     setPageNumber(1);
     setIsSearching(false);
   };
 
   const getNextPage = async () => {
-    setSoftLoading(true);
+    setLoading(true);
     try {
       const temp = await fetch("/api/automation/filter", {
         method: "POST",
         body: JSON.stringify({
           category: mainFilter,
           pageNumber: pageNumber + 1,
+          rate: rateFilter,
         }),
       });
       const res = await temp.json();
 
       if (res.softwares.length != 0) {
         setPageNumber(pageNumber + 1);
-        setSoftwares(res.softwares);
       }
+      setSoftwares(res.softwares);
     } catch (e) {}
-    setSoftLoading(false);
+    setLoading(false);
   };
 
   const getPreviousPage = async () => {
-    setSoftLoading(true);
+    setLoading(true);
     try {
       if (pageNumber <= 1) {
         return;
       }
 
-      const temp = await fetch("/api/automation/filter", {
-        method: "POST",
-        body: JSON.stringify({
-          category: mainFilter,
-          pageNumber: pageNumber - 1,
-        }),
-      });
+      let temp = null;
+      if (softwares.length == 0) {
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            category: mainFilter,
+            pageNumber: pageNumber,
+            rate: rateFilter,
+          }),
+        });
+      } else {
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            category: mainFilter,
+            pageNumber: pageNumber - 1,
+            rate: rateFilter,
+          }),
+        });
+        setPageNumber(pageNumber - 1);
+      }
       const res = await temp.json();
 
-      setPageNumber(pageNumber - 1);
       setSoftwares(res.softwares);
     } catch (e) {}
-    setSoftLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -300,6 +327,7 @@ export default function Products({
                   // console.log("tempfilter length", tempFilter.length);
                   if (tempFilter.length > 0 || tempRate.length > 0) {
                     getFilteredSoftwares();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}
               >
@@ -388,86 +416,71 @@ export default function Products({
                   </div>
                 ) : (
                   <div className="ml-4 min-h-[735px] relative">
-                    <div className="grid grid-cols-2 s900:grid-cols-3 lg:grid-cols-4 gap-5 ">
-                      {searchSoftware.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
-                          >
-                            <div className="flex justify-between flex-wrap">
-                              <div>
-                                <p className="text-ellipsis">{item.name}</p>
-                                <div className="star flex flex-wrap">
-                                  <div className="flex">
-                                    {[1, 2, 3, 4, 5].map((it, ind) => {
-                                      return (
-                                        <svg
-                                          width="18"
-                                          height="17"
-                                          viewBox="0 0 18 17"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          key={ind}
-                                        >
-                                          <path
-                                            d="M9.00033 14.275L4.85033 16.775C4.667 16.8916 4.47533 16.9416 4.27533 16.9249C4.07533 16.9083 3.90033 16.8416 3.75033 16.725C3.60033 16.6083 3.48366 16.4623 3.40033 16.287C3.317 16.1116 3.30033 15.916 3.35033 15.7L4.45033 10.975L0.775329 7.79995C0.608662 7.64995 0.504662 7.47895 0.463329 7.28695C0.421996 7.09495 0.434329 6.90762 0.500329 6.72495C0.566996 6.54162 0.666995 6.39162 0.800329 6.27495C0.933662 6.15828 1.117 6.08328 1.35033 6.04995L6.20033 5.62495L8.07533 1.17495C8.15866 0.974952 8.288 0.824951 8.46333 0.724951C8.63866 0.624951 8.81766 0.574951 9.00033 0.574951C9.18366 0.574951 9.36266 0.624951 9.53733 0.724951C9.712 0.824951 9.84133 0.974952 9.92533 1.17495L11.8003 5.62495L16.6503 6.04995C16.8837 6.08328 17.067 6.15828 17.2003 6.27495C17.3337 6.39162 17.4337 6.54162 17.5003 6.72495C17.567 6.90829 17.5797 7.09595 17.5383 7.28795C17.497 7.47995 17.3927 7.65062 17.2253 7.79995L13.5503 10.975L14.6503 15.7C14.7003 15.9166 14.6837 16.1126 14.6003 16.288C14.517 16.4633 14.4003 16.609 14.2503 16.725C14.1003 16.8416 13.9253 16.9083 13.7253 16.9249C13.5253 16.9416 13.3337 16.8916 13.1503 16.775L9.00033 14.275Z"
-                                            fill="#F3B146"
-                                          />
-                                        </svg>
-                                      );
-                                    })}
+                    {searchSoftware.length > 0 ? (
+                      <div className="grid grid-cols-2 s900:grid-cols-3 lg:grid-cols-4 gap-5 ">
+                        {searchSoftware.map((item, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
+                            >
+                              <div className="flex justify-between flex-wrap">
+                                <div>
+                                  <p className="text-ellipsis">{item.name}</p>
+                                  <div className="star flex flex-wrap">
+                                    <Stars number={item.star} />
                                   </div>
-                                  <p className="text-gray text-ellipsis">
-                                    (2,145)
-                                  </p>
+                                </div>
+
+                                <div className="flex items-center mb-4">
+                                  {!tids.includes(item.id) && (
+                                    <button
+                                      className="p-1 group-hover:bg-white bg-[#1e293b] border-white rounded dark:ring-offset-gray-800"
+                                      onClick={() => {
+                                        addIds(
+                                          item.id,
+                                          item.name,
+                                          true,
+                                          item.icon
+                                        );
+                                      }}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="1.6em"
+                                        height="1.6em"
+                                        viewBox="0 0 32 32"
+                                        className="group-hover:stroke-black group-hover:fill-black stroke-white fill-white stroke-0"
+                                      >
+                                        <path d="M28 6H18V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2M4 15h6.17l-2.58 2.59L9 19l5-5l-5-5l-1.41 1.41L10.17 13H4V4h12v20H4Zm12 13v-2a2 2 0 0 0 2-2V8h10v9h-6.17l2.58-2.59L23 13l-5 5l5 5l1.41-1.41L21.83 19H28v9Z" />
+                                      </svg>
+                                    </button>
+                                  )}
                                 </div>
                               </div>
-
-                              <div className="flex items-center mb-4">
-                                {!tids.includes(item.id) && (
-                                  <button
-                                    className="p-1 group-hover:bg-white bg-[#1e293b] border-white rounded dark:ring-offset-gray-800"
-                                    onClick={() => {
-                                      addIds(
-                                        item.id,
-                                        item.name,
-                                        true,
-                                        item.icon
-                                      );
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="1.6em"
-                                      height="1.6em"
-                                      viewBox="0 0 32 32"
-                                      className="group-hover:stroke-black group-hover:fill-black stroke-white fill-white stroke-0"
-                                    >
-                                      <path d="M28 6H18V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2M4 15h6.17l-2.58 2.59L9 19l5-5l-5-5l-1.41 1.41L10.17 13H4V4h12v20H4Zm12 13v-2a2 2 0 0 0 2-2V8h10v9h-6.17l2.58-2.59L23 13l-5 5l5 5l1.41-1.41L21.83 19H28v9Z" />
-                                    </svg>
-                                  </button>
-                                )}
-                              </div>
+                              <Link
+                                href={{
+                                  pathname: "/pages/software",
+                                  query: { id: item.id },
+                                }}
+                                className="pic flex justify-center my-5 "
+                              >
+                                <img
+                                  src={item.icon}
+                                  alt=""
+                                  className="h-20"
+                                  referrerPolicy="no-referrer"
+                                />
+                              </Link>
                             </div>
-                            <Link
-                              href={{
-                                pathname: "/pages/software",
-                                query: { id: item.id },
-                              }}
-                              className="pic flex justify-center my-5 "
-                            >
-                              <img
-                                src={item.icon}
-                                alt=""
-                                className="h-20"
-                                referrerPolicy="no-referrer"
-                              />
-                            </Link>
-                          </div>
-                        );
-                      })}
-                    </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="h-96 text-2xl flex place-content-center place-items-center">
+                        No More Software/Tool Found!
+                      </div>
+                    )}
                     <div className="h-[100px]"></div>
                     {doneSearching && (
                       <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
@@ -533,6 +546,29 @@ export default function Products({
                     )}
                   </div>
                 )
+              ) : loading ? (
+                <div className="shadow rounded-md p-4 w-full mx-auto">
+                  <p
+                    className="font-medium text-xs xm:text-nbase whitespace-break-spaces invisible"
+                    id="softwareOverview"
+                  ></p>
+                  <div className="animate-pulse flex space-x-4">
+                    <div className="flex-1 space-y-6 py-1">
+                      <div className="h-2 bg-slate-200 rounded"></div>
+                      {[1, 2].map((item, index) => {
+                        return (
+                          <div className="space-y-3" key={index}>
+                            <div className="grid grid-cols-3 gap-4">
+                              <div className="h-2 bg-slate-200 rounded col-span-2"></div>
+                              <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+                            </div>
+                            <div className="h-2 bg-slate-200 rounded"></div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <div className="ml-4 min-h-[735px] relative">
                   {softwares.length > 0 ? (
@@ -601,7 +637,7 @@ export default function Products({
                     </div>
                   )}
                   <div className="h-[100px]"></div>
-                  {!softLoading && (
+                  {!loading && (
                     <div className="flex place-items-center place-content-center mt-10 absolute bottom-0 w-full">
                       {pageNumber > 1 && (
                         <button
@@ -649,30 +685,32 @@ export default function Products({
                         );
                       })} */}
 
-                      <button
-                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex"
-                        onClick={() => {
-                          getNextPage();
-                        }}
-                      >
-                        <p>Next Page</p>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="1.7em"
-                          height="1.7em"
-                          viewBox="0 0 48 48"
-                          className="fill-transparent"
+                      {softwares.length > 0 && (
+                        <button
+                          className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 h-8 xm:h-10 md:h-12 rounded-full flex"
+                          onClick={() => {
+                            getNextPage();
+                          }}
                         >
-                          <g
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeWidth="4"
+                          <p>Next Page</p>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1.7em"
+                            height="1.7em"
+                            viewBox="0 0 48 48"
+                            className="fill-transparent"
                           >
-                            <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                            <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
-                          </g>
-                        </svg>
-                      </button>
+                            <g
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeWidth="4"
+                            >
+                              <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                              <path strokeLinecap="round" d="m21 33l9-9l-9-9" />
+                            </g>
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>

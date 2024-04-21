@@ -59,8 +59,8 @@ export default function ComparisonPage() {
         for (let i = 0; i < icons.length; i++) {
           tproduct.push({ name: names[i], icon: icons[i] });
         }
-        console.log(icons, names);
-        console.log(tproduct);
+        // console.log(icons, names);
+        // console.log(tproduct);
         setProducts(tproduct);
       } catch (e) {
         router.push("/pages/categories");

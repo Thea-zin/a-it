@@ -22,7 +22,7 @@ export async function POST(req) {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
     const smax = 4;
-    console.log(request);
+    // console.log(request);
     let softwares = await getSoftwareInfoPerPage(
       "https://www.aixploria.com/en/category/" + request.category,
       request.category

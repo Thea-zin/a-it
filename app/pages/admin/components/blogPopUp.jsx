@@ -32,7 +32,7 @@ const handleCloseAddBlog =()=>{
       const updateTags = [...tags,inputTag]
       setTags(updateTags);
       setInputTags('');
-      console.log(tags)
+      // console.log(tags)
 
     }
   };
@@ -44,7 +44,7 @@ const handleCloseAddBlog =()=>{
   }
   const addBlog = async (e) =>{
     e.preventDefault();
-    console.log(image)
+    // console.log(image)
     if ((title != '') && (content != '') && (tags !='')  ){
         // setNullWarning(false)
         try{
@@ -60,7 +60,7 @@ const handleCloseAddBlog =()=>{
                 body:form
             })
             const message = await response.json()
-            console.log(message)
+            // console.log(message)
             if (response.ok){
                await setContent('')
                await setTitle('')

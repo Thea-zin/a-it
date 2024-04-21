@@ -23,20 +23,52 @@ export async function POST(req) {
     const request = await req.json();
     console.log(request);
 
-    console.log(request);
-    let softwares = await getSoftwareInfoPerPage(
-      "https://www.aixploria.com/en/category/" +
-        request.category +
-        "/page/" +
-        request.pageNumber +
-        "?orderby=alphabetical",
-      request.category
-    );
+    if (request.rate.length > 0 && request.category != "") {
+      const q = query(
+        collection(firestore, "softwares"),
+        where("star_text", "in", request.rate),
+        where("category", "==", request.category),
+        limit(11)
+      );
+      const snapshot = await getDocs(q);
+      let softwares = [];
+      for (let doc of snapshot.docs) {
+        softwares.push(doc.data());
+      }
+      return NextResponse.json(
+        { softwares: softwares, total: softwares.length },
+        { status: 200 }
+      );
+    } else if (request.rate.length > 0) {
+      const q = query(
+        collection(firestore, "softwares"),
+        where("star_text", "in", request.rate),
+        limit(11)
+      );
+      const snapshot = await getDocs(q);
+      let softwares = [];
+      for (let doc of snapshot.docs) {
+        softwares.push(doc.data());
+      }
+      return NextResponse.json(
+        { softwares: softwares, total: softwares.length },
+        { status: 200 }
+      );
+    } else {
+      let softwares = await getSoftwareInfoPerPage(
+        "https://www.aixploria.com/en/category/" +
+          request.category +
+          "/page/" +
+          request.pageNumber +
+          "?orderby=alphabetical",
+        request.category
+      );
 
-    return NextResponse.json(
-      { softwares: softwares, total: softwares.length },
-      { status: 200 }
-    );
+      return NextResponse.json(
+        { softwares: softwares, total: softwares.length },
+        { status: 200 }
+      );
+    }
   } catch (e) {
     console.log(e);
     return NextResponse.json(

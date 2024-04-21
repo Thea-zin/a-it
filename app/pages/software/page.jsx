@@ -112,7 +112,7 @@ export default function SoftwarePage() {
   };
 
   return loading ? (
-    <div className="shadow rounded-md p-4 w-full mx-auto h-[600px] min-w-[460px]">
+    <div className="shadow rounded-md p-4 w-full mx-auto h-[600px] min-w-[500px]">
       <p
         className="font-medium text-xs xm:text-nbase whitespace-break-spaces invisible"
         id="softwareOverview"
@@ -136,7 +136,7 @@ export default function SoftwarePage() {
     </div>
   ) : (
     <div
-      className={`sm:px-2 xl:px-10 pt-7 pb-10 bg-base font-dmsan min-w-[460px] ${
+      className={`sm:px-2 xl:px-10 pt-7 pb-10 bg-base font-dmsan min-w-[500px] ${
         loading && "animate-pulse"
       }`}
     >

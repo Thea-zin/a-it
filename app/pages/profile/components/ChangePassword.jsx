@@ -19,7 +19,7 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(current, newPass, allow);
+    // console.log(current, newPass, allow);
     if (current && newPass && allow) {
       onChangePassword();
     }
@@ -66,7 +66,7 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
   };
 
   const validatePassword = async () => {
-    console.log(cPassword, nPassword, rPassword);
+    // console.log(cPassword, nPassword, rPassword);
     setCurrent(cPassword.length >= 8);
     setNewPass(
       nPassword.length >= 8 && rPassword.length >= 8 && nPassword == rPassword
