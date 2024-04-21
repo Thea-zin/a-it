@@ -62,11 +62,17 @@ export default function SoftwarePage() {
       getSameCategories(res.data);
       // getAllCategories();
       setData(res.data);
-      setReview(res.reviews);
       setCategories(res.data.othercategories);
+      getReivews(res.data.nci);
     } catch (e) {
       console.log("Problem Occurs! Possible cause: id, network");
     }
+  };
+
+  const getReivews = async (id) => {
+    const temp = await fetch(`/api/automation/review?id=${id}`);
+    const res = await temp.json();
+    setReview([...res.data]);
   };
 
   const getSameCategories = async (software) => {
@@ -173,7 +179,7 @@ export default function SoftwarePage() {
                   />
                 </svg>
               </div>
-              <p className="font-semibold text-sm ml-2">Save to My List</p>
+              <p className="font-semibold text-sm ml-2">{data.category}</p>
             </button>
           </div>
         </div>
@@ -239,15 +245,6 @@ export default function SoftwarePage() {
                 </button>
               </div>
 
-              <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
-                {/* <ReviewBox />
-                <ReviewBox /> */}
-                {reviews.map((review, index) => {
-                  if (index > 1) return;
-                  return <ReviewBox review={review} key={index} />;
-                })}
-              </div>
-
               {/* <div className="grid place-items-center w-full">
                 <div className="hidden sm:flex place-items-center mt-3">
                   
@@ -274,7 +271,16 @@ export default function SoftwarePage() {
               </div> */}
             </div>
           ) : (
-            <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl"></div>
+            <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
+              <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
+                {/* <ReviewBox />
+                <ReviewBox /> */}
+                {reviews.map((review, index) => {
+                  if (index > 1) return;
+                  return <ReviewBox review={review} key={index} />;
+                })}
+              </div>
+            </div>
           )
         ) : (
           <div className="animate-pulse flex min-w-[70%] space-x-4">

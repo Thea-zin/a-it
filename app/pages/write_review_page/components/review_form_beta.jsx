@@ -22,9 +22,14 @@ export default function ReviewFormBeta() {
   useEffect(() => {
     if (id == null) return;
     const getSofwareInfo = async () => {
-      const temp = await fetch(`/api/writeReview?id=${id}`);
-      const software = await temp.json();
-      setSoftwareInfo(software.data[0]);
+      const temp = await fetch("/api/automation/software", {
+        method: "POST",
+        body: JSON.stringify({
+          id: id,
+        }),
+      });
+      const res = await temp.json();
+      setSoftwareInfo(res.data);
     };
     getSofwareInfo();
   }, []);
@@ -47,7 +52,7 @@ export default function ReviewFormBeta() {
     const d = new Date();
     let date = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
     let timestamp = Date.now();
-    const data = await fetch("/api/review", {
+    const data = await fetch("/api/automation/review", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -55,8 +60,12 @@ export default function ReviewFormBeta() {
         recommend: recommend,
         title: title,
         comment: comment,
-        user_id: "1",
+        username: localStorage.getItem("token"),
         soft_id: id,
+        nci: softwareInfo.nci,
+        icon: softwareInfo.icon,
+        category: softwareInfo.category,
+        name: softwareInfo.name,
         date: date,
         timestamp: timestamp,
       }),
@@ -75,9 +84,9 @@ export default function ReviewFormBeta() {
     });
     try {
       if (
-        experience.length == 0 &&
-        recommend.length == 0 &&
-        title.length == 0 &&
+        experience.length == 0 ||
+        recommend.length == 0 ||
+        title.length == 0 ||
         comment.length == 0
       ) {
         return;
@@ -89,7 +98,12 @@ export default function ReviewFormBeta() {
   }
 
   try {
-    if (id == null) throw new Error("");
+    if (
+      id == null ||
+      localStorage.getItem("token") == null ||
+      localStorage.getItem("token") == ""
+    )
+      throw new Error("Error from review page!");
     return (
       <div className="w-[400px] xm:w-full font-dmsan z-20 bg-white">
         <div className="mx-2 xm:mx-4 sm:mx-8 md:mx-16 mt-10 mb-5 border-2 border-baselight rounded-xl">
@@ -249,24 +263,6 @@ export default function ReviewFormBeta() {
 
             <div className="h-16"></div>
           </div>
-          {/* <div className="h-24 w-full flex place-content-between place-items-center">
-            <button
-              onClick={() => {
-                router.push("/pages/mainCategories");
-              }}
-              className="bg-basedark py-2 px-5 sm:px-10 font-medium rounded-full text-white ml-2 sm:ml-10 text-xl xm:text-2xl hover:bg-[#1DCDFE]"
-            >
-              Exit
-            </button>
-            <button
-              onClick={() => {
-                validateInput();
-              }}
-              className="bg-basedark py-2 px-5 sm:px-10 font-medium rounded-full text-white mr-2 sm:mr-10 text-xl xm:text-2xl hover:bg-[#1DCDFE]"
-            >
-              Submit Your Review
-            </button>
-          </div> */}
           <div className="h-24 w-full flex place-content-center place-items-center">
             <button
               onClick={() => {
@@ -281,6 +277,7 @@ export default function ReviewFormBeta() {
       </div>
     );
   } catch (e) {
+    console.log(e);
     router.push("/pages/categories");
   }
 }

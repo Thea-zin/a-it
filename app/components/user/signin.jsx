@@ -45,11 +45,12 @@ export default function SignIn({ setSignStatus }) {
       localStorage.setItem("token", res.token);
       localStorage.setItem("photoURL", res.photoURL);
       localStorage.setItem("displayName", res.displayName);
+      localStorage.setItem("email", res.email);
       localStorage.setItem("joined", res.joined);
       setSignStatus(0);
     } else if (temp.status == 404)
-      alert(`Sign up Failed!\n${res.reason}`); // wrong credential
-    else alert(`Sign up Failed!\n${res.reason}`);
+      alert(`Sign In Failed!\n${res.reason}`); // wrong credential
+    else alert(`Sign In Failed!\n${res.reason}`);
   };
 
   return (

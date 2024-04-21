@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import Favorite from "./components/Favorite";
 import ProfilePage from "./components/Profile";
-import Setting from "./components/Setting";
+import ChangePassword from "./components/ChangePassword";
 import Dashboard from "./components/Dashboard";
 import PublishSoftware from "./components/PublishSoftware";
 import IsAuth from "@/app/components/isauth";
+import { useRouter } from "next/navigation";
+import Reviews from "./components/Review";
 
 function Profile() {
   const [activeItem, setActiveItem] = useState(null);
@@ -15,6 +17,7 @@ function Profile() {
     setActiveItem(item);
   };
   const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     handleItemClick(3);
@@ -32,24 +35,24 @@ function Profile() {
     }
   }, []);
 
-  useEffect(() => {
-    determineAdmin();
-  }, []);
+  // useEffect(() => {
+  //   determineAdmin();
+  // }, []);
 
-  const determineAdmin = async () => {
-    const token = localStorage.getItem("token");
-    const temp = await fetch("/api/user/admin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: token }),
-    });
-    const res = await temp.json();
-    if (temp.status == 200) {
-      setIsAdmin(true);
-    } else if (temp.status == 405) {
-      localStorage.setItem("token", "");
-    }
-  };
+  // const determineAdmin = async () => {
+  //   const token = localStorage.getItem("token");
+  //   const temp = await fetch("/api/user/admin", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ token: token }),
+  //   });
+  //   const res = await temp.json();
+  //   if (temp.status == 200) {
+  //     setIsAdmin(true);
+  //   } else if (temp.status == 405) {
+  //     localStorage.setItem("token", "");
+  //   }
+  // };
 
   return (
     <div className="font-dmsan bg-base p-6 grid grid-cols-3 m-5 min-w-[946px]">
@@ -78,9 +81,6 @@ function Profile() {
               ) : (
                 <img src={userinfo.photoURL}></img>
               )}
-              <div className="relative mt-[-20%] ml-[50%] ">
-                <img src={"../profile/profile-edit.png"}></img>
-              </div>
             </div>
           </div>
           <div className="mt-[52%] text-display-sm">
@@ -89,7 +89,7 @@ function Profile() {
               Joined on {userinfo.joined}
             </div>
             <div className="text-body-md space-y-8  mt-[10%]">
-              {isAdmin && (
+              {/* {isAdmin && (
                 <button
                   onClick={() => handleItemClick(1)}
                   className={`flex items-center space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
@@ -134,7 +134,7 @@ function Profile() {
                   </svg>
                   <span className="hover:bg-cyan">Publish Software</span>
                 </button>
-              )}
+              )} */}
               <button
                 onClick={() => handleItemClick(3)}
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
@@ -169,28 +169,6 @@ function Profile() {
                 </svg>
                 <span className="  hover:bg-cyan">Profile</span>
               </button>
-              {/* <button
-                onClick={() => handleItemClick(4)}
-                className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
-                  activeItem == 4
-                    ? "active bg-cyan rounded-[16px] font-bold"
-                    : ""
-                }`}
-              >
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M28.8438 8.8625C28.4249 7.89261 27.8209 7.01371 27.0656 6.275C26.3098 5.53408 25.4186 4.94528 24.4406 4.54062C23.4265 4.11935 22.3388 3.90372 21.2406 3.90625C19.7 3.90625 18.1969 4.32812 16.8906 5.125C16.5781 5.31562 16.2812 5.525 16 5.75312C15.7188 5.525 15.4219 5.31562 15.1094 5.125C13.8031 4.32812 12.3 3.90625 10.7594 3.90625C9.65 3.90625 8.575 4.11875 7.55937 4.54062C6.57812 4.94687 5.69375 5.53125 4.93437 6.275C4.17811 7.01288 3.57399 7.89199 3.15625 8.8625C2.72188 9.87187 2.5 10.9437 2.5 12.0469C2.5 13.0875 2.7125 14.1719 3.13438 15.275C3.4875 16.1969 3.99375 17.1531 4.64062 18.1187C5.66563 19.6469 7.075 21.2406 8.825 22.8563C11.725 25.5344 14.5969 27.3844 14.7188 27.4594L15.4594 27.9344C15.7875 28.1438 16.2094 28.1438 16.5375 27.9344L17.2781 27.4594C17.4 27.3813 20.2687 25.5344 23.1719 22.8563C24.9219 21.2406 26.3313 19.6469 27.3563 18.1187C28.0031 17.1531 28.5125 16.1969 28.8625 15.275C29.2844 14.1719 29.4969 13.0875 29.4969 12.0469C29.5 10.9437 29.2781 9.87187 28.8438 8.8625ZM16 25.4625C16 25.4625 4.875 18.3344 4.875 12.0469C4.875 8.8625 7.50937 6.28125 10.7594 6.28125C13.0437 6.28125 15.025 7.55625 16 9.41875C16.975 7.55625 18.9563 6.28125 21.2406 6.28125C24.4906 6.28125 27.125 8.8625 27.125 12.0469C27.125 18.3344 16 25.4625 16 25.4625Z"
-                    fill="black"
-                  />
-                </svg>
-                <span className="  hover:bg-cyan">Favorite</span>
-              </button> */}
               <button
                 className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
                   activeItem == 5
@@ -211,32 +189,45 @@ function Profile() {
                 }`}
               >
                 <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  width="1.5em"
+                  height="1.5em"
+                  viewBox="0 0 15 15"
                 >
                   <path
-                    d="M18.7722 2C18.9839 2.00001 19.1902 2.06721 19.3613 2.19193C19.5323 2.31664 19.6594 2.49244 19.7242 2.694L20.8242 6.112C21.2862 6.338 21.7282 6.592 22.1502 6.878L25.6622 6.122C25.8693 6.07779 26.085 6.10045 26.2784 6.18671C26.4718 6.27297 26.6328 6.41838 26.7382 6.602L29.5102 11.4C29.6161 11.5835 29.6609 11.7959 29.6383 12.0065C29.6156 12.2172 29.5267 12.4152 29.3842 12.572L26.9742 15.232C27.0093 15.7421 27.0093 16.2539 26.9742 16.764L29.3842 19.428C29.5267 19.5848 29.6156 19.7828 29.6383 19.9935C29.6609 20.2041 29.6161 20.4165 29.5102 20.6L26.7382 25.4C26.6325 25.5833 26.4714 25.7283 26.278 25.8141C26.0847 25.9 25.8691 25.9224 25.6622 25.878L22.1502 25.122C21.7302 25.406 21.2862 25.662 20.8262 25.888L19.7242 29.306C19.6594 29.5076 19.5323 29.6834 19.3613 29.8081C19.1902 29.9328 18.9839 30 18.7722 30H13.2282C13.0165 30 12.8103 29.9328 12.6392 29.8081C12.4681 29.6834 12.341 29.5076 12.2762 29.306L11.1782 25.89C10.7175 25.6647 10.273 25.4074 9.84822 25.12L6.33822 25.878C6.13115 25.9222 5.91539 25.8996 5.72202 25.8133C5.52865 25.727 5.36765 25.5816 5.26222 25.398L2.49022 20.6C2.38437 20.4165 2.33953 20.2041 2.36218 19.9935C2.38482 19.7828 2.47378 19.5848 2.61622 19.428L5.02622 16.764C4.99131 16.2553 4.99131 15.7447 5.02622 15.236L2.61622 12.572C2.47378 12.4152 2.38482 12.2172 2.36218 12.0065C2.33953 11.7959 2.38437 11.5835 2.49022 11.4L5.26222 6.6C5.36794 6.41675 5.52907 6.27175 5.72241 6.18586C5.91576 6.09997 6.13136 6.07761 6.33822 6.122L9.84822 6.88C10.2722 6.594 10.7162 6.336 11.1782 6.11L12.2782 2.694C12.3428 2.49309 12.4693 2.31776 12.6396 2.1931C12.8098 2.06844 13.0152 2.00085 13.2262 2H18.7702H18.7722ZM18.0402 4H13.9602L12.8242 7.534L12.0582 7.908C11.6817 8.09227 11.3181 8.3021 10.9702 8.536L10.2622 9.016L6.63022 8.232L4.59022 11.768L7.08022 14.524L7.02022 15.372C6.99148 15.7902 6.99148 16.2098 7.02022 16.628L7.08022 17.476L4.58622 20.232L6.62822 23.768L10.2602 22.986L10.9682 23.464C11.3161 23.6979 11.6797 23.9077 12.0562 24.092L12.8222 24.466L13.9602 28H18.0442L19.1842 24.464L19.9482 24.092C20.3244 23.9082 20.6873 23.6983 21.0342 23.464L21.7402 22.986L25.3742 23.768L27.4142 20.232L24.9222 17.476L24.9822 16.628C25.011 16.2092 25.011 15.7888 24.9822 15.37L24.9222 14.522L27.4162 11.768L25.3742 8.232L21.7402 9.012L21.0342 8.536C20.6873 8.30163 20.3244 8.09178 19.9482 7.908L19.1842 7.536L18.0422 4H18.0402ZM16.0002 10C17.5915 10 19.1176 10.6321 20.2429 11.7574C21.3681 12.8826 22.0002 14.4087 22.0002 16C22.0002 17.5913 21.3681 19.1174 20.2429 20.2426C19.1176 21.3679 17.5915 22 16.0002 22C14.4089 22 12.8828 21.3679 11.7576 20.2426C10.6324 19.1174 10.0002 17.5913 10.0002 16C10.0002 14.4087 10.6324 12.8826 11.7576 11.7574C12.8828 10.6321 14.4089 10 16.0002 10ZM16.0002 12C14.9394 12 13.9219 12.4214 13.1718 13.1716C12.4216 13.9217 12.0002 14.9391 12.0002 16C12.0002 17.0609 12.4216 18.0783 13.1718 18.8284C13.9219 19.5786 14.9394 20 16.0002 20C17.0611 20 18.0785 19.5786 18.8286 18.8284C19.5788 18.0783 20.0002 17.0609 20.0002 16C20.0002 14.9391 19.5788 13.9217 18.8286 13.1716C18.0785 12.4214 17.0611 12 16.0002 12Z"
-                    fill="black"
+                    fill="none"
+                    stroke="currentColor"
+                    d="M12.5 8.5v-1a1 1 0 0 0-1-1h-10a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1m0-4h-4a2 2 0 1 0 0 4h4m0-4a2 2 0 1 1 0 4m-9-6v-3a3 3 0 0 1 6 0v3m2.5 4h1m-3 0h1m-3 0h1"
                   />
                 </svg>
-                <span className="  hover:bg-cyan">Setting</span>
+                <span className="  hover:bg-cyan">Change Password</span>
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.setItem("token", "");
+                  router.push("/");
+                  router.refresh();
+                }}
+                className={`flex space-x-3 hover:bg-orange-500 py-2 px-4 place-content-center bg-red w-full rounded-[16px] hover:font-bold ${
+                  activeItem == 6
+                    ? "active bg-orange-500 rounded-[16px] font-bold"
+                    : ""
+                }`}
+              >
+                Log Out
               </button>
             </div>
           </div>
         </div>
       </div>
       <div className="col-span-2">
-        {activeItem === 1 && isAdmin && <Dashboard />}
+        {/* {activeItem === 1 && isAdmin && <Dashboard />}
         {activeItem === 2 && isAdmin && (
           <PublishSoftware handleItemClick={handleItemClick} />
-        )}
-        {activeItem === 3 && <ProfilePage />}
-        {activeItem === 4 && <Favorite />}
-        {activeItem === 5 && <Favorite />}
-        {activeItem === 6 && <Setting />}
+        )} */}
+        {activeItem === 3 && <ProfilePage setUserInfo={setUserInfo} />}
+        {activeItem === 5 && <Reviews />}
+        {activeItem === 6 && <ChangePassword setActiveItem={setActiveItem} />}
       </div>
     </div>
   );

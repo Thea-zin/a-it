@@ -72,6 +72,7 @@ export async function POST(req) {
           token: token,
           photoURL: user.photoURL,
           displayName: user.displayName,
+          email: user.email,
           joined: user.metadata.creationTime,
         },
         { status: 200 }
