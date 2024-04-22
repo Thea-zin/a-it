@@ -21,9 +21,7 @@ export default function Stars({ number }) {
   } else if (number >= 0.5) {
     return generateStar([1, 0, 0, 0, 0], number);
   } else {
-    return (
-      <p className="text-[#F3B146] text-lg font-bold">Not enough rating yet!</p>
-    )
+    return generateStar([0, 0, 0, 0, 0], number);
   }
 }
 

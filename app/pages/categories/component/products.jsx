@@ -245,7 +245,6 @@ export default function Products({
                   ["3", "rate3"],
                   ["2", "rate2"],
                   ["1", "rate1"],
-                  ["Not Enough Rating", "rate0"],
                 ].map((item, index) => {
                   return (
                     <div className="flex items-center mb-2" key={index}>

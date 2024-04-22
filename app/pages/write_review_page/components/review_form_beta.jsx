@@ -66,6 +66,7 @@ export default function ReviewFormBeta() {
         icon: softwareInfo.icon,
         category: softwareInfo.category,
         name: softwareInfo.name,
+        fullcategories: softwareInfo.fullcategories,
         date: date,
         timestamp: timestamp,
       }),

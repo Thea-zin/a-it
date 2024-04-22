@@ -9,6 +9,7 @@ import {
   query,
   where,
   orderBy,
+  documentId,
 } from "firebase/firestore";
 const jsdom = require("jsdom");
 
@@ -18,13 +19,30 @@ export async function POST(req) {
     const request = await req.json();
     // console.log(request);
 
+    const snapshot = await getDoc(doc(firestore, "softwares", request.id));
+    if (snapshot.exists()) {
+      let temp = snapshot.data();
+      if (temp.reviews != null) {
+        let [othercategories] = await getCategoriesLink();
+        const indexes = Array.from({ length: 10 }, () =>
+          Math.floor(Math.random() * othercategories.length)
+        );
+        othercategories = othercategories.filter((item, index) => {
+          return item[1] != request.id && indexes.includes(index);
+        });
+        temp["othercategories"] = othercategories;
+        return NextResponse.json({ data: temp, reviews: [] }, { status: 200 });
+      }
+    }
+
+    let [othercategories, allcategories] = await getCategoriesLink();
     var data = await getSoftwareInfo(
-      "https://www.aixploria.com/en/" + request.id
+      "https://www.aixploria.com/en/" + request.id,
+      allcategories
     );
     data.nci = request.id;
     data.id = request.id;
 
-    let othercategories = await getCategoriesLink();
     const indexes = Array.from({ length: 10 }, () =>
       Math.floor(Math.random() * othercategories.length)
     );
@@ -43,7 +61,7 @@ export async function POST(req) {
   }
 }
 
-const getSoftwareInfo = async (lnk) => {
+const getSoftwareInfo = async (lnk, allcategories) => {
   const data = await fetch(lnk, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -64,6 +82,12 @@ const getSoftwareInfo = async (lnk) => {
   const views = 0;
   const reviews = 0;
 
+  console.log(allcategories);
+  temp = page.querySelectorAll("div.entry-categories a");
+  const fullcategories = Array.from(temp).map((item) => {
+    return item.textContent;
+  });
+
   return {
     name,
     icon,
@@ -73,6 +97,7 @@ const getSoftwareInfo = async (lnk) => {
     views,
     reviews,
     othercategories: [],
+    fullcategories,
   };
 };
 
@@ -86,7 +111,6 @@ const getCategoriesLink = async () => {
   const page = dom.window.document;
 
   const grid = page.querySelectorAll("div.categories-grid div.category-item");
-  // console.log(grid.length);
 
   const quotes = Array.from(grid).map((cell) => {
     const text = cell.querySelector("a p").textContent;
@@ -95,6 +119,12 @@ const getCategoriesLink = async () => {
     const nci = temp[temp.length - 2];
     return [text, nci];
   });
+  const refs = Array.from(grid).map((cell) => {
+    let temp = cell.querySelector("a").href;
+    temp = temp.split("/");
+    const nci = temp[temp.length - 2];
+    return nci;
+  });
 
-  return quotes;
+  return [quotes, refs];
 };

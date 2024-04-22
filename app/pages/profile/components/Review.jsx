@@ -29,8 +29,8 @@ export default function Reviews() {
       <div className="flex space-x-3 py-2 px-4  hover:rounded-[16px] hover:font-bold ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
+          width="2.3em"
+          height="2.3em"
           viewBox="0 0 24 24"
         >
           <path

@@ -105,13 +105,14 @@ export async function POST(req) {
           name: review.name,
           id: review.soft_id,
           category: review.category,
-          icon: review.icon
+          icon: review.icon,
+          fullcategories: review.fullcategories,
         }
       );
 
       return NextResponse.json({ id: result.id }, { status: 200 });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       return NextResponse.json({ message: "Session Expire" }, { status: 405 });
     }
   } catch (e) {

@@ -11,8 +11,8 @@ export default function ReviewBox({ review = null }) {
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="full"
-                height="full"
+                width="100%"
+                height="100%"
                 viewBox="0 0 48 48"
               >
                 <g fill="#434280">

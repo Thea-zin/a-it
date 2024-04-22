@@ -28,6 +28,8 @@ function Profile() {
       temp["joined"] = localStorage.getItem("joined");
       temp["photoURL"] = localStorage.getItem("photoURL").split("!បំបែក!")[1];
 
+      setActiveItem(3);
+
       // console.log(temp);
       setUserInfo(temp);
     } catch (e) {
@@ -55,40 +57,39 @@ function Profile() {
   // };
 
   return (
-    <div className="font-dmsan bg-base p-6 grid grid-cols-3 m-5 min-w-[946px]">
-      <div className="col-span-1">
-        <div className="bg-white flex flex-col rounded-[16px] p-4 w-[300px]">
-          <div className=" ml-[35%] ">
-            <div className="absolute mt-[3%] ">
-              {userinfo["photoURL"] == "0" ? (
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="6em"
-                    height="6em"
-                    viewBox="0 0 48 48"
-                  >
-                    <g fill="#434280">
-                      <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
-                      <path
-                        fillRule="evenodd"
-                        d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20a21.253 21.253 0 0 1-.274 0c-.181 0-.362-.006-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.942 17.942 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621"
-                        clipRule="evenodd"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              ) : (
-                <img src={userinfo.photoURL}></img>
-              )}
-            </div>
+    <div className="font-dmsan bg-base p-6 md:flex m-5 min-w-[500px]">
+      <div className="min-w-[300px] mb-10">
+        <div className="bg-white flex flex-col rounded-[16px] p-4 md:w-[300px] relative">
+          <div className="flex place-content-center">
+            {userinfo["photoURL"] == "0" ? (
+              <div className="">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="6em"
+                  height="6em"
+                  viewBox="0 0 48 48"
+                >
+                  <g fill="#434280">
+                    <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
+                    <path
+                      fillRule="evenodd"
+                      d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20a21.253 21.253 0 0 1-.274 0c-.181 0-.362-.006-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.942 17.942 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621"
+                      clipRule="evenodd"
+                    />
+                  </g>
+                </svg>
+              </div>
+            ) : (
+              <img src={userinfo.photoURL}></img>
+            )}
           </div>
-          <div className="mt-[52%] text-display-sm">
+
+          <div className="text-display-sm">
             <div className="text-center">{userinfo.displayName}</div>
             <div className=" text-basedark text-label-lg text-center">
               Joined on {userinfo.joined}
             </div>
-            <div className="text-body-md space-y-8  mt-[10%]">
+            <div className="text-body-md mt-10 flex justify-between md:block">
               {/* {isAdmin && (
                 <button
                   onClick={() => handleItemClick(1)}
@@ -135,13 +136,14 @@ function Profile() {
                   <span className="hover:bg-cyan">Publish Software</span>
                 </button>
               )} */}
+
               <button
-                onClick={() => handleItemClick(3)}
-                className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
+                className={`flex place-items-center space-x-3 my-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
                   activeItem == 3
                     ? "active bg-cyan rounded-[16px] font-bold"
                     : ""
                 }`}
+                onClick={() => handleItemClick(3)}
               >
                 <svg
                   width="32"
@@ -169,20 +171,31 @@ function Profile() {
                 </svg>
                 <span className="  hover:bg-cyan">Profile</span>
               </button>
+
               <button
-                className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
+                className={`flex place-items-center space-x-3 my-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
                   activeItem == 5
                     ? "active bg-cyan rounded-[16px] font-bold"
                     : ""
                 }`}
                 onClick={() => handleItemClick(5)}
               >
-                <img src={"../profile/review.png"}></img>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M3 20.077V4.615q0-.69.463-1.152T4.615 3h14.77q.69 0 1.152.463T21 4.615v10.77q0 .69-.462 1.153T19.385 17H6.077zm6.517-6.404L12 12.167l2.483 1.506l-.66-2.825l2.196-1.885l-2.886-.255L12 6.058l-1.133 2.65l-2.886.255l2.196 1.885z"
+                  />
+                </svg>
                 <span className="  hover:bg-cyan">Review</span>
               </button>
               <button
                 onClick={() => handleItemClick(6)}
-                className={`flex space-x-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
+                className={`flex place-items-center space-x-3 my-3 hover:bg-cyan py-2 px-4  hover:rounded-[16px] hover:font-bold ${
                   activeItem == 6
                     ? "active bg-cyan rounded-[16px] font-bold"
                     : ""
@@ -200,7 +213,7 @@ function Profile() {
                     d="M12.5 8.5v-1a1 1 0 0 0-1-1h-10a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1m0-4h-4a2 2 0 1 0 0 4h4m0-4a2 2 0 1 1 0 4m-9-6v-3a3 3 0 0 1 6 0v3m2.5 4h1m-3 0h1m-3 0h1"
                   />
                 </svg>
-                <span className="  hover:bg-cyan">Change Password</span>
+                <div className="hover:bg-cyan text-left">Change Password</div>
               </button>
               <button
                 onClick={() => {
@@ -208,7 +221,21 @@ function Profile() {
                   router.push("/");
                   router.refresh();
                 }}
-                className={`flex space-x-3 hover:bg-orange-500 py-2 px-4 place-content-center bg-red w-full rounded-[16px] hover:font-bold ${
+                className={`hidden md:flex space-x-3 hover:bg-orange-500 mt-7 py-2 px-4 place-content-center bg-red w-full rounded-[16px] hover:font-bold ${
+                  activeItem == 6
+                    ? "active bg-orange-500 rounded-[16px] font-bold"
+                    : ""
+                }`}
+              >
+                Log Out
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.setItem("token", "");
+                  router.push("/");
+                  router.refresh();
+                }}
+                className={`absolute top-5 right-5 md:hidden space-x-3 hover:bg-orange-500 py-2 px-10 place-content-center bg-red rounded-[16px] hover:font-bold ${
                   activeItem == 6
                     ? "active bg-orange-500 rounded-[16px] font-bold"
                     : ""
@@ -220,7 +247,7 @@ function Profile() {
           </div>
         </div>
       </div>
-      <div className="col-span-2">
+      <div className="flex-1 md:ml-3 lg:ml-16">
         {/* {activeItem === 1 && isAdmin && <Dashboard />}
         {activeItem === 2 && isAdmin && (
           <PublishSoftware handleItemClick={handleItemClick} />
