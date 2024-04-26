@@ -17,7 +17,8 @@ function ProfilePage({ setUserInfo = () => {} }) {
   const [allow, setAllow] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
+  const [errorFnMessage,setErrorFnMessage]=useState("");
+  const [errorOcMessage,setErrorOcMessage]=useState("");
   useEffect(() => {
     setProfile({
       displayName: localStorage.getItem("displayName"),
@@ -33,13 +34,41 @@ function ProfilePage({ setUserInfo = () => {} }) {
   useEffect(() => {
     if (fn && oc && allow) {
       onSave();
+      setErrorFnMessage("");
+      setErrorOcMessage("");
     }
   }, [fn, oc, allow]);
 
   const validate = () => {
-    setFN(fullname.length > 0);
-    setOC(occupation.length > 0);
-    setAllow(true);
+    if (fullname.length<8  ){
+          setFN(false)
+          setAllow(false)
+          setErrorFnMessage("value can't be null and It has to be greater than 8 characters!")
+          setErrorOcMessage("")
+    }else if(!fullname.length){
+      setFN(false)
+      setAllow(false)
+      setErrorFnMessage("value can't be null and It has to be greater than 8 characters!")
+      setErrorOcMessage("")
+    }
+    else if (occupation.length<8 | occupation.length==0){
+      setOC(false)
+      setAllow(false)
+      setErrorFnMessage("")
+      setErrorOcMessage("value can't be null and It has to be greater than 8 characters!")
+    }else if((occupation.length<8 | occupation.length==0 ) &&(fullname.length<8 | fullname.length==0)){
+      setFN(fullname.length > 8);
+      setOC(occupation.length > 8);
+      setAllow(false);
+      setErrorOcMessage("value can't be null and It has to be greater than 8 characters!")
+      setErrorFnMessage("value can't be null and It has to be greater than 8 characters!")
+    }else{
+      setFN(fullname.length > 8);
+      setOC(occupation.length > 8);
+      setAllow(true);
+      setErrorOcMessage("")
+      setErrorFnMessage("")
+    }
   };
 
   const onSave = async () => {
@@ -107,7 +136,7 @@ function ProfilePage({ setUserInfo = () => {} }) {
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
           <label>
-            Full Name <span className="text-red">*</span>
+            Full Name <span className="text-red">*</span><span className="text-red">{errorFnMessage}</span>
           </label>
         </div>
         <input
@@ -125,7 +154,7 @@ function ProfilePage({ setUserInfo = () => {} }) {
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
           <label>
-            Ocupation <span className="text-red">*</span>
+            Ocupation <span className="text-red">*</span><span className="text-red">{errorOcMessage}</span>
           </label>
         </div>
         <input
