@@ -17,6 +17,8 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
   const [rPassword, setRPassword] = useState("");
   const [allow, setAllow] = useState(false);
   const router = useRouter();
+  const [ErrorMessageN,setErrorMessageN]=useState("")
+  const [ErrorMessageR,setErrorMessageR]=useState("")
 
   useEffect(() => {
     // console.log(current, newPass, allow);
@@ -67,11 +69,48 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
 
   const validatePassword = async () => {
     // console.log(cPassword, nPassword, rPassword);
-    setCurrent(cPassword.length >= 8);
-    setNewPass(
-      nPassword.length >= 8 && rPassword.length >= 8 && nPassword == rPassword
-    );
-    setAllow(true);
+    if (nPassword.length<8){
+      setAllow(false)
+      setCurrent(false)
+      setNewPass(false)
+      setErrorMessageN("It cant be null. The character must be 8 letters.")
+      setErrorMessageR("")
+    } else if (rPassword<8){
+      setAllow(false)
+      setCurrent(false)
+      setNewPass(false)
+      setErrorMessageR("It cant be null. The character must be 8 letters.")
+      setErrorMessageN("")
+    } else if(nPassword.length < 8 && rPassword.length < 8 ){
+      setAllow(false)
+      setCurrent(false)
+      setNewPass(false)
+      setErrorMessageR("It cant be null. The character must be 8 letters.")
+      setErrorMessageN("It cant be null. The character must be 8 letters.")
+    } else{
+        if (nPassword != rPassword){
+          setAllow(false)
+          setCurrent(false)
+          setNewPass(false)
+          setErrorMessageR("Password is not match. Re-enter it again")
+          setErrorMessageN("Password is not match. Re-enter it again")
+        }
+        else{
+          setErrorMessageR("")
+          setErrorMessageN("")
+          setCurrent(cPassword.length >= 8);
+          setNewPass(
+            nPassword.length >= 8 && rPassword.length >= 8 && nPassword == rPassword
+          );
+          setAllow(true);
+        }
+    }
+    // if (nPassword != rPassword){}
+    // setCurrent(cPassword.length >= 8);
+    // setNewPass(
+    //   nPassword.length >= 8 && rPassword.length >= 8 && nPassword == rPassword
+    // );
+    // setAllow(true);
   };
 
   return (
@@ -142,7 +181,7 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
           <label>
-            New Password <span className="text-red">*</span>
+            New Password <span className="text-red">*</span><span className="text-red">{ErrorMessageN}</span>
           </label>
         </div>
         <div className="flex">
@@ -187,7 +226,7 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
           <label>
-            Confirm New Password <span className="text-red">*</span>
+            Confirm New Password <span className="text-red">*</span><span className="text-red">{ErrorMessageR}</span>
           </label>
         </div>
         <div className="flex">
