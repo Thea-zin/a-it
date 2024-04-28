@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Stars from "./star_display";
+import { startAfter } from "firebase/firestore";
 
 export default function Products({
   isSearching = false,
@@ -23,7 +24,7 @@ export default function Products({
   const [icons, setIcons] = useState([]);
   const [softwares, setSoftwares] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [filterPageNumber, setFilterPageNumber] = useState(1);
+  const [startAfterList, setStartAfterList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [mainFilter, setMainFilter] = useState("");
   const [tempFilter, setTempFilter] = useState("");
@@ -73,8 +74,8 @@ export default function Products({
   }
 
   useEffect(() => {
-    // console.log(tempRate);
-  }, [tempRate]);
+    // console.log(startAfterList);
+  }, [startAfterList]);
 
   useEffect(() => {
     if (isSearching) {
@@ -100,7 +101,7 @@ export default function Products({
   }, []);
 
   useEffect(() => {
-    // console.log(softwares);
+    console.log(softwares);
   }, [softwares]);
 
   useEffect(() => {
@@ -150,25 +151,31 @@ export default function Products({
   };
 
   const getFilteredSoftwares = async () => {
-    setLoading(true);
-    setMainFilter(tempFilter);
-    setRateFilter(tempRate);
-    document.querySelector("input[type='text']").value = "";
+    try {
+      setLoading(true);
+      setMainFilter(tempFilter);
+      setRateFilter(tempRate);
+      document.querySelector("input[type='text']").value = "";
 
-    const temp = await fetch("/api/automation/filter", {
-      method: "POST",
-      body: JSON.stringify({
-        category: tempFilter,
-        rate: tempRate,
-        pageNumber: 1,
-      }),
-    });
-    const tsoft = await temp.json();
+      const temp = await fetch("/api/automation/filter", {
+        method: "POST",
+        body: JSON.stringify({
+          category: tempFilter,
+          rate: tempRate,
+          pageNumber: 1,
+          startAfter: "",
+        }),
+      });
+      const tsoft = await temp.json();
 
-    setSoftwares(tsoft.softwares);
-    setLoading(false);
-    setPageNumber(1);
-    setIsSearching(false);
+      setSoftwares(tsoft.softwares);
+      setLoading(false);
+      setPageNumber(1);
+      setIsSearching(false);
+      setStartAfterList(["", tsoft.softwares[tsoft.softwares.length - 1].nci]);
+    } catch (e) {
+      setSoftwares([]);
+    }
   };
 
   const getNextPage = async () => {
@@ -180,15 +187,20 @@ export default function Products({
           category: mainFilter,
           pageNumber: pageNumber + 1,
           rate: rateFilter,
+          startAfter: startAfterList[startAfterList.length - 1],
         }),
       });
       const res = await temp.json();
 
-      if (res.softwares.length != 0) {
-        setPageNumber(pageNumber + 1);
-      }
+      setPageNumber(pageNumber + 1);
+      let tplist = startAfterList;
+      tplist.push(res.softwares[res.softwares.length - 1].nci);
+      setStartAfterList([...tplist]);
+
       setSoftwares(res.softwares);
-    } catch (e) {}
+    } catch (e) {
+      setSoftwares([]);
+    }
     setLoading(false);
   };
 
@@ -200,30 +212,24 @@ export default function Products({
       }
 
       let temp = null;
-      if (softwares.length == 0) {
-        temp = await fetch("/api/automation/filter", {
-          method: "POST",
-          body: JSON.stringify({
-            category: mainFilter,
-            pageNumber: pageNumber,
-            rate: rateFilter,
-          }),
-        });
-      } else {
-        temp = await fetch("/api/automation/filter", {
-          method: "POST",
-          body: JSON.stringify({
-            category: mainFilter,
-            pageNumber: pageNumber - 1,
-            rate: rateFilter,
-          }),
-        });
-        setPageNumber(pageNumber - 1);
-      }
+
+      temp = await fetch("/api/automation/filter", {
+        method: "POST",
+        body: JSON.stringify({
+          category: mainFilter,
+          pageNumber: pageNumber - 1,
+          rate: rateFilter,
+          startAfter: startAfterList[pageNumber - 2],
+        }),
+      });
+      setPageNumber(pageNumber - 1);
+
       const res = await temp.json();
 
       setSoftwares(res.softwares);
-    } catch (e) {}
+    } catch (e) {
+      setSoftwares([]);
+    }
     setLoading(false);
   };
 

@@ -14,6 +14,7 @@ import {
   endAt,
   startAt,
   getCountFromServer,
+  documentId,
 } from "firebase/firestore";
 const jsdom = require("jsdom");
 
@@ -29,6 +30,7 @@ export async function POST(req) {
     );
 
     let data = [];
+    let ids = [];
     let i = 0;
     while (data.length < smax && i < softwares.length) {
       if (
@@ -39,8 +41,24 @@ export async function POST(req) {
       ) {
         softwares[i]["category"] = request.category;
         data.push(softwares[i]);
+        ids.push(softwares[i].id);
       }
       i++;
+    }
+
+    const q = query(
+      collection(firestore, "softwares"),
+      where(documentId(), "in", ids)
+    );
+    const snapshots = await getDocs(q);
+    for (let doc of snapshots.docs) {
+      const tempData = doc.data();
+      data = data.map((item) => {
+        if (item.id == doc.id && tempData.reviews > 0) {
+          return tempData;
+        }
+        return item;
+      });
     }
 
     return NextResponse.json(

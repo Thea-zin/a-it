@@ -14,6 +14,7 @@ import {
   endAt,
   startAt,
   getCountFromServer,
+  documentId,
 } from "firebase/firestore";
 const jsdom = require("jsdom");
 
@@ -28,7 +29,9 @@ export async function POST(req) {
         collection(firestore, "softwares"),
         where("star_text", "in", request.rate),
         where("category", "==", request.category),
-        limit(11)
+        orderBy("nci"),
+        startAfter(request.startAfter),
+        limit(12)
       );
       const snapshot = await getDocs(q);
       let softwares = [];
@@ -43,7 +46,9 @@ export async function POST(req) {
       const q = query(
         collection(firestore, "softwares"),
         where("star_text", "in", request.rate),
-        limit(11)
+        orderBy("nci"),
+        startAfter(request.startAfter),
+        limit(12)
       );
       const snapshot = await getDocs(q);
       let softwares = [];
@@ -55,7 +60,7 @@ export async function POST(req) {
         { status: 200 }
       );
     } else {
-      let softwares = await getSoftwareInfoPerPage(
+      let [softwares, ids] = await getSoftwareInfoPerPage(
         "https://www.aixploria.com/en/category/" +
           request.category +
           "/page/" +
@@ -63,6 +68,23 @@ export async function POST(req) {
           "?orderby=alphabetical",
         request.category
       );
+
+      if (ids.length > 0) {
+        const q = query(
+          collection(firestore, "softwares"),
+          where(documentId(), "in", ids)
+        );
+        const snapshots = await getDocs(q);
+        for (let doc of snapshots.docs) {
+          const data = doc.data();
+          softwares = softwares.map((item) => {
+            if (item.id == doc.id && data.reviews > 0) {
+              return data;
+            }
+            return item;
+          });
+        }
+      }
 
       return NextResponse.json(
         { softwares: softwares, total: softwares.length },
@@ -92,6 +114,7 @@ const getSoftwareInfoPerPage = async (lnk, category) => {
   let filtered = Array.from(grid).filter((item) => {
     return !item.className.includes("toolday1");
   });
+  let ids = [];
   let softwares = filtered.map((cell) => {
     const icon = cell.querySelector("div.post-info div div img").src;
     const name = cell.querySelector("div.post-info div span a").textContent;
@@ -104,8 +127,10 @@ const getSoftwareInfoPerPage = async (lnk, category) => {
     const views = 0;
     const reviews = 0;
 
+    ids.push(id);
+
     return { id, name, nci, icon, site, category, star, views, reviews };
   });
 
-  return softwares;
+  return [softwares, ids];
 };
