@@ -31,6 +31,8 @@ export default function Products({
   const [rateFilter, setRateFilter] = useState([]);
   const [tempRate, setTempRate] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isViewAll, setIsViewAll] = useState(true);
+  const [viewAllCatgories, setViewAllCategories] = useState([]);
 
   function addIds(id, name, add, icon = "") {
     let tempid = tids;
@@ -140,7 +142,9 @@ export default function Products({
       });
       const tsoft = await temp.json();
 
+      setIsViewAll(true);
       setCategories(res.categories);
+      setViewAllCategories(res.categories);
       setSoftwares(tsoft.softwares);
       setLoading(false);
       setTempFilter(initcategory);
@@ -151,7 +155,12 @@ export default function Products({
   };
 
   const getFilteredSoftwares = async () => {
+    if (loading) {
+      return;
+    }
+
     try {
+      setIsViewAll(false);
       setLoading(true);
       setMainFilter(tempFilter);
       setRateFilter(tempRate);
@@ -164,6 +173,8 @@ export default function Products({
           rate: tempRate,
           pageNumber: 1,
           startAfter: "",
+          viewAllCatgories: viewAllCatgories,
+          isViewAll: false,
         }),
       });
       const tsoft = await temp.json();
@@ -181,24 +192,78 @@ export default function Products({
   const getNextPage = async () => {
     setLoading(true);
     try {
-      const temp = await fetch("/api/automation/filter", {
-        method: "POST",
-        body: JSON.stringify({
-          category: mainFilter,
-          pageNumber: pageNumber + 1,
-          rate: rateFilter,
-          startAfter: startAfterList[startAfterList.length - 1],
-        }),
-      });
-      const res = await temp.json();
+      let temp = null;
+      let res = null;
+      let vaCategories = viewAllCatgories;
+
+      while (true) {
+        let index = -1;
+        if (isViewAll) {
+          let category = mainFilter;
+          let pgn = pageNumber + 1;
+          console.log("vacategories", vaCategories);
+          for (let i = 0; i < vaCategories.length; i++) {
+            if (
+              !vaCategories[i][2] ||
+              (vaCategories[i][2] && vaCategories[i][2] >= pgn)
+            ) {
+              category = vaCategories[i][1];
+              index = i;
+              setTempFilter(category);
+              setMainFilter(category);
+              try {
+                pgn = pageNumber + 1 - vaCategories[i - 1][2];
+              } catch (e) {}
+              break;
+            }
+          }
+          if (index == -1) {
+            category = vaCategories[vaCategories.length - 1][1];
+            pgn = vaCategories[vaCategories.length - 1][2] + 1;
+          }
+
+          temp = await fetch("/api/automation/filter", {
+            method: "POST",
+            body: JSON.stringify({
+              category: category,
+              pageNumber: pgn,
+              rate: rateFilter,
+              startAfter: startAfterList[startAfterList.length - 1],
+            }),
+          });
+        } else {
+          temp = await fetch("/api/automation/filter", {
+            method: "POST",
+            body: JSON.stringify({
+              category: mainFilter,
+              pageNumber: pageNumber + 1,
+              rate: rateFilter,
+              startAfter: startAfterList[startAfterList.length - 1],
+            }),
+          });
+        }
+        res = await temp.json();
+        console.log("index", index);
+        if (res.softwares.length <= 0 && isViewAll) {
+          vaCategories[index].push(pageNumber);
+        }
+
+        if (res.softwares.length > 0 || index == -1) {
+          break;
+        } else if (!isViewAll) {
+          break;
+        }
+      }
 
       setPageNumber(pageNumber + 1);
+      setViewAllCategories([...vaCategories]);
       let tplist = startAfterList;
       tplist.push(res.softwares[res.softwares.length - 1].nci);
       setStartAfterList([...tplist]);
 
       setSoftwares(res.softwares);
     } catch (e) {
+      console.log(e);
       setSoftwares([]);
     }
     setLoading(false);
@@ -212,25 +277,79 @@ export default function Products({
       }
 
       let temp = null;
+      let vaCategories = viewAllCatgories;
 
-      temp = await fetch("/api/automation/filter", {
-        method: "POST",
-        body: JSON.stringify({
-          category: mainFilter,
-          pageNumber: pageNumber - 1,
-          rate: rateFilter,
-          startAfter: startAfterList[pageNumber - 2],
-        }),
-      });
-      setPageNumber(pageNumber - 1);
+      console.log("vacategories in Previous", vaCategories);
+      if (isViewAll) {
+        let category = mainFilter;
+        let pgn = pageNumber - 1;
+        for (let i = 0; i < vaCategories.length; i++) {
+          if (
+            !vaCategories[i][2] ||
+            (vaCategories[i][2] && vaCategories[i][2] >= pgn)
+          ) {
+            category = vaCategories[i][1];
+            setTempFilter(category);
+            setMainFilter(category);
+            try {
+              pgn = pageNumber - 1 - vaCategories[i - 1][2];
+            } catch (e) {}
+            break;
+          }
+        }
 
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            category: category,
+            pageNumber: pgn,
+            rate: rateFilter,
+            startAfter: startAfterList[startAfterList.length - 1],
+          }),
+        });
+      } else {
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            category: mainFilter,
+            pageNumber: pageNumber - 1,
+            rate: rateFilter,
+            startAfter: startAfterList[startAfterList.length - 1],
+          }),
+        });
+      }
       const res = await temp.json();
 
+      setPageNumber(pageNumber - 1);
       setSoftwares(res.softwares);
     } catch (e) {
       setSoftwares([]);
     }
     setLoading(false);
+  };
+
+  const onViewAll = async () => {
+    if (loading) {
+      return;
+    }
+
+    try {
+      setIsSearching(false);
+      setIsViewAll(true);
+      setLoading(true);
+      setTempFilter(categories[0][1]);
+      setMainFilter(categories[0][1]);
+      setPageNumber(1);
+
+      const temp = await fetch("/api/automation/products", {
+        method: "POST",
+        body: JSON.stringify({ category: categories[0][1] }),
+      });
+      const tsoft = await temp.json();
+
+      setSoftwares(tsoft.softwares);
+      setLoading(false);
+    } catch (e) {}
   };
 
   return (
@@ -240,6 +359,7 @@ export default function Products({
           <div className="filter  bg-white rounded-xl p-8 " id="filter">
             <div className="flex justify-between ">
               <div className="font-bold">Filters </div>
+              <button onClick={onViewAll}> View All </button>
             </div>
 
             <div className="software mt-5">
