@@ -76,8 +76,8 @@ export default function Products({
   }
 
   useEffect(() => {
-    // console.log(startAfterList);
-  }, [startAfterList]);
+    // console.log(pageNumber);
+  }, [pageNumber]);
 
   useEffect(() => {
     if (isSearching) {
@@ -103,7 +103,7 @@ export default function Products({
   }, []);
 
   useEffect(() => {
-    console.log(softwares);
+    // console.log(softwares);
   }, [softwares]);
 
   useEffect(() => {
@@ -201,7 +201,7 @@ export default function Products({
         if (isViewAll) {
           let category = mainFilter;
           let pgn = pageNumber + 1;
-          console.log("vacategories", vaCategories);
+          // console.log("vacategories", vaCategories);
           for (let i = 0; i < vaCategories.length; i++) {
             if (
               !vaCategories[i][2] ||
@@ -228,7 +228,7 @@ export default function Products({
               category: category,
               pageNumber: pgn,
               rate: rateFilter,
-              startAfter: startAfterList[startAfterList.length - 1],
+              startAfter: startAfterList[pageNumber],
             }),
           });
         } else {
@@ -238,12 +238,12 @@ export default function Products({
               category: mainFilter,
               pageNumber: pageNumber + 1,
               rate: rateFilter,
-              startAfter: startAfterList[startAfterList.length - 1],
+              startAfter: startAfterList[pageNumber],
             }),
           });
         }
         res = await temp.json();
-        console.log("index", index);
+        // console.log("index", index);
         if (res.softwares.length <= 0 && isViewAll) {
           vaCategories[index].push(pageNumber);
         }
@@ -257,9 +257,12 @@ export default function Products({
 
       setPageNumber(pageNumber + 1);
       setViewAllCategories([...vaCategories]);
-      let tplist = startAfterList;
-      tplist.push(res.softwares[res.softwares.length - 1].nci);
-      setStartAfterList([...tplist]);
+
+      if (pageNumber + 1 >= startAfterList.length) {
+        let tplist = startAfterList;
+        tplist.push(res.softwares[res.softwares.length - 1].nci);
+        setStartAfterList([...tplist]);
+      }
 
       setSoftwares(res.softwares);
     } catch (e) {
@@ -279,7 +282,7 @@ export default function Products({
       let temp = null;
       let vaCategories = viewAllCatgories;
 
-      console.log("vacategories in Previous", vaCategories);
+      // console.log("vacategories in Previous", vaCategories);
       if (isViewAll) {
         let category = mainFilter;
         let pgn = pageNumber - 1;
@@ -304,7 +307,7 @@ export default function Products({
             category: category,
             pageNumber: pgn,
             rate: rateFilter,
-            startAfter: startAfterList[startAfterList.length - 1],
+            startAfter: startAfterList[pageNumber - 2],
           }),
         });
       } else {
@@ -314,7 +317,7 @@ export default function Products({
             category: mainFilter,
             pageNumber: pageNumber - 1,
             rate: rateFilter,
-            startAfter: startAfterList[startAfterList.length - 1],
+            startAfter: startAfterList[pageNumber - 2],
           }),
         });
       }
@@ -339,7 +342,14 @@ export default function Products({
       setLoading(true);
       setTempFilter(categories[0][1]);
       setMainFilter(categories[0][1]);
+      setTempRate([]);
+      setRateFilter([]);
       setPageNumber(1);
+
+      let checkboxes = document.querySelectorAll("input[type='checkbox'");
+      for (let i of checkboxes) {
+        i.checked = false;
+      }
 
       const temp = await fetch("/api/automation/products", {
         method: "POST",
