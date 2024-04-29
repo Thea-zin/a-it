@@ -3,25 +3,74 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import ReviewBox from "./reviewbox";
+import { useRouter } from "next/navigation";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
+  const [reviewPageNumber, setReviewPageNumber] = useState(0);
+  const [startAfterList, setStartAfterList] = useState([0]);
+  const [showLoadMore, setShowLoadMore] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     getReivews();
   }, []);
 
+  useEffect(() => {
+    console.log(startAfterList);
+  }, [startAfterList]);
+
   const getReivews = async () => {
     try {
-      const temp = await fetch("/api/automation/userreview", {
+      const temp = await fetch("/api/automation/userreview/pagination", {
         method: "POST",
         body: JSON.stringify({
           token: localStorage.getItem("token"),
+          startAfter: startAfterList[0],
         }),
       });
       const res = await temp.json();
+
+      if (temp.status == 405) {
+        localStorage.setItem("token", "");
+        router.push("/");
+        router.refresh();
+        return;
+      }
+
       setReviews(res.data);
+
+      if (res.data.length > 0) {
+        let tplist = startAfterList;
+        tplist.push(res.data[res.data.length - 1].timestamp);
+        setStartAfterList([...tplist]);
+      } else {
+        setShowLoadMore(false);
+      }
     } catch (e) {}
+  };
+
+  const loadMore = async () => {
+    const temp = await fetch("/api/automation/userreview/pagination", {
+      method: "POST",
+      body: JSON.stringify({
+        token: localStorage.getItem("token"),
+        startAfter: startAfterList[reviewPageNumber + 1],
+      }),
+    });
+    const res = await temp.json();
+
+    if (res.data.length > 0) {
+      let tplist = startAfterList;
+      tplist.push(res.data[res.data.length - 1].timestamp);
+      setStartAfterList([...tplist]);
+      setReviewPageNumber(reviewPageNumber + 1);
+
+      tplist = reviews.concat(res.data);
+      setReviews([...tplist]);
+    } else {
+      setShowLoadMore(false);
+    }
   };
 
   return (
@@ -48,6 +97,9 @@ export default function Reviews() {
             </React.Fragment>
           );
         })}
+        <div className="flex place-items-center place-content-center gap-10">
+          {showLoadMore && <button onClick={loadMore}>Load More</button>}
+        </div>
       </div>
     </div>
   );

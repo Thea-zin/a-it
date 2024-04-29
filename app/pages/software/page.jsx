@@ -7,6 +7,7 @@ import Stars from "./components/star_display";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { startAfter } from "firebase/firestore";
 
 export default function SoftwarePage() {
   const [data, setData] = useState({ name: "", icon: "", fullcategories: [] });
@@ -16,6 +17,10 @@ export default function SoftwarePage() {
   const [text, setText] = useState("");
   const [softwareToCompare, setSoftwareToCompare] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [reviewPageNumber, setReviewPageNumber] = useState(0);
+  const [startAfterList, setStartAfterList] = useState([0]);
+  const [showLoadMore, setShowLoadMore] = useState(true);
+  const [totalReviews, setTotalReviews] = useState(0);
   const searchParams = useSearchParams();
 
   const router = useRouter();
@@ -45,6 +50,10 @@ export default function SoftwarePage() {
     } catch (e) {}
   }, [tap]);
 
+  useEffect(() => {
+    console.log(startAfterList);
+  }, [startAfterList]);
+
   const getData = async () => {
     try {
       setLoading(true);
@@ -70,9 +79,47 @@ export default function SoftwarePage() {
   };
 
   const getReivews = async (id) => {
-    const temp = await fetch(`/api/automation/review?id=${id}`);
+    const temp = await fetch("/api/automation/review/pagination", {
+      method: "POST",
+      body: JSON.stringify({
+        id: id,
+        startAfter: startAfterList[0],
+      }),
+    });
     const res = await temp.json();
     setReview([...res.data]);
+    setTotalReviews(res.total);
+
+    if (res.data.length > 0) {
+      let tplist = startAfterList;
+      tplist.push(res.data[res.data.length - 1].timestamp);
+      setStartAfterList([...tplist]);
+    } else {
+      setShowLoadMore(false);
+    }
+  };
+
+  const loadMore = async () => {
+    const temp = await fetch("/api/automation/review/pagination", {
+      method: "POST",
+      body: JSON.stringify({
+        id: data.id,
+        startAfter: startAfterList[reviewPageNumber + 1],
+      }),
+    });
+    const res = await temp.json();
+
+    if (res.data.length > 0) {
+      let tplist = startAfterList;
+      tplist.push(res.data[res.data.length - 1].timestamp);
+      setStartAfterList([...tplist]);
+      setReviewPageNumber(reviewPageNumber + 1);
+
+      tplist = reviews.concat(res.data);
+      setReview([...tplist]);
+    } else {
+      setShowLoadMore(false);
+    }
   };
 
   const getSameCategories = async (software) => {
@@ -162,7 +209,7 @@ export default function SoftwarePage() {
             <div className="xm:flex mt-2 sm:mt-4 place-items-center">
               <Stars number={data.star} />
               <p className="xm:border-l-[1px] xm:pl-2 border-divider text-sm sm:text-[1rem] font-semibold text-bblue">
-                {`${reviews.length} reviews`}
+                {`${totalReviews} reviews`}
               </p>
             </div>
             <div className="flex flex-wrap place-items-center mt-2 text-darkgray">
@@ -272,9 +319,11 @@ export default function SoftwarePage() {
                 {/* <ReviewBox />
                 <ReviewBox /> */}
                 {reviews.map((review, index) => {
-                  if (index > 1) return;
                   return <ReviewBox review={review} key={index} />;
                 })}
+              </div>
+              <div className="flex place-items-center place-content-center gap-10">
+                {showLoadMore && <button onClick={loadMore}>Load More</button>}
               </div>
             </div>
           )
