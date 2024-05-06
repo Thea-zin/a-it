@@ -24,29 +24,36 @@ export async function POST(req) {
     const request = await req.json();
     const smax = 12;
 
-    let category = request.category;
+    // let category = request.category;
 
-    let [softwares, ids] = await getSoftwareInfoPerPage(
-      "https://www.aixploria.com/en/category/" +
-        category +
-        "?orderby=alphabetical",
-      category
-    );
+    // let [softwares, ids] = await getSoftwareInfoPerPage(
+    //   "https://www.aixploria.com/en/category/" +
+    //     category +
+    //     "?orderby=alphabetical",
+    //   category
+    // );
 
     const q = query(
       collection(firestore, "softwares"),
-      where(documentId(), "in", ids)
+      orderBy("name"),
+      limit(smax)
     );
     const snapshots = await getDocs(q);
+    let softwares = [];
     for (let doc of snapshots.docs) {
-      const data = doc.data();
-      softwares = softwares.map((item) => {
-        if (item.id == doc.id && data.reviews > 0) {
-          return data;
-        }
-        return item;
-      });
+      let temp = doc.data();
+      temp.id = doc.id;
+      softwares.push(temp);
     }
+    // for (let doc of snapshots.docs) {
+    //   const data = doc.data();
+    //   softwares = softwares.map((item) => {
+    //     if (item.id == doc.id && data.reviews > 0) {
+    //       return data;
+    //     }
+    //     return item;
+    //   });
+    // }
 
     return NextResponse.json(
       { softwares: softwares, total: softwares.length },

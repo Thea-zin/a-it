@@ -20,38 +20,37 @@ export async function POST(req) {
     // console.log(request);
 
     const snapshot = await getDoc(doc(firestore, "softwares", request.id));
-    if (snapshot.exists()) {
-      let temp = snapshot.data();
-      if (temp.reviews != null) {
-        let [othercategories] = await getCategoriesLink();
-        const indexes = Array.from({ length: 10 }, () =>
-          Math.floor(Math.random() * othercategories.length)
-        );
-        othercategories = othercategories.filter((item, index) => {
-          return item[1] != request.id && indexes.includes(index);
-        });
-        temp["othercategories"] = othercategories;
-        return NextResponse.json({ data: temp, reviews: [] }, { status: 200 });
-      }
-    }
+    let temp = snapshot.data();
 
-    let [othercategories, allcategories] = await getCategoriesLink();
-    var data = await getSoftwareInfo(
-      "https://www.aixploria.com/en/" + request.id,
-      allcategories
-    );
-    data.nci = request.id;
-    data.id = request.id;
+    // let [othercategories] = await getCategoriesLink();
+    // const indexes = Array.from({ length: 10 }, () =>
+    //   Math.floor(Math.random() * othercategories.length)
+    // );
+    // othercategories = othercategories.filter((item, index) => {
+    //   return item[1] != request.id && indexes.includes(index);
+    // });
+    // temp["othercategories"] = othercategories;
+    // temp.nci = temp.name.toLowerCase();
+    // temp.id = snapshot.id;
+    // return NextResponse.json({ data: temp, reviews: [] }, { status: 200 });
 
-    const indexes = Array.from({ length: 10 }, () =>
-      Math.floor(Math.random() * othercategories.length)
-    );
-    othercategories = othercategories.filter((item, index) => {
-      return item[1] != request.id && indexes.includes(index);
-    });
-    data.othercategories = othercategories;
+    // let [othercategories, allcategories] = await getCategoriesLink();
+    // var data = await getSoftwareInfo(
+    //   "https://www.aixploria.com/en/" + request.id,
+    //   allcategories
+    // );
+    // data.nci = request.id;
+    // data.id = request.id;
 
-    return NextResponse.json({ data: data, reviews: [] }, { status: 200 });
+    // const indexes = Array.from({ length: 10 }, () =>
+    //   Math.floor(Math.random() * othercategories.length)
+    // );
+    // othercategories = othercategories.filter((item, index) => {
+    //   return item[1] != request.id && indexes.includes(index);
+    // });
+    // data.othercategories = othercategories;
+
+    return NextResponse.json({ data: temp, reviews: [] }, { status: 200 });
   } catch (e) {
     console.log(e);
     return NextResponse.json(

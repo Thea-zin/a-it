@@ -17,6 +17,8 @@ export default function Overview() {
     let tempnames = names;
     let tempicon = icons;
     if (add) {
+      if (tempid.length >= 3) return;
+
       tempid.push(id);
       tempnames.push(name);
       tempicon.push([icon, name, id]);
@@ -145,7 +147,12 @@ export default function Overview() {
                       </div>
                     </div>
                     <div className="image flex justify-center mt-5">
-                      <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
+                      <img
+                        src={item.icon}
+                        alt=""
+                        className="h-20"
+                        referrerPolicy="no-referrer"
+                      />
                     </div>
                     <div className="flex justify-center mt-5">{item.name}</div>
                     <div className="flex justify-center star">
@@ -196,7 +203,12 @@ export default function Overview() {
                       addIds(item[2], item[1], false, item[0]);
                     }}
                   >
-                    <img src={item[0]} alt="" className="h-16" referrerPolicy="no-referrer"/>
+                    <img
+                      src={item[0]}
+                      alt=""
+                      className="h-16"
+                      referrerPolicy="no-referrer"
+                    />
                   </button>
                 );
               })}
@@ -324,7 +336,12 @@ export default function Overview() {
                               }}
                               className="pic flex justify-center my-5 "
                             >
-                              <img src={item.icon} alt="" className="h-20" referrerPolicy="no-referrer"/>
+                              <img
+                                src={item.icon}
+                                alt=""
+                                className="h-20"
+                                referrerPolicy="no-referrer"
+                              />
                             </Link>
                           </div>
                         );

@@ -10,7 +10,7 @@ export default function TapSoftwareComponent({ id, tap, setTap }) {
       <div className="flex">
         <button
           className={`border-t-2 border-x-2 border-darkblue rounded-t-xl py-1 xm:py-3 px-3 xm:px-5 mr-2 xm:mr-5 text-xs xm:text-[1.15rem] ${
-            tap == 0 ? "bg-darkblue text-white" : "bg-white text-darkgray"
+            tap == 0 ? "bg-white text-darkgray" : "bg-darkblue text-white"
           }`}
           onClick={() => setTap(0)}
         >
@@ -18,7 +18,7 @@ export default function TapSoftwareComponent({ id, tap, setTap }) {
         </button>
         <button
           className={`border-t-2 border-x-2 border-darkblue rounded-t-xl py-1 xm:py-3 px-3 xm:px-5 mr-2 xm:mr-5 text-xs xm:text-[1.15rem] ${
-            tap == 1 ? "bg-darkblue text-white" : "bg-white text-darkgray"
+            tap == 1 ? "bg-white text-darkgray" : "bg-darkblue text-white"
           }`}
           onClick={() => setTap(1)}
         >

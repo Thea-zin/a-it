@@ -101,12 +101,6 @@ export async function POST(req) {
           star: parseFloat(star.toFixed(2)),
           star_text: start_text,
           reviews: data.length,
-          nci: review.nci,
-          name: review.name,
-          id: review.soft_id,
-          category: review.category,
-          icon: review.icon,
-          fullcategories: review.fullcategories,
         }
       );
 

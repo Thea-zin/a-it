@@ -21,14 +21,42 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
-    const smax = 8;
-    let softwares = await getSoftwareInfoPerPage(
-      "https://www.aixploria.com/en/page/" +
-        request.pageNumber +
-        "/?s=" +
-        request.search,
-      ""
-    );
+
+    console.log(request, request.search);
+    let q = null;
+    if (request.pageNumber > 1) {
+      q = query(
+        collection(firestore, "softwares"),
+        orderBy("nci"),
+        startAfter(request.startAfter),
+        endAt(request.search + "~"),
+        limit(12)
+      );
+    } else {
+      q = query(
+        collection(firestore, "softwares"),
+        orderBy("nci"),
+        startAt(request.search),
+        endAt(request.search + "~"),
+        limit(12)
+      );
+    }
+
+    const snapshot = await getDocs(q);
+    let softwares = [];
+    for (let doc of snapshot.docs) {
+      let temp = doc.data();
+      temp.id = doc.id;
+      softwares.push(temp);
+    }
+
+    // let softwares = await getSoftwareInfoPerPage(
+    //   "https://www.aixploria.com/en/page/" +
+    //     request.pageNumber +
+    //     "/?s=" +
+    //     request.search,
+    //   ""
+    // );
 
     return NextResponse.json(
       { softwares: softwares, total: softwares.length },

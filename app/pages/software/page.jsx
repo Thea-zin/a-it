@@ -10,7 +10,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { startAfter } from "firebase/firestore";
 
 export default function SoftwarePage() {
-  const [data, setData] = useState({ name: "", icon: "", fullcategories: [] });
+  const [data, setData] = useState({
+    name: "",
+    icon: "",
+    fullcategories: [],
+    site: "",
+  });
   const [reviews, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tap, setTap] = useState(0);
@@ -72,7 +77,7 @@ export default function SoftwarePage() {
       // getAllCategories();
       setData(res.data);
       setCategories(res.data.othercategories);
-      getReivews(res.data.nci);
+      getReivews(res.data.id);
     } catch (e) {
       console.log("Problem Occurs! Possible cause: id, network");
     }
@@ -133,13 +138,24 @@ export default function SoftwarePage() {
   };
 
   const gemini = async (software) => {
-    const temp = await fetch("/api/gemini", {
-      method: "POST",
-      body: JSON.stringify({
-        prompt: `What is an ai tool called ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.categories}`,
-        nci: software.nci,
-      }),
-    });
+    let temp = null;
+    while (true) {
+      temp = await fetch("/api/gemini", {
+        method: "POST",
+        body: JSON.stringify({
+          prompt: `What is an ai tool called ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.fullcategorieslink}`,
+          nci: software.nci,
+          id: software.id,
+        }),
+      });
+
+      if (temp.status == 504) {
+        continue;
+      } else {
+        break;
+      }
+    }
+
     // const temp = await fetch("/api/gemini", {
     //   method: "POST",
     //   body: JSON.stringify({
@@ -147,15 +163,22 @@ export default function SoftwarePage() {
     //   }),
     // });
 
-    const res = await temp.json();
-    let temptext = res.result;
-    var regex = /(?<=\*\*)(.*?)(?=\*\*)/g;
-    const textarr = [...temptext.matchAll(regex)];
-    // console.log(textarr);
-    textarr.forEach((title) => {
-      temptext = temptext.replace(`**${title[0]}**`, "<b>" + title[0] + "</b>");
-    });
-    setText(temptext);
+    try {
+      const res = await temp.json();
+      let temptext = res.result;
+      var regex = /(?<=\*\*)(.*?)(?=\*\*)/g;
+      const textarr = [...temptext.matchAll(regex)];
+      // console.log(textarr);
+      textarr.forEach((title) => {
+        temptext = temptext.replace(
+          `**${title[0]}**`,
+          "<b>" + title[0] + "</b>"
+        );
+      });
+      setText(temptext);
+    } catch (e) {
+      setText("Overivew cannot be generated! Please try again later!");
+    }
   };
 
   return loading ? (
@@ -202,7 +225,12 @@ export default function SoftwarePage() {
       <div className="flex bg-white justify-between px-3 sm:px-8 relative min-h-40 xm:h-52 lg:h-auto ">
         <div className="flex">
           <div className="p-2 xm:p-5 sm:p-7 w-20 xm:w-28 sm:w-[9.3rem] h-20 xm:h-28 sm:h-[9.3rem] border-[1px] border-divider -translate-y-5 sm:-translate-y-8 bg-white flex rounded-lg place-content-center">
-            <img src={data.icon} alt="" placeholder="" />
+            <img
+              src={data.icon}
+              alt=""
+              placeholder=""
+              referrerPolicy="no-referrer"
+            />
           </div>
           <div className="ml-5 mt-1 pb-10">
             <p className="text-xl sm:text-3xl font-semibold">{data.name}</p>
@@ -214,12 +242,14 @@ export default function SoftwarePage() {
             </div>
             <div className="flex flex-wrap place-items-center mt-2 text-darkgray">
               {data.fullcategories.map((cat, index) => {
+                let category = cat.split("!បំបែក!");
+                category = category[0];
                 return (
                   <div
                     className="font-semibold text-sm ml-2 p-1 border-[1px] border-darkblue rounded-full"
                     key={index}
                   >
-                    {cat}
+                    {category}
                   </div>
                 );
               })}
@@ -260,88 +290,110 @@ export default function SoftwarePage() {
       <hr className="border-divider" />
 
       <div className="lg:flex xl:p-8 p-4 bg-white relative">
-        {text != "" ? (
-          tap == 0 ? (
-            <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
-              <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl">
-                <p className="text-[1rem] xm:text-2xl font-bold">{`${data.name} Overview`}</p>
-                <hr className="border-divider my-3" />
-                <p
-                  className="font-medium text-xs xm:text-nbase whitespace-break-spaces"
-                  id="softwareOverview"
-                ></p>
-                <hr className="border-divider my-5" />
-              </div>
+        {/* <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
+          
+        </div> */}
 
-              <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
-                <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
-                  Software user?
-                </p>
-                <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
-                  <Link
-                    href={`/pages/write_review_page?id=${searchParams.get(
-                      "id"
-                    )}`}
+        {tap == 0 ? (
+          <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
+            {data.name != "" ? (
+              data.site != "" ? (
+                <div className="bg-base xm:p-7 p-3 mt-5 rounded-2xl flex place-content-center">
+                  <a
+                    style={{ display: "table-cell" }}
+                    href={data.site}
+                    target="_blank"
+                    className="bg-darkblue px-10 py-5 text-lg font-bold text-white rounded-full"
                   >
-                    Write a Review
-                  </Link>
-                </button>
-              </div>
-
-              {/* <div className="grid place-items-center w-full">
-                <div className="hidden sm:flex place-items-center mt-3">
-                  
-                  <button className="bg-[#E3E6EA] mx-1 p-2 md:w-12 md:h-12 w-10 h-10 rounded-full grid place-content-center">
-                    <img src="/write_review\icons\next.png" alt="" />
-                  </button>
+                    {`Visit Website of ${data.name}`}
+                  </a>
                 </div>
-
-                <div className="flex sm:hidden place-items-center mt-3">
-                  {[1, 2, 3].map((item, index) => {
-                    return (
-                      <button
-                        key={index}
-                        className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-7 xm:w-9 md:w-12 h-7 xm:h-9 md:h-12 rounded-full"
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
-                  <button className="bg-[#E3E6EA] mx-1 p-1 xm:p-2 w-8 xm:w-10 md:w-12 h-8 xm:h-10 md:h-12   rounded-full grid place-content-center">
-                    <img src="/write_review\icons\next.png" alt="" />
-                  </button>
+              ) : (
+                <div className="bg-base xm:p-7 p-3 mt-5 rounded-2xl flex place-content-center">
+                  <p className="bg-yellow-300 px-10 py-5 text-lg font-bold text-darkblue rounded-full">
+                    {`We cannot reach website of ${data.name}`}
+                  </p>
                 </div>
-              </div> */}
-            </div>
-          ) : (
-            <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
-              <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
-                {/* <ReviewBox />
-                <ReviewBox /> */}
-                {reviews.map((review, index) => {
-                  return <ReviewBox review={review} key={index} />;
-                })}
+              )
+            ) : (
+              <Loading />
+            )}
+
+            {data.name != "" ? (
+              <div className="relative bg-base xm:p-10 p-3 mt-5 rounded-2xl flex flex-col place-content-center place-items-center overflow-clip">
+                <div className="absolute bg-darkblue text-white font-semibold top-5 -right-14 rotate-[30deg] py-1 px-16">
+                  AIExploria
+                </div>
+                <div className="mb-8">
+                  <img
+                    src={data.aie_image}
+                    alt=""
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="">
+                  <p className="font-semibold text-center">{data.aie_text}</p>
+                </div>
               </div>
-              <div className="flex place-items-center place-content-center gap-10">
-                {showLoadMore && <button onClick={loadMore}>Load More</button>}
-              </div>
-            </div>
-          )
-        ) : (
-          <div className="animate-pulse flex min-w-[70%] space-x-4">
-            <div className="flex-1 space-y-6 py-1">
-              <div className="h-2 bg-slate-200 rounded"></div>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => {
-                return (
-                  <div className="space-y-3" key={index}>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="h-2 bg-slate-200 rounded col-span-2"></div>
-                      <div className="h-2 bg-slate-200 rounded col-span-1"></div>
-                    </div>
-                    <div className="h-2 bg-slate-200 rounded"></div>
+            ) : (
+              <Loading />
+            )}
+
+            {text != "" ? (
+              <div>
+                <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl relative overflow-clip">
+                  <div className="absolute bg-darkblue text-white font-semibold top-5 -right-14 rotate-[30deg] py-1 px-20">
+                    Gemini
                   </div>
-                );
+                  <div className="absolute bg-darkblue text-white font-semibold text-sm top-0 left-0 px-5 max-w-[80%] text-center">
+                    This overview is generated by Google's Gemini. Please beware
+                    of factual errors!
+                  </div>
+                  <p className="text-[1rem] xm:text-2xl font-bold">{`${data.name} Overview`}</p>
+                  <hr className="border-divider my-3" />
+                  <p
+                    className="font-medium text-xs xm:text-nbase whitespace-break-spaces"
+                    id="softwareOverview"
+                  ></p>
+                  <hr className="border-divider my-5" />
+                </div>
+                <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
+                  <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
+                    Software user?
+                  </p>
+                  <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
+                    <Link
+                      href={`/pages/write_review_page?id=${searchParams.get(
+                        "id"
+                      )}`}
+                    >
+                      Write a Review
+                    </Link>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl relative overflow-clip">
+                <Loading />
+                <div className="absolute bg-darkblue text-white font-semibold top-5 -right-14 rotate-[30deg] py-1 px-20">
+                  Gemini
+                </div>
+                <div className="absolute bg-darkblue text-white font-semibold text-sm top-0 left-0 px-5 max-w-[80%] text-center">
+                  This overview is generated by Google's Gemini. Please beware
+                  of factual errors!
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
+            <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
+              {reviews.map((review, index) => {
+                return <ReviewBox review={review} key={index} />;
               })}
+            </div>
+            <div className="flex place-items-center place-content-center gap-10">
+              {showLoadMore && <button onClick={loadMore}>Load More</button>}
             </div>
           </div>
         )}
@@ -359,53 +411,23 @@ export default function SoftwarePage() {
         </div>
 
         <div className="flex-1 xl:ml-6 lg:ml-3">
-          {/* <div className="bg-base p-5 rounded-2xl">
-            <p className="text-[1rem] xm:text-2xl font-bold text-center">
-              {`${data.name} Comparision`}
-            </p>
-            {softwareToCompare.map((item, index) => {
-              return (
-                <div
-                  className="flex justify-between place-items-center mt-7 items-start"
-                  key={index}
-                >
-                  <div className="text-center xm:w-28 sm:w-36 relative">
-                    <div className="xm:p-7 p-3 bg-white w-full xm:h-28 sm:h-36 h-20 flex place-content-center flex-1 rounded-lg border-[1px] border-divider">
-                      <img src={item[1]} alt="" className="" />
-                    </div>
-                    <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">
-                      {item[0]}
-                    </p>
-                  </div>
-                  <p className="mt-10 xm:mt-16 sm:mt-20">VS</p>
-                  <div className="text-center xm:w-28 sm:w-36 w-20 relative">
-                    <div className="xm:p-7 p-3 bg-white w-full xm:h-28 sm:h-36 h-20 flex place-content-center flex-1 rounded-lg border-[1px] border-divider">
-                      <img
-                        src={`/write_review/icons/${item[3]}.png`}
-                        alt=""
-                        className=""
-                      />
-                    </div>
-                    <p className="text-[1rem] xm:text-xl font-semibold mt-1 text-center">
-                      {item[2]}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div> */}
-
           <div className="bg-base rounded-2xl pt-6">
             <p className="text-center text-[1rem] xm:text-2xl font-bold">
               Similar Tools
             </p>
-            <div className="lg:block flex place-content-center">
-              <div className="mt-5 px-12 lg:w-auto w-96">
-                {softwareToCompare.map((item, index) => {
-                  return <Item key={index} id={index} software={item} />;
-                })}
+            {softwareToCompare.length > 0 ? (
+              <div className="lg:block flex place-content-center">
+                <div className="mt-5 px-12 lg:w-auto w-96">
+                  {softwareToCompare.map((item, index) => {
+                    return <Item key={index} id={index} software={item} />;
+                  })}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="mt-5 px-12">
+                <Loading />
+              </div>
+            )}
 
             {/* <div className="flex place-content-center py-10">
               <button className="text-bblue font-semibold">See More</button>
@@ -419,13 +441,14 @@ export default function SoftwarePage() {
             <div className="lg:block flex place-content-center">
               <div className="px-16 mt-6">
                 {categories.map((item, index) => {
+                  let cate = item.split("!បំបែក!");
                   return (
                     <Link
                       className="my-1 flex place-content-start items-center text-bblue mt-3"
                       key={index}
                       href="categories"
                       onClick={() => {
-                        localStorage.setItem("ait_soft_cat", `${item[1]}`);
+                        localStorage.setItem("ait_soft_cat", `${cate[1]}`);
                       }}
                     >
                       <div className="w-5 xm:w-10">
@@ -443,7 +466,7 @@ export default function SoftwarePage() {
                         </svg>
                       </div>
                       <p className="text-left flex-1 text-sm xm:text-[1rem] ml-1 hover:text-blue-800 hover:font-bold">
-                        {item[0]}
+                        {cate[0]}
                       </p>
                     </Link>
                   );
@@ -452,6 +475,27 @@ export default function SoftwarePage() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <div className="animate-pulse flex min-w-[70%] space-x-4">
+      <div className="flex-1 space-y-6 py-1">
+        <div className="h-2 bg-slate-200 rounded"></div>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => {
+          return (
+            <div className="space-y-3" key={index}>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="h-2 bg-slate-200 rounded col-span-2"></div>
+                <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+              </div>
+              <div className="h-2 bg-slate-200 rounded"></div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

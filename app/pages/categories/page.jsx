@@ -19,6 +19,7 @@ const Categories = () => {
   });
   const [initialFilter, setInitialFilter] = useState("");
   const [searchPageNumber, setSearchPageNumber] = useState(1);
+  const [searchAfterList, setSearchAfterList] = useState([]);
 
   const onKeyDown = (bypass = false, event) => {
     if (bypass || event.key === "Enter") {
@@ -31,6 +32,10 @@ const Categories = () => {
       // document.getElementById("search").value = "";
     }
   };
+
+  useEffect(() => {
+    console.log(searchPageNumber, searchAfterList);
+  }, [searchPageNumber, searchAfterList]);
 
   useEffect(() => {
     if (isSearching) {
@@ -61,14 +66,47 @@ const Categories = () => {
   const getSearchSoftware = async (pageNumber = 1) => {
     setIsSearching(true);
     setDoneSearching(false);
-    const temp = await fetch("/api/automation/search", {
-      method: "POST",
-      body: JSON.stringify({
-        search: query.toLowerCase(),
-        pageNumber: pageNumber,
-      }),
-    });
+    console.log("searching", pageNumber);
+    let temp = null;
+    if (pageNumber > 1) {
+      temp = await fetch("/api/automation/search", {
+        method: "POST",
+        body: JSON.stringify({
+          search: query.toLowerCase(),
+          startAfter: searchAfterList[pageNumber - 1],
+          pageNumber: pageNumber,
+        }),
+      });
+    } else {
+      temp = await fetch("/api/automation/search", {
+        method: "POST",
+        body: JSON.stringify({
+          search: query.toLowerCase(),
+          pageNumber: pageNumber,
+        }),
+      });
+    }
+
     const res = await temp.json();
+
+    try {
+      if (res.softwares.length > 0) {
+        if (pageNumber > 1 && pageNumber >= searchAfterList.length) {
+          let tplist = searchAfterList;
+          tplist.push(res.softwares[res.softwares.length - 1].nci);
+          setSearchAfterList([...tplist]);
+        } else if (pageNumber <= 1) {
+          console.log("#####################");
+          setSearchAfterList([
+            query.toLowerCase(),
+            res.softwares[res.softwares.length - 1].nci,
+          ]);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      setSearchAfterList([query.toLowerCase()]);
+    }
 
     if (
       (res.softwares.length > 0 && pageNumber >= 1) ||

@@ -16,7 +16,7 @@ export default function Item({ id, software }) {
         <Stars number={software.star} />
         <div className="w-full h-28 grid place-content-center relative z-0">
           <div>
-            <img src={software.icon} alt="" className="w-32 p-5" />
+            <img src={software.icon} alt="" className="w-32 p-5" referrerPolicy="no-referrer"/>
           </div>
         </div>
       </Link>

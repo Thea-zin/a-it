@@ -45,23 +45,23 @@ export async function POST(req) {
 
     // console.log(softwares);
 
-    if (softwares.length < smax) {
-      let temp = await getSoftwareInfoPerPage(
-        "https://www.aixploria.com/en/category/popular-ai-tools/"
-      );
-      let i = 0;
+    // if (softwares.length < smax) {
+    //   let temp = await getSoftwareInfoPerPage(
+    //     "https://www.aixploria.com/en/category/popular-ai-tools/"
+    //   );
+    //   let i = 0;
 
-      while (softwares.length < smax && i < temp.length) {
-        if (
-          softwares.every((item) => {
-            return item.nci != temp[i].nci;
-          })
-        ) {
-          softwares.push(temp[i]);
-        }
-        i++;
-      }
-    }
+    //   while (softwares.length < smax && i < temp.length) {
+    //     if (
+    //       softwares.every((item) => {
+    //         return item.nci != temp[i].nci;
+    //       })
+    //     ) {
+    //       softwares.push(temp[i]);
+    //     }
+    //     i++;
+    //   }
+    // }
 
     return NextResponse.json(
       { softwares: softwares, total: softwares.length },

@@ -20,8 +20,10 @@ export async function POST(req) {
     const firestore = getFirestore(firebase_app);
     const request = await req.json();
 
+    console.log("gemini", request);
+
     if (request.job != "compare") {
-      const docsnap = await getDoc(doc(firestore, "softwares", request.nci));
+      const docsnap = await getDoc(doc(firestore, "softwares", request.id));
       if (docsnap.exists()) {
         const overview = docsnap.data().overview;
         if (overview != null && overview != "") {
@@ -31,7 +33,7 @@ export async function POST(req) {
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
-    
+
     const prompt = request.prompt;
 
     const result = await model.generateContent(prompt);
@@ -40,7 +42,7 @@ export async function POST(req) {
 
     if (request.job != "compare") {
       const ressnap = await setDoc(
-        doc(firestore, "softwares", request.nci),
+        doc(firestore, "softwares", request.id),
         { overview: text },
         { merge: true }
       );

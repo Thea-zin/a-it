@@ -76,8 +76,8 @@ export default function Products({
   }
 
   useEffect(() => {
-    // console.log(pageNumber);
-  }, [pageNumber]);
+    console.log(pageNumber, startAfterList);
+  }, [pageNumber, startAfterList]);
 
   useEffect(() => {
     if (isSearching) {
@@ -100,6 +100,11 @@ export default function Products({
 
     setLoading(true);
     getAllCategories();
+    if (initialFilter != "") {
+      getFilteredSoftwares(initialFilter);
+    } else {
+      getIntitalProducts();
+    }
   }, []);
 
   useEffect(() => {
@@ -136,47 +141,99 @@ export default function Products({
         initcategory = res.categories[0][1];
       }
 
-      temp = await fetch("/api/automation/products", {
-        method: "POST",
-        body: JSON.stringify({ category: initcategory }),
-      });
-      const tsoft = await temp.json();
-
       setIsViewAll(true);
       setCategories(res.categories);
       setViewAllCategories(res.categories);
-      setSoftwares(tsoft.softwares);
-      setLoading(false);
-      setTempFilter(initcategory);
-      setMainFilter(initcategory);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const getFilteredSoftwares = async () => {
+  const getIntitalProducts = async () => {
+    const temp = await fetch("/api/automation/products", {
+      method: "POST",
+      body: JSON.stringify({}),
+    });
+    const tsoft = await temp.json();
+    try {
+      setStartAfterList(["", tsoft.softwares[tsoft.softwares.length - 1].nci]);
+    } catch (e) {
+      setStartAfterList([""]);
+    }
+    setPageNumber(1);
+    setSoftwares(tsoft.softwares);
+    setLoading(false);
+  };
+
+  const getFilteredSoftwares = async (initcate = "") => {
     if (loading) {
       return;
     }
 
     try {
+      if (
+        (tempFilter == null || tempFilter == "") &&
+        (tempRate == null || tempRate.length == 0) &&
+        initcate == ""
+      ) {
+        return;
+      }
+
+      // setIsViewAll(false);
+      // setLoading(true);
+      // setMainFilter(tempFilter);
+      // setRateFilter(tempRate);
+      // document.querySelector("input[type='text']").value = "";
+
+      // const temp = await fetch("/api/automation/filter", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     category: tempFilter,
+      //     rate: tempRate,
+      //     pageNumber: 1,
+      //     startAfter: "",
+      //     viewAllCatgories: viewAllCatgories,
+      //     isViewAll: false,
+      //   }),
+      // });
+      // const tsoft = await temp.json();
+
+      // setSoftwares(tsoft.softwares);
+      // setLoading(false);
+      // setPageNumber(1);
+      // setIsSearching(false);
+      // setStartAfterList(["", tsoft.softwares[tsoft.softwares.length - 1].nci]);
+
       setIsViewAll(false);
       setLoading(true);
-      setMainFilter(tempFilter);
       setRateFilter(tempRate);
       document.querySelector("input[type='text']").value = "";
 
-      const temp = await fetch("/api/automation/filter", {
-        method: "POST",
-        body: JSON.stringify({
-          category: tempFilter,
-          rate: tempRate,
-          pageNumber: 1,
-          startAfter: "",
-          viewAllCatgories: viewAllCatgories,
-          isViewAll: false,
-        }),
-      });
+      let temp = null;
+      if (initcate == "") {
+        setMainFilter(tempFilter);
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            category: tempFilter,
+            rate: tempRate,
+            pageNumber: 1,
+            startAfter: "",
+          }),
+        });
+      } else {
+        setMainFilter(initcate);
+        setTempFilter(initcate);
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            category: initcate,
+            rate: tempRate,
+            pageNumber: 1,
+            startAfter: "",
+          }),
+        });
+      }
       const tsoft = await temp.json();
 
       setSoftwares(tsoft.softwares);
@@ -192,78 +249,113 @@ export default function Products({
   const getNextPage = async () => {
     setLoading(true);
     try {
-      let temp = null;
+      // let temp = null;
+      // let res = null;
+      // let vaCategories = viewAllCatgories;
+
+      // while (true) {
+      //   let index = -1;
+      //   if (isViewAll) {
+      //     let category = mainFilter;
+      //     let pgn = pageNumber + 1;
+      //     // console.log("vacategories", vaCategories);
+      //     for (let i = 0; i < vaCategories.length; i++) {
+      //       if (
+      //         !vaCategories[i][2] ||
+      //         (vaCategories[i][2] && vaCategories[i][2] >= pgn)
+      //       ) {
+      //         category = vaCategories[i][1];
+      //         index = i;
+      //         setTempFilter(category);
+      //         setMainFilter(category);
+      //         try {
+      //           pgn = pageNumber + 1 - vaCategories[i - 1][2];
+      //         } catch (e) {}
+      //         break;
+      //       }
+      //     }
+      //     if (index == -1) {
+      //       category = vaCategories[vaCategories.length - 1][1];
+      //       pgn = vaCategories[vaCategories.length - 1][2] + 1;
+      //     }
+
+      //     temp = await fetch("/api/automation/filter", {
+      //       method: "POST",
+      //       body: JSON.stringify({
+      //         category: category,
+      //         pageNumber: pgn,
+      //         rate: rateFilter,
+      //         startAfter: startAfterList[pageNumber],
+      //       }),
+      //     });
+      //   } else {
+      //     temp = await fetch("/api/automation/filter", {
+      //       method: "POST",
+      //       body: JSON.stringify({
+      //         category: mainFilter,
+      //         pageNumber: pageNumber + 1,
+      //         rate: rateFilter,
+      //         startAfter: startAfterList[pageNumber],
+      //       }),
+      //     });
+      //   }
+      //   res = await temp.json();
+      //   // console.log("index", index);
+      //   if (res.softwares.length <= 0 && isViewAll) {
+      //     vaCategories[index].push(pageNumber);
+      //   }
+
+      //   if (res.softwares.length > 0 || index == -1) {
+      //     break;
+      //   } else if (!isViewAll) {
+      //     break;
+      //   }
+      // }
+
+      // setPageNumber(pageNumber + 1);
+      // setViewAllCategories([...vaCategories]);
+
+      // if (pageNumber + 1 >= startAfterList.length) {
+      //   let tplist = startAfterList;
+      //   tplist.push(res.softwares[res.softwares.length - 1].nci);
+      //   setStartAfterList([...tplist]);
+      // }
+
       let res = null;
-      let vaCategories = viewAllCatgories;
-
-      while (true) {
-        let index = -1;
-        if (isViewAll) {
-          let category = mainFilter;
-          let pgn = pageNumber + 1;
-          // console.log("vacategories", vaCategories);
-          for (let i = 0; i < vaCategories.length; i++) {
-            if (
-              !vaCategories[i][2] ||
-              (vaCategories[i][2] && vaCategories[i][2] >= pgn)
-            ) {
-              category = vaCategories[i][1];
-              index = i;
-              setTempFilter(category);
-              setMainFilter(category);
-              try {
-                pgn = pageNumber + 1 - vaCategories[i - 1][2];
-              } catch (e) {}
-              break;
-            }
-          }
-          if (index == -1) {
-            category = vaCategories[vaCategories.length - 1][1];
-            pgn = vaCategories[vaCategories.length - 1][2] + 1;
-          }
-
-          temp = await fetch("/api/automation/filter", {
-            method: "POST",
-            body: JSON.stringify({
-              category: category,
-              pageNumber: pgn,
-              rate: rateFilter,
-              startAfter: startAfterList[pageNumber],
-            }),
-          });
-        } else {
-          temp = await fetch("/api/automation/filter", {
-            method: "POST",
-            body: JSON.stringify({
-              category: mainFilter,
-              pageNumber: pageNumber + 1,
-              rate: rateFilter,
-              startAfter: startAfterList[pageNumber],
-            }),
-          });
-        }
-        res = await temp.json();
-        // console.log("index", index);
-        if (res.softwares.length <= 0 && isViewAll) {
-          vaCategories[index].push(pageNumber);
-        }
-
-        if (res.softwares.length > 0 || index == -1) {
-          break;
-        } else if (!isViewAll) {
-          break;
-        }
+      let temp = null;
+      if (isViewAll) {
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            startAfter: startAfterList[pageNumber],
+            category: "",
+            rate: [],
+          }),
+        });
+      } else {
+        temp = await fetch("/api/automation/filter", {
+          method: "POST",
+          body: JSON.stringify({
+            startAfter: startAfterList[pageNumber],
+            category: mainFilter,
+            rate: rateFilter,
+          }),
+        });
       }
+      res = await temp.json();
+
+      try {
+        if (
+          res.softwares.length > 0 &&
+          pageNumber + 1 == startAfterList.length
+        ) {
+          let tplist = startAfterList;
+          tplist.push(res.softwares[res.softwares.length - 1].nci);
+          setStartAfterList(tplist);
+        }
+      } catch (e) {}
 
       setPageNumber(pageNumber + 1);
-      setViewAllCategories([...vaCategories]);
-
-      if (pageNumber + 1 >= startAfterList.length) {
-        let tplist = startAfterList;
-        tplist.push(res.softwares[res.softwares.length - 1].nci);
-        setStartAfterList([...tplist]);
-      }
-
       setSoftwares(res.softwares);
     } catch (e) {
       console.log(e);
@@ -279,48 +371,70 @@ export default function Products({
         return;
       }
 
-      let temp = null;
-      let vaCategories = viewAllCatgories;
+      // let temp = null;
+      // let vaCategories = viewAllCatgories;
 
       // console.log("vacategories in Previous", vaCategories);
-      if (isViewAll) {
-        let category = mainFilter;
-        let pgn = pageNumber - 1;
-        for (let i = 0; i < vaCategories.length; i++) {
-          if (
-            !vaCategories[i][2] ||
-            (vaCategories[i][2] && vaCategories[i][2] >= pgn)
-          ) {
-            category = vaCategories[i][1];
-            setTempFilter(category);
-            setMainFilter(category);
-            try {
-              pgn = pageNumber - 1 - vaCategories[i - 1][2];
-            } catch (e) {}
-            break;
-          }
-        }
+      // if (isViewAll) {
+      //   let category = mainFilter;
+      //   let pgn = pageNumber - 1;
+      //   for (let i = 0; i < vaCategories.length; i++) {
+      //     if (
+      //       !vaCategories[i][2] ||
+      //       (vaCategories[i][2] && vaCategories[i][2] >= pgn)
+      //     ) {
+      //       category = vaCategories[i][1];
+      //       setTempFilter(category);
+      //       setMainFilter(category);
+      //       try {
+      //         pgn = pageNumber - 1 - vaCategories[i - 1][2];
+      //       } catch (e) {}
+      //       break;
+      //     }
+      //   }
 
+      //   temp = await fetch("/api/automation/filter", {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       category: category,
+      //       pageNumber: pgn,
+      //       rate: rateFilter,
+      //       startAfter: startAfterList[pageNumber - 2],
+      //     }),
+      //   });
+      // } else {
+      //   temp = await fetch("/api/automation/filter", {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       category: mainFilter,
+      //       pageNumber: pageNumber - 1,
+      //       rate: rateFilter,
+      //       startAfter: startAfterList[pageNumber - 2],
+      //     }),
+      //   });
+      // }
+
+      let temp = null;
+      if (isViewAll) {
         temp = await fetch("/api/automation/filter", {
           method: "POST",
           body: JSON.stringify({
-            category: category,
-            pageNumber: pgn,
-            rate: rateFilter,
             startAfter: startAfterList[pageNumber - 2],
+            category: "",
+            rate: [],
           }),
         });
       } else {
         temp = await fetch("/api/automation/filter", {
           method: "POST",
           body: JSON.stringify({
-            category: mainFilter,
-            pageNumber: pageNumber - 1,
-            rate: rateFilter,
             startAfter: startAfterList[pageNumber - 2],
+            category: mainFilter,
+            rate: rateFilter,
           }),
         });
       }
+
       const res = await temp.json();
 
       setPageNumber(pageNumber - 1);
@@ -340,8 +454,8 @@ export default function Products({
       setIsSearching(false);
       setIsViewAll(true);
       setLoading(true);
-      setTempFilter(categories[0][1]);
-      setMainFilter(categories[0][1]);
+      setTempFilter("");
+      setMainFilter("");
       setTempRate([]);
       setRateFilter([]);
       setPageNumber(1);
@@ -351,14 +465,7 @@ export default function Products({
         i.checked = false;
       }
 
-      const temp = await fetch("/api/automation/products", {
-        method: "POST",
-        body: JSON.stringify({ category: categories[0][1] }),
-      });
-      const tsoft = await temp.json();
-
-      setSoftwares(tsoft.softwares);
-      setLoading(false);
+      getIntitalProducts();
     } catch (e) {}
   };
 
