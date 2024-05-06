@@ -19,13 +19,14 @@ export default function SoftwarePage() {
   const [reviews, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tap, setTap] = useState(0);
-  const [text, setText] = useState("");
+  const [text, setText] = useState({ text: "" });
   const [softwareToCompare, setSoftwareToCompare] = useState([]);
   const [categories, setCategories] = useState([]);
   const [reviewPageNumber, setReviewPageNumber] = useState(0);
   const [startAfterList, setStartAfterList] = useState([0]);
   const [showLoadMore, setShowLoadMore] = useState(true);
   const [totalReviews, setTotalReviews] = useState(0);
+  const [loadingGemini, setLoadingGemini] = useState(false);
   const searchParams = useSearchParams();
 
   const router = useRouter();
@@ -42,15 +43,16 @@ export default function SoftwarePage() {
   }, [data]);
 
   useEffect(() => {
+    console.log(text);
     try {
-      document.getElementById("softwareOverview").innerHTML = text;
+      document.getElementById("softwareOverview").innerHTML = text.text;
     } catch (e) {}
   }, [text]);
 
   useEffect(() => {
     try {
       if (tap == 0) {
-        document.getElementById("softwareOverview").innerHTML = text;
+        document.getElementById("softwareOverview").innerHTML = text.text;
       }
     } catch (e) {}
   }, [tap]);
@@ -138,22 +140,21 @@ export default function SoftwarePage() {
   };
 
   const gemini = async (software) => {
-    let temp = null;
-    while (true) {
-      temp = await fetch("/api/gemini", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt: `What is an ai tool called ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.fullcategorieslink}`,
-          nci: software.nci,
-          id: software.id,
-        }),
-      });
+    const temp = await fetch("/api/gemini", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: `What is an ai tool called ${software.name}? what is it use for? what are its business values? make it as detail as possible. For your information, these are the products' categories: ${software.fullcategorieslink}`,
+        nci: software.nci,
+        id: software.id,
+      }),
+    });
 
-      if (temp.status == 504) {
-        continue;
-      } else {
-        break;
-      }
+    if (temp.status != 200) {
+      setText({
+        text: "Overivew cannot be generated! Please try again later!",
+      });
+      setLoadingGemini(false);
+      return;
     }
 
     // const temp = await fetch("/api/gemini", {
@@ -175,10 +176,13 @@ export default function SoftwarePage() {
           "<b>" + title[0] + "</b>"
         );
       });
-      setText(temptext);
+      setText({ text: temptext });
     } catch (e) {
-      setText("Overivew cannot be generated! Please try again later!");
+      setText({
+        text: "Overivew cannot be generated! Please try again later!",
+      });
     }
+    setLoadingGemini(false);
   };
 
   return loading ? (
@@ -339,7 +343,7 @@ export default function SoftwarePage() {
               <Loading />
             )}
 
-            {text != "" ? (
+            {text.text != "" && !loadingGemini ? (
               <div>
                 <div className="bg-base xm:p-10 p-3 mt-5 rounded-2xl relative overflow-clip">
                   <div className="absolute bg-darkblue text-white font-semibold top-5 -right-14 rotate-[30deg] py-1 px-20">
@@ -356,21 +360,21 @@ export default function SoftwarePage() {
                     className="font-medium text-xs xm:text-nbase whitespace-break-spaces"
                     id="softwareOverview"
                   ></p>
+                  {text.text ==
+                    "Overivew cannot be generated! Please try again later!" && (
+                    <div className="flex place-content-center">
+                      <button
+                        className="my-5 px-10 py-3 text-white font-semibold bg-darkblue rounded-full"
+                        onClick={() => {
+                          setLoadingGemini(true);
+                          gemini(data);
+                        }}
+                      >
+                        Generate Again!
+                      </button>
+                    </div>
+                  )}
                   <hr className="border-divider my-5" />
-                </div>
-                <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
-                  <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
-                    Software user?
-                  </p>
-                  <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
-                    <Link
-                      href={`/pages/write_review_page?id=${searchParams.get(
-                        "id"
-                      )}`}
-                    >
-                      Write a Review
-                    </Link>
-                  </button>
                 </div>
               </div>
             ) : (
@@ -386,10 +390,36 @@ export default function SoftwarePage() {
                 </div>
               </div>
             )}
+
+            {data.name != "" ? (
+              <div className="px-5 py-4 bg-base flex sm:flex-row flex-col justify-between mt-5 rounded-2xl place-items-center">
+                <p className="text-basedark text-sm xm:text-nbase sm:ml-5 mb-3 sm:mb-0">
+                  Software user?
+                </p>
+                <button className="bg-darkblue text-white text-sm xm:text-nbase sm:text-xl xl:text-2xl font-semibold py-4 px-5 xm:px-10 md:px-20 rounded-full">
+                  <Link
+                    href={`/pages/write_review_page?id=${searchParams.get(
+                      "id"
+                    )}`}
+                  >
+                    Write a Review
+                  </Link>
+                </button>
+              </div>
+            ) : (
+              <div className="h-32 overflow-clip">
+                <Loading />
+              </div>
+            )}
           </div>
         ) : (
           <div className="border-divider border-[1px] xl:w-[67%] lg:w-[63%] p-4 rounded-2xl">
-            <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden">
+            <div className="mt-5 bg-base pb-10 rounded-2xl overflow-hidden relative">
+              <div className="absolute bg-darkblue text-white font-semibold text-sm top-0 left-0 px-5 w-full text-center">
+                {
+                  "These reviews are approved by Google's Gemini. Please beware of inappropriate comments!"
+                }
+              </div>
               {reviews.map((review, index) => {
                 return <ReviewBox review={review} key={index} />;
               })}
@@ -407,7 +437,18 @@ export default function SoftwarePage() {
           <p className="font-medium text-sm xm:text-[1rem]">
             Compare with other products
           </p>
-          <button className="bg-darkblue mt-4 text-white text-sm xm:text-xl font-semibold py-3 xm:px-20 px-10 rounded-full">
+          <button
+            className={`bg-darkblue mt-4 text-white text-sm xm:text-xl font-semibold py-3 xm:px-20 px-10 rounded-full ${
+              data.name == "" && "invisible"
+            }`}
+            onClick={() => {
+              localStorage.setItem(
+                "ait_soft_comp",
+                `${data.id},${data.name},${data.icon}`
+              );
+              router.push("categories");
+            }}
+          >
             Compare
           </button>
         </div>

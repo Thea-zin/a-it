@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+
 function ProfilePage({ setUserInfo = () => {} }) {
   const [profile, setProfile] = useState({
     displayName: "",
@@ -36,9 +38,17 @@ function ProfilePage({ setUserInfo = () => {} }) {
     }
   }, [fn, oc, allow]);
 
+  useEffect(() => {
+    console.log(fullname, occupation);
+  }, [fullname, occupation]);
+
   const validate = () => {
-    setFN(fullname.length > 0);
-    setOC(occupation.length > 0);
+    const tfullname = document.getElementById("fullname").value;
+    const toccupation = document.getElementById("occupation").value;
+    setFullName(tfullname.trim());
+    setOccupation(toccupation.trim());
+    setFN(tfullname.trim().length > 0);
+    setOC(toccupation.trim().length > 0);
     setAllow(true);
   };
 
@@ -58,11 +68,17 @@ function ProfilePage({ setUserInfo = () => {} }) {
 
     if (temp.status != 200) {
       if (temp.status == 402) {
-        alert("Profile Updation Failed!\nPleasee try again!");
+        Swal.fire({
+          title: "Failed",
+          text: "Profile Updation Failed!",
+          icon: "error",
+        });
       } else {
-        alert(
-          "Something is wrong on the server side!\nPlease try again later!"
-        );
+        Swal.fire({
+          title: "Failed",
+          text: "Something is wrong on the server side!",
+          icon: "error",
+        });
       }
     } else {
       localStorage.setItem("displayName", res.displayName);
@@ -73,6 +89,12 @@ function ProfilePage({ setUserInfo = () => {} }) {
         joined: localStorage.getItem("joined"),
         photoURL: localStorage.getItem("photoURL").split("!បំបែក!")[1],
         occupation: localStorage.getItem("photoURL").split("!បំបែក!")[0],
+      });
+
+      Swal.fire({
+        title: "Successful",
+        text: "Your profile has been updated!",
+        icon: "success",
       });
     }
 
@@ -113,14 +135,20 @@ function ProfilePage({ setUserInfo = () => {} }) {
         <input
           type="text"
           placeholder="Full Name"
+          id="fullname"
+          name="fullname"
           className={`text-gray-300 rounded-full ${
             fn ? "border-darkgray" : "border-red"
           }  border-[1px] w-full p-2`}
           defaultValue={profile.displayName}
-          onChange={(e) => {
-            setFullName(e.target.value);
-          }}
-        ></input>
+        />
+        <div className="flex place-content-center">
+          {!fn && (
+            <label htmlFor="fullname" className="text-red text-sm">
+              *Fullname can not be empty!
+            </label>
+          )}
+        </div>
       </div>
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
@@ -130,15 +158,21 @@ function ProfilePage({ setUserInfo = () => {} }) {
         </div>
         <input
           type="text"
+          id="occupation"
+          name="occupation"
           placeholder="Ocupation"
           className={`text-gray-300 rounded-full ${
             oc ? "border-darkgray" : "border-red"
           }  border-[1px] w-full p-2`}
           defaultValue={profile.occupation}
-          onChange={(e) => {
-            setOccupation(e.target.value);
-          }}
-        ></input>
+        />
+        <div className="flex place-content-center">
+          {!oc && (
+            <label htmlFor="occupation" className="text-red text-sm">
+              *Occupation can not be empty!
+            </label>
+          )}
+        </div>
       </div>
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">

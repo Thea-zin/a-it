@@ -24,45 +24,48 @@ export async function POST(req) {
     const request = await req.json();
     const smax = 4;
     // console.log(request);
-    let softwares = await getSoftwareInfoPerPage(
-      "https://www.aixploria.com/en/category/" + request.category,
-      request.category
-    );
+    // let softwares = await getSoftwareInfoPerPage(
+    //   "https://www.aixploria.com/en/category/" + request.category,
+    //   request.category
+    // );
+
+    // let data = [];
+    // let ids = [];
+    // let i = 0;
+    // while (data.length < smax && i < softwares.length) {
+    //   if (
+    //     data.every((item) => {
+    //       return item.nci != softwares[i].nci;
+    //     }) &&
+    //     softwares[i].nci != request.nci
+    //   ) {
+    //     softwares[i]["category"] = request.category;
+    //     data.push(softwares[i]);
+    //     ids.push(softwares[i].id);
+    //   }
+    //   i++;
+    // }
 
     let data = [];
-    let ids = [];
-    let i = 0;
-    while (data.length < smax && i < softwares.length) {
-      if (
-        data.every((item) => {
-          return item.nci != softwares[i].nci;
-        }) &&
-        softwares[i].nci != request.nci
-      ) {
-        softwares[i]["category"] = request.category;
-        data.push(softwares[i]);
-        ids.push(softwares[i].id);
-      }
-      i++;
-    }
-
     const q = query(
       collection(firestore, "softwares"),
-      where(documentId(), "in", ids)
+      where("fullcategorieslink", "array-contains", request.category),
+      orderBy("reviews"),
+      limit(12)
     );
     const snapshots = await getDocs(q);
     for (let doc of snapshots.docs) {
       const tempData = doc.data();
-      data = data.map((item) => {
-        if (item.id == doc.id && tempData.reviews > 0) {
-          return tempData;
-        }
-        return item;
-      });
+      if (doc.id != request.id) {
+        data.push(tempData);
+      }
+      if (data.length >= smax) {
+        break;
+      }
     }
 
     return NextResponse.json(
-      { softwares: data, total: softwares.length },
+      { softwares: data, total: data.length },
       { status: 200 }
     );
   } catch (e) {

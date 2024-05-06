@@ -46,8 +46,8 @@ export async function POST(req) {
       }
 
       return NextResponse.json(
-        { softwares: softwares, total: softwares.length },
-        { status: 200 }
+        { softwares: [], total: softwares.length },
+        { status: 404 }
       );
     } else {
       for (let i = 0; i < request.compareData.length; i++) {

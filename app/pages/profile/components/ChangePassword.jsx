@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function ChangePassword({ setActiveItem = () => {} }) {
   const [showHide, setShowHide] = useState({
@@ -16,6 +17,7 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
   const [nPassword, setNPassword] = useState("");
   const [rPassword, setRPassword] = useState("");
   const [allow, setAllow] = useState(false);
+  const [wrongCurrentPassword, setWrongCurrentPassword] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,34 +45,55 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
     if (temp.status != 200) {
       if (temp.status == 402) {
         setNewPass(false);
-        alert("New Password is not allowed!\nPleasee try other password!");
+        Swal.fire({
+          title: "Failed",
+          text: "New Password is not allowed!",
+          icon: "error",
+        });
       } else if (temp.status == 403) {
         setCurrent(false);
-        alert(
-          "Wrong Current Password!\nPlease enter correct current password!"
-        );
+        setWrongCurrentPassword(true);
+        Swal.fire({
+          title: "Failed",
+          text: "Wrong Current Password!",
+          icon: "error",
+        });
       } else if (temp.status == 405) {
         router.push("");
         router.refresh();
       } else {
-        alert(
-          "Something is wrong on the server side!\nPlease try again later!"
-        );
+        Swal.fire({
+          title: "Failed",
+          text: "Something is wrong on the server side!",
+          icon: "error",
+        });
       }
     } else {
       localStorage.setItem("token", res.token);
       setActiveItem(3);
+      Swal.fire({
+        title: "Successful",
+        text: "Your password has been changed successfully!",
+        icon: "success",
+      });
     }
 
     setChangingPass(false);
   };
 
   const validatePassword = async () => {
+    setWrongCurrentPassword(false);
     // console.log(cPassword, nPassword, rPassword);
-    setCurrent(cPassword.length >= 8);
-    setNewPass(
-      nPassword.length >= 8 && rPassword.length >= 8 && nPassword == rPassword
-    );
+    const tcurrent = document.getElementById("current").value;
+    const tnew = document.getElementById("new").value;
+    const trenew = document.getElementById("renew").value;
+
+    setCPassword(tcurrent);
+    setNPassword(tnew);
+    setRPassword(trenew);
+
+    setCurrent(tcurrent.length >= 8);
+    setNewPass(tnew.length >= 8 && trenew.length >= 8 && tnew == trenew);
     setAllow(true);
   };
 
@@ -103,14 +126,12 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
         <div className="flex">
           <input
             name="current"
+            id="current"
             type={showHide.current ? "text" : "password"}
             placeholder="Current Password"
             className={`text-gray-300 rounded-full ${
               current ? "border-darkgray" : "border-red"
             } border-[1px] w-full p-2`}
-            onChange={(e) => {
-              setCPassword(e.target.value);
-            }}
           />
           {showHide.current ? (
             <div
@@ -138,6 +159,18 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
             </div>
           )}
         </div>
+        <div className="flex place-content-center">
+          {!current &&
+            (wrongCurrentPassword ? (
+              <label htmlFor="current" className="text-red text-sm">
+                *Your current password is wrong!
+              </label>
+            ) : (
+              <label htmlFor="current" className="text-red text-sm">
+                *Password must be at least 8 characters long!
+              </label>
+            ))}
+        </div>
       </div>
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
@@ -148,14 +181,12 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
         <div className="flex">
           <input
             name="new"
+            id="new"
             type={showHide.newPass ? "text" : "password"}
             placeholder="New Password"
             className={`text-gray-300 rounded-full ${
               newPass ? "border-darkgray" : "border-red"
             } border-[1px] w-full p-2`}
-            onChange={(e) => {
-              setNPassword(e.target.value);
-            }}
           />
           {showHide.newPass ? (
             <div
@@ -183,6 +214,18 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
             </div>
           )}
         </div>
+        <div className="flex place-content-center">
+          {!newPass &&
+            (document.getElementById("new").value.length < 8 ? (
+              <label htmlFor="new" className="text-red text-sm">
+                *Password must be at least 8 characters long!
+              </label>
+            ) : (
+              <label htmlFor="new" className="text-red text-sm">
+                *Password does not match!
+              </label>
+            ))}
+        </div>
       </div>
       <div className="lg:text-title-sm md:text-body-md sm:text-body-sm xsm:text-body-sm">
         <div className="p-2 font-bold">
@@ -193,14 +236,12 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
         <div className="flex">
           <input
             name="renew"
+            id="renew"
             type={showHide.renew ? "text" : "password"}
             placeholder="Confirm New Password"
             className={`text-gray-300 rounded-full ${
               newPass ? "border-darkgray" : "border-red"
             } border-[1px] w-full p-2`}
-            onChange={(e) => {
-              setRPassword(e.target.value);
-            }}
           />
           {showHide.renew ? (
             <div
@@ -226,6 +267,13 @@ export default function ChangePassword({ setActiveItem = () => {} }) {
             >
               show
             </div>
+          )}
+        </div>
+        <div className="flex place-content-center">
+          {!newPass && (
+            <label htmlFor="new" className="text-red text-sm">
+              *Password does not match!
+            </label>
           )}
         </div>
       </div>

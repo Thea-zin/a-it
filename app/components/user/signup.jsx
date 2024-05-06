@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function SignUp({ setSignStatus }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,8 +69,19 @@ export default function SignUp({ setSignStatus }) {
     const res = await temp.json();
     // console.log(res);
     setLoading(false);
-    if (temp.status == 200) setSignStatus(3);
-    else alert(`Sign up Failed!\n${res.reason}`);
+    if (temp.status == 200) {
+      setSignStatus(3);
+      Swal.fire({
+        title: "Successful",
+        text: "You have been signed up successfully",
+        icon: "success",
+      });
+    } else
+      Swal.fire({
+        title: "Sign Up Failed",
+        text: `${res.reason}`,
+        icon: "error",
+      });
   };
 
   return (
@@ -87,7 +99,7 @@ export default function SignUp({ setSignStatus }) {
           <div className=" lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px]  border bg-base rounded-[16px]   md:p-10 sm:p-7 xsm:p-8 ">
             <div className="space-y-4">
               <div className="flex justify-center items-center">
-                <img src={"/photo/logoAIT.png"}></img>
+                <img src={"/photo/LogoAIT.png"}></img>
               </div>
               <div className="text-center text-darkblue font-bold text-display-md">
                 Sign Up
@@ -105,6 +117,13 @@ export default function SignUp({ setSignStatus }) {
                     placeholder="Name"
                   />
                 </div>
+                <div className="flex place-content-center">
+                  {!name && (
+                    <label htmlFor="name" className="text-red text-sm">
+                      *Name can not be empty!
+                    </label>
+                  )}
+                </div>
                 <div className="flex justify-center mt-2">
                   <input
                     type="text"
@@ -116,6 +135,13 @@ export default function SignUp({ setSignStatus }) {
                     placeholder="Occupation"
                   />
                 </div>
+                <div className="flex place-content-center">
+                  {!occupation && (
+                    <label htmlFor="occupation" className="text-red text-sm">
+                      *Occupation can not be empty!
+                    </label>
+                  )}
+                </div>
                 <div className="flex justify-center mt-2">
                   <input
                     type="text"
@@ -126,6 +152,13 @@ export default function SignUp({ setSignStatus }) {
                     name="email"
                     placeholder="Email Address"
                   />
+                </div>
+                <div className="flex place-content-center">
+                  {!email && (
+                    <label htmlFor="email" className="text-red text-sm">
+                      *Email is not correct!
+                    </label>
+                  )}
                 </div>
                 <div className="flex justify-center relative mt-2">
                   <input
@@ -151,6 +184,18 @@ export default function SignUp({ setSignStatus }) {
                     )}
                   </div>
                 </div>
+                <div className="flex place-content-center">
+                  {!password &&
+                    (document.getElementById("password").value.length < 8 ? (
+                      <label htmlFor="password" className="text-red text-sm">
+                        *Password must be at least 8 characters long!
+                      </label>
+                    ) : (
+                      <label htmlFor="password" className="text-red text-sm">
+                        *Password does not match!
+                      </label>
+                    ))}
+                </div>
                 <div className="flex justify-center relative mt-2">
                   <input
                     type={showVerify ? "text" : "password"}
@@ -174,6 +219,18 @@ export default function SignUp({ setSignStatus }) {
                       <p className="text-basedark">show</p>
                     )}
                   </div>
+                </div>
+                <div className="flex place-content-center">
+                  {!password &&
+                    (document.getElementById("verify").value.length < 8 ? (
+                      <label htmlFor="verify" className="text-red text-sm">
+                        *Password must be at least 8 characters long!
+                      </label>
+                    ) : (
+                      <label htmlFor="verify" className="text-red text-sm">
+                        *Password does not match!
+                      </label>
+                    ))}
                 </div>
                 <div className="flex justify-center mt-2">
                   {loading ? (

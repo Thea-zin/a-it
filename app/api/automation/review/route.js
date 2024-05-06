@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import firebase_app from "../../firebase";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   doc,
   getDoc,
@@ -51,6 +52,14 @@ export async function POST(req) {
     const auth = getAuth(firebase_app);
     let review = await req.json();
 
+    const prompt = `We have this comment with title (${review.title}) and the comment (${review.comment}). Are both title and comment appropriate, not offensive, and a proper sentence or paragraph? please only answer yes or no.`;
+    const allow = await gemini(prompt);
+    if (allow.toLowerCase() != "yes") {
+      return NextResponse.json(
+        { message: "Inappropriate comment" },
+        { status: 406 }
+      );
+    }
     try {
       const decode = verify(review.username, process.env.secret);
 
@@ -117,3 +126,22 @@ export async function POST(req) {
     );
   }
 }
+
+const gemini = async (pmt) => {
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.geminiKey);
+
+    const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+
+    const prompt = pmt;
+
+    const result = await model.generateContent(pmt);
+    const response = await result.response;
+    const text = response.text();
+
+    return text.trim();
+  } catch (e) {
+    console.log(e);
+    return "no";
+  }
+};

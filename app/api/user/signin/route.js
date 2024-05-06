@@ -81,6 +81,13 @@ export async function POST(req) {
       console.log(error);
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log(errorCode);
+      if (errorCode == "auth/too-many-requests") {
+        return NextResponse.json(
+          { reason: "Too Many Wrong Log In! Please Try Again later!" },
+          { status: 406 }
+        );
+      }
       return NextResponse.json(
         { reason: "Incorrect Log In Credential!" },
         { status: 405 }

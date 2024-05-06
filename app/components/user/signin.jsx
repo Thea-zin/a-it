@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 export default function SignIn({ setSignStatus }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -48,9 +49,18 @@ export default function SignIn({ setSignStatus }) {
       localStorage.setItem("email", res.email);
       localStorage.setItem("joined", res.joined);
       setSignStatus(0);
-    } else if (temp.status == 404)
-      alert(`Sign In Failed!\n${res.reason}`); // wrong credential
-    else alert(`Sign In Failed!\n${res.reason}`);
+
+      Swal.fire({
+        title: "Successful!",
+        text: `Your has been signed in successfully`,
+        icon: "success",
+      });
+    } else
+      Swal.fire({
+        title: "Sign In Failed!",
+        text: `${res.reason}`,
+        icon: "error",
+      }); // wrong credential
   };
 
   return (
@@ -68,7 +78,7 @@ export default function SignIn({ setSignStatus }) {
           <div className=" lg:w-[700px] md:w-[600px] sm:w-[500px] xsm:w-[300px]  border bg-base rounded-[16px]   md:p-10 sm:p-7 xsm:p-8 ">
             <div className="space-y-4">
               <div className="flex justify-center items-center">
-                <img src={"/photo/logoAIT.png"}></img>
+                <img src={"/photo/LogoAIT.png"}></img>
               </div>
               <div className="text-center text-darkblue font-bold text-display-md">
                 Log In
@@ -85,6 +95,13 @@ export default function SignIn({ setSignStatus }) {
                     name="email"
                     placeholder="Email Address"
                   ></input>
+                </div>
+                <div className="flex place-content-center">
+                  {!email && (
+                    <label htmlFor="email" className="text-red text-sm">
+                      *Email is not correct!
+                    </label>
+                  )}
                 </div>
                 <div className="flex justify-center relative mt-2">
                   <input
@@ -109,6 +126,13 @@ export default function SignIn({ setSignStatus }) {
                       <p className="text-basedark">show</p>
                     )}
                   </div>
+                </div>
+                <div className="flex place-content-center">
+                  {!password && (
+                    <label htmlFor="password" className="text-red text-sm">
+                      *Password must be at least 8 characters long!
+                    </label>
+                  )}
                 </div>
 
                 <div className="flex justify-center mt-2">

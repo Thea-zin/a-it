@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function ReviewFormBeta() {
   const [experience, setExperience] = useState("");
@@ -15,6 +16,7 @@ export default function ReviewFormBeta() {
     comment: true,
   });
   const [softwareInfo, setSoftwareInfo] = useState({ icon: "", name: "" });
+  const [submitLoading, setSubmitLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get("id");
@@ -73,7 +75,38 @@ export default function ReviewFormBeta() {
     });
 
     // setShowForm(-1);
-    router.push(`/pages/software?id=${id}`);
+    if (data.status == 406) {
+      Swal.fire({
+        title: "Review Not Accepted",
+        text: "Your review is not accepted!\nPlease check your review to make sure it is appropriate and not offensive!",
+        icon: "error",
+      });
+    } else if (data.status == 405) {
+      localStorage.setItem("token", "");
+      router.push("/");
+      router.refresh();
+      Swal.fire({
+        title: "Successful",
+        text: "Your review has been submitted successfully!",
+        icon: "success",
+      });
+    } else if (data.status == 403) {
+      Swal.fire({
+        title: "Failed",
+        text: "You have already submitted a review for this AI tool!",
+        icon: "error",
+      });
+      router.push(`/pages/software?id=${id}`);
+    } else {
+      Swal.fire({
+        title: "Failed",
+        text: "Something is wrong!",
+        icon: "error",
+      });
+      router.push(`/pages/software?id=${id}`);
+    }
+
+    setSubmitLoading(false);
   }
 
   function validateInput() {
@@ -95,6 +128,8 @@ export default function ReviewFormBeta() {
     } catch (e) {
       return;
     }
+
+    setSubmitLoading(true);
     uploadReview();
   }
 
@@ -120,13 +155,10 @@ export default function ReviewFormBeta() {
                 <div className="h-7 bg-[#1DCDFE]"></div>
                 <div className="p-5">
                   <li>
-                    Your review will only be published after it has been
-                    reviewed by our team and passed quality checks
+                    {`Your review will be checked by Google's Gemini to determine whether it is appropriate and not offensive`}
                   </li>
-                  <li>This may take up to 3 business days</li>
                   <li>
-                    If your review is incentivized, it can take up to 1-2
-                    additional business days to receive it
+                    {`Please make sure your review is correct. Once submitted, you won't be able to delete or modify your review.`}
                   </li>
                 </div>
               </div>
@@ -265,14 +297,44 @@ export default function ReviewFormBeta() {
             <div className="h-16"></div>
           </div>
           <div className="h-24 w-full flex place-content-center place-items-center">
-            <button
-              onClick={() => {
-                validateInput();
-              }}
-              className="bg-basedark py-2 px-5 sm:px-10 font-medium rounded-full text-white mr-2 sm:mr-10 text-xl xm:text-2xl hover:bg-[#1DCDFE]"
-            >
-              Submit Your Review
-            </button>
+            {submitLoading ? (
+              <div className="flex place-content-center mt-12">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2.3em"
+                  height="2.3em"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="#434280"
+                    d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z"
+                    opacity="0.5"
+                  />
+                  <path
+                    fill="#434280"
+                    d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      dur="1s"
+                      from="0 12 12"
+                      repeatCount="indefinite"
+                      to="360 12 12"
+                      type="rotate"
+                    />
+                  </path>
+                </svg>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  validateInput();
+                }}
+                className="bg-basedark py-2 px-5 sm:px-10 font-medium rounded-full text-white mr-2 sm:mr-10 text-xl xm:text-2xl hover:bg-[#1DCDFE]"
+              >
+                Submit Your Review
+              </button>
+            )}
           </div>
         </div>
       </div>

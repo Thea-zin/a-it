@@ -32,6 +32,7 @@ export default function Products({
   const [tempRate, setTempRate] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isViewAll, setIsViewAll] = useState(true);
+  const [categoryLoading, setCategoryLoading] = useState(false);
   const [viewAllCatgories, setViewAllCategories] = useState([]);
 
   function addIds(id, name, add, icon = "") {
@@ -99,6 +100,7 @@ export default function Products({
     localStorage.setItem("ait_soft_icons", "");
 
     setLoading(true);
+    setCategoryLoading(true);
     getAllCategories();
     if (initialFilter != "") {
       getFilteredSoftwares(initialFilter);
@@ -147,6 +149,8 @@ export default function Products({
     } catch (e) {
       console.log(e);
     }
+
+    setCategoryLoading(false);
   };
 
   const getIntitalProducts = async () => {
@@ -473,10 +477,15 @@ export default function Products({
     <div className="itemes bg-[#F7F8FA]">
       <div className="md:flex p-8 ml-5">
         <div className="min-w-[260px]">
-          <div className="filter  bg-white rounded-xl p-8 " id="filter">
-            <div className="flex justify-between ">
+          <div className="filter  bg-white rounded-xl p-8 relative" id="filter">
+            <div className="flex justify-between place-items-center">
               <div className="font-bold">Filters </div>
-              <button onClick={onViewAll}> View All </button>
+              <button
+                onClick={onViewAll}
+                className="px-5 py-2 bg-darkblue text-white font-semibold rounded-lg"
+              >
+                View All
+              </button>
             </div>
 
             <div className="software mt-5">
@@ -537,44 +546,66 @@ export default function Products({
             </div>
             <div className="busineses">
               <div className="title mt-5 font-semibold">Categories</div>
-              <div className="mt-5">
-                {categories.map((item, index) => {
-                  return (
-                    <div className="flex items-center mb-2" key={index}>
-                      <input
-                        id={item[0]}
-                        type="radio"
-                        value={item[1]}
-                        name="categories"
-                        className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
-                        onChange={(e) => {
-                          setTempFilter(e.target.value);
-                        }}
-                        checked={tempFilter === item[1]}
-                      />
-                      <label
-                        htmlFor={item[0]}
-                        className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
-                      >
-                        <div className="text-black ">{item[0]}</div>
-                      </label>
-                    </div>
-                  );
-                })}
-              </div>
+              {categoryLoading ? (
+                <div className="animate-pulse flex space-x-4">
+                  <div className="flex-1 space-y-6 py-1">
+                    <div className="h-2 bg-slate-200 rounded"></div>
+                    {[1, 2].map((item, index) => {
+                      return (
+                        <div className="space-y-3" key={index}>
+                          <div className="grid grid-cols-3 gap-4">
+                            <div className="h-2 bg-slate-200 rounded col-span-2"></div>
+                            <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+                          </div>
+                          <div className="h-2 bg-slate-200 rounded"></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-5">
+                  {categories.map((item, index) => {
+                    return (
+                      <div className="flex items-center mb-2" key={index}>
+                        <input
+                          id={item[0]}
+                          type="radio"
+                          value={item[1]}
+                          name="categories"
+                          className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full dark:bg-gray-700 dark:border-gray-600"
+                          onChange={(e) => {
+                            setTempFilter(e.target.value);
+                          }}
+                          checked={tempFilter === item[1]}
+                        />
+                        <label
+                          htmlFor={item[0]}
+                          className="cursor-pointer ml-2 text-sm font-medium text-[#EDA42D] dark:text-gray-300 flex items-center p-1 rounded-lg"
+                        >
+                          <div className="text-black ">{item[0]}</div>
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-            <div className="flex place-content-center">
-              <button
-                onClick={() => {
-                  // console.log("tempfilter length", tempFilter.length);
-                  if (tempFilter.length > 0 || tempRate.length > 0) {
-                    getFilteredSoftwares();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                }}
-              >
-                Filter
-              </button>
+            <div className="flex place-content-center sticky bottom-0">
+              {!categoryLoading && (
+                <button
+                  className="px-5 py-2 bg-darkblue text-white font-semibold rounded-lg"
+                  onClick={() => {
+                    // console.log("tempfilter length", tempFilter.length);
+                    if (tempFilter.length > 0 || tempRate.length > 0) {
+                      getFilteredSoftwares();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
+                >
+                  Filter
+                </button>
+              )}
             </div>
           </div>
         </div>
