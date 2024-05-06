@@ -129,7 +129,6 @@ export default function Products({
 
   const getAllCategories = async () => {
     try {
-      let initcategory = initialFilter;
       let isParent = false;
       let temp = await fetch("/api/automation/categories", {
         method: "POST",
@@ -139,11 +138,10 @@ export default function Products({
 
       // console.log(res.categories[0]);
 
-      if (initcategory == null || initcategory == "") {
-        initcategory = res.categories[0][1];
+      if (initialFilter == "") {
+        setIsViewAll(true);
       }
 
-      setIsViewAll(true);
       setCategories(res.categories);
       setViewAllCategories(res.categories);
     } catch (e) {
