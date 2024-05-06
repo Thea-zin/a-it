@@ -64,7 +64,7 @@ export default function SoftwarePage() {
   const getData = async () => {
     try {
       setLoading(true);
-      setText("");
+      setText({text: ""});
 
       const temp = await fetch("/api/automation/software", {
         method: "POST",
