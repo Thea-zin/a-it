@@ -64,6 +64,9 @@ const Navbar = () => {
           method: "POST",
           body: JSON.stringify({}),
         });
+        if (temp.status == 504) {
+          continue;
+        }
         const res = await temp.json();
         if (!res.cont) {
           break;
