@@ -25,6 +25,9 @@ const Navbar = () => {
     if (mode != "" && mode != null) {
       if (mode == "verifyEmail") verifyEmail(oobCode);
     }
+
+    // part of automation to update data in firebase
+    updateDataInFirebase();
   }, []);
 
   useEffect(() => {
@@ -52,6 +55,23 @@ const Navbar = () => {
       setSignStatus(5);
     }
     router.push("/");
+  };
+
+  const updateDataInFirebase = async () => {
+    while (true) {
+      try {
+        const temp = await fetch("/api/automation/refresh", {
+          method: "POST",
+          body: JSON.stringify({}),
+        });
+        const res = await temp.json();
+        if (!res.cont) {
+          break;
+        }
+      } catch (e) {
+        break;
+      }
+    }
   };
 
   return (
