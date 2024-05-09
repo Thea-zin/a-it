@@ -52,7 +52,7 @@ export async function POST(req) {
     // );
 
     while (true) {
-    //   console.log(getIds());
+      //   console.log(getIds());
       const pgn = getPagenumber();
       if (getStatus() == 0) {
         setLastAccess(Date.now());
@@ -78,7 +78,8 @@ export async function POST(req) {
           setPagenumber(1);
           continue;
         }
-        for (let id of getIds()) {
+        while (getIds().length > 0) {
+          let id = getIds()[getIds().length - 1];
           setLastAccess(Date.now());
 
           let software = await getSoftwareInfo(
@@ -87,7 +88,7 @@ export async function POST(req) {
           );
           updateIds(id, false);
           await setDoc(doc(firestore, "softwares", id), software);
-        //   console.log("loaded in firebase: ", id);
+          //   console.log("loaded in firebase: ", id);
         }
       } else {
         if (isReadyForRefresh()) {
