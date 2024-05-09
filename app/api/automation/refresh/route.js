@@ -38,7 +38,7 @@ export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
 
-    if (Date.now() - getLastAccess() < 12000) {
+    if (Date.now() - getLastAccess() < 10000) {
       return NextResponse.json({ cont: false }, { status: 200 });
     }
 
