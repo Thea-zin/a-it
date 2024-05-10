@@ -89,7 +89,7 @@ export async function POST(req) {
         );
       }
       return NextResponse.json(
-        { reason: "Incorrect Log In Credential!" },
+        { reason: "Incorrect Log In Credential!", e: error },
         { status: 405 }
       );
     }
