@@ -50,7 +50,7 @@ export async function POST(req) {
     const q = query(
       collection(firestore, "softwares"),
       where("fullcategorieslink", "array-contains", request.category),
-      orderBy("reviews"),
+      orderBy("star", "desc"),
       limit(12)
     );
     const snapshots = await getDocs(q);
