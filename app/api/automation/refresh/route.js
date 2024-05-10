@@ -31,17 +31,24 @@ import {
   isReadyForRefresh,
   getLastAccess,
   setLastAccess,
+  getZooKeeper,
+  setZooKeeper,
 } from "../../AutoData";
 const jsdom = require("jsdom");
 
 export async function POST(req) {
   try {
     const firestore = getFirestore(firebase_app);
+    const request = req.json();
 
-    if (Date.now() - getLastAccess() < 10000) {
+    if (
+      Date.now() - getLastAccess() < 10000 &&
+      request.zooKeeper != getZooKeeper()
+    ) {
       return NextResponse.json({ cont: false }, { status: 200 });
     }
 
+    setZooKeeper(request.zooKeeper);
     // console.log(Date.now() - getLastAccess(), getLastAccess());
     // console.log(
     //   getMore(),

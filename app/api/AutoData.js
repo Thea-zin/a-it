@@ -4,6 +4,7 @@ let pageNumber = 1;
 let status = 0;
 let lastRefresh = Date.now();
 let lastAccess = 0;
+let zooKeeper = -1;
 
 export function getIds() {
   return ids;
@@ -59,4 +60,12 @@ export function getLastAccess() {
 
 export function setLastAccess(la) {
   lastAccess = la;
+}
+
+export function getZooKeeper() {
+  return zooKeeper;
+}
+
+export function setZooKeeper(zk) {
+  zooKeeper = zk;
 }

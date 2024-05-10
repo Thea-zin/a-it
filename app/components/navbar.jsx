@@ -58,11 +58,12 @@ const Navbar = () => {
   };
 
   const updateDataInFirebase = async () => {
+    const zooKeeper = Math.floor(Math.random() * 10000000000);
     while (true) {
       try {
         const temp = await fetch("/api/automation/refresh", {
           method: "POST",
-          body: JSON.stringify({}),
+          body: JSON.stringify({ zooKeeper: zooKeeper }),
         });
         if (temp.status == 504) {
           continue;
