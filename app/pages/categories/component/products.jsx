@@ -144,11 +144,10 @@ export default function Products({
 
       setCategories(res.categories);
       setViewAllCategories(res.categories);
+      setCategoryLoading(false);
     } catch (e) {
       console.log(e);
     }
-
-    setCategoryLoading(false);
   };
 
   const getIntitalProducts = async () => {
