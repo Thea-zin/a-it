@@ -695,7 +695,7 @@ export default function Products({
                               className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
                             >
                               <div className="flex justify-between flex-wrap">
-                                <div>
+                                <div className="flex-1">
                                   <p className="text-ellipsis">{item.name}</p>
                                   <div className="star flex flex-wrap">
                                     <Stars number={item.star} />
@@ -850,8 +850,8 @@ export default function Products({
                             className="group border border-gray p-3 rounded-lg font-semibold  hover:bg-[#1e293b] hover:text-white"
                           >
                             <div className="flex justify-between flex-wrap">
-                              <div>
-                                <p className="text-ellipsis">{item.name}</p>
+                              <div className="flex-1">
+                                <p className="text-ellipsis overflow-hidden">{item.name}</p>
                                 <div className="star flex flex-wrap">
                                   <Stars number={item.star} />
                                 </div>
