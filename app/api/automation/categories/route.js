@@ -53,11 +53,11 @@ const getCategoriesLink = async () => {
   const dom = new jsdom.JSDOM(temp);
   const page = dom.window.document;
 
-  const grid = page.querySelectorAll("div.categories-grid div.category-item");
+  const grid = page.querySelectorAll("div.categorie-generale-card ul.categories-associees li");
   // console.log(grid.length);
 
   const quotes = Array.from(grid).map((cell) => {
-    const text = cell.querySelector("a p").textContent;
+    const text = cell.querySelector("a").textContent;
     let temp = cell.querySelector("a").href;
     temp = temp.split("/");
     const nci = temp[temp.length - 2];
